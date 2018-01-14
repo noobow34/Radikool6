@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Radikool6.Entities;
 
 namespace Radikool6
 {
@@ -21,6 +23,10 @@ namespace Radikool6
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<Db>(op =>
+            {
+                op.UseSqlite(@"Data Source=data\data.db");
+            });
             services.AddMvc();
         }
 
