@@ -14,6 +14,12 @@ namespace Radikool6.Entities
         [Column("id")]
         public string Id { get; set; }
 
+        [Column("region_id")]
+        public string RegionId { get; set; }
+        
+        [Column("region_name")]
+        public string RegionName { get; set; }
+        
         [Column("area")]
         public string Area { get; set; }
 
@@ -25,6 +31,9 @@ namespace Radikool6.Entities
 
         [Column("name")]
         public string Name { get; set; }
+        
+        [Column("sequence")]
+        public int Sequence { get; set; }
 
         public List<Program> Programs { get; set; } = new List<Program>();
 

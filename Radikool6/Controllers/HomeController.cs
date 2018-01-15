@@ -14,6 +14,7 @@ namespace Radikool6.Controllers
 
         public HomeController(Db db)
         {
+            Radio.Radiko.GetStations();
             var p = db.Programs.ToList();
         }
 
