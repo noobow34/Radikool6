@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Radikool6.Entities;
@@ -11,6 +12,16 @@ namespace Radikool6.Models
         {
         }
 
+        /// <summary>
+        /// 放送局IDで放送局取得
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Station GetById(string id)
+        {
+            return Db.Stations.Find(id);
+        }
+        
         /// <summary>
         /// 種別で放送局取得
         /// </summary>
@@ -32,7 +43,7 @@ namespace Radikool6.Models
             Db.Stations.RemoveRange(Db.Stations.Where(s => types.Contains(s.Type)));
             Db.SaveChanges();
 
-            Db.AddRange(stations);
+            Db.Stations.AddRange(stations);
             Db.SaveChanges();
 
         }

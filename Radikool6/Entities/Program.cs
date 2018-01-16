@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Radikool6.Entities
 {
@@ -33,6 +34,7 @@ namespace Radikool6.Entities
         [Column("description")]
         public string Description { get; set; }
 
+        [JsonIgnore]
         public Station Station { get; set; }
     }
 }

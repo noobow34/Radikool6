@@ -17,7 +17,7 @@ namespace Radikool6.Classes
             /// <summary>
             /// 週刊番組表
             /// </summary>
-            public const string WeeklyTimeTable = "http://radiko.jp/v3/program/station/weekly/{station_id}.xml";
+            public const string WeeklyTimeTable = "http://radiko.jp/v3/program/station/weekly/[stationCode].xml";
 
             /// <summary>
             /// 今日の番組表
