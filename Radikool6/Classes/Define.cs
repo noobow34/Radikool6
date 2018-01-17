@@ -108,5 +108,55 @@ namespace Radikool6.Classes
             public const string FfmpegArgs = "";
 
         }
+        
+        /// <summary>
+        /// NHK関連
+        /// </summary>
+        public class Nhk
+        {
+            /// <summary>
+            /// NHKホーム
+            /// </summary>
+            public const string Home = "";
+
+            /// <summary>
+            /// 今日の番組表
+            /// </summary>
+            public const string DailyTimeTable = "http://cgi4.nhk.or.jp/hensei/api/sche-nr.cgi?ch=net{station_id}&date={date}&tz=all&mode=xml";
+
+            /// <summary>
+            /// 放送URL
+            /// </summary>
+            public const string Swf = "http://www3.nhk.or.jp/netradio/files/swf/rtmpe.swf?buffer=2&ch={station_id}&area={area}&server_r1=rtmpe://netradio-hkr1-flash.nhk.jp/live/&stream_r1=NetRadio_HKR1_flash@108442&server_r2=rtmpe://netradio-r2-flash.nhk.jp/live/&stream_r2=NetRadio_R2_flash@63342&server_fm=rtmpe://netradio-hkfm-flash.nhk.jp/live/&stream_fm=NetRadio_HKFM_flash@108237";
+
+            /// <summary>
+            /// 種別
+            /// </summary>
+            public const string TypeName = "nhk";
+
+            /// <summary>
+            /// Windows Media Playerサイト
+            /// </summary>
+            public const string Wmp = "http://windows.microsoft.com/ja-jp/windows/windows-media-player";
+
+            /// <summary>
+            /// rtmpdumpの引数
+            /// </summary>
+          //  public const string RtmpdumpArgs = "--rtmp {rtmp} --app \"live\" --playpath {play_path} -W {swf} --live";
+       //     public const string RtmpdumpArgs = "--rtmp {rtmp} --app \"live\" --swfhash \"89a3f354dd60c59f837a49e326fcefab78a8fa896e535c1d3ccc15872bcf31b3\" --swfsize 126752  --playpath {play_path} -W {swf} --live";
+            public const string RtmpdumpArgs = "--rtmp {rtmp} -W http://www3.nhk.or.jp/netradio/files/swf/rtmpe_ver2015.swf --live";
+
+            public const string StationList = "http://www3.nhk.or.jp/netradio/app/config_pc.xml";
+
+
+            // JCBA用
+            // rtmpdump --rtmp "rtmp://jcbasimul015-live1.sp1.fmslive.stream.ne.jp/jcbasimul015-live1/_definst_/jcbasimul015-live" --timeout 3 -B "600" --live -o "jcba.flv"
+
+            public const string Config = "http://www.nhk.or.jp/radio/config/config_web.xml";
+      //      public const string Image = "http://www3.nhk.or.jp/netradio/files/img/parts.png";
+
+            public const string Image = "http://www.nhk.or.jp/radio/img/parts.png";
+
+        }
     }
 }

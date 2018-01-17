@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Radikool6.Entities
 {
@@ -34,6 +31,12 @@ namespace Radikool6.Entities
         
         [Column("sequence")]
         public int Sequence { get; set; }
+        
+        [Column("media_url")]
+        public string MediaUrl { get; set; }
+        
+        [Column("timetable_url")]
+        public string TimetableUrl { get; set; }
 
         public List<Program> Programs { get; set; } = new List<Program>();
 

@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
 using Radikool6.Radio;
@@ -45,7 +48,17 @@ namespace Radikool6.Controllers
                 var sModel = new StationModel(_db);
                 var station = sModel.GetById(stationId);
                 if (station == null) return;
-                var programs = Radiko.GetPrograms(station).Result;
+                var programs = new List<Entities.Program>();
+                switch (station.Type)
+                {
+                    case Define.Radiko.TypeName:
+                        programs = Radiko.GetPrograms(station).Result;
+                        break;
+                    case Define.Nhk.TypeName:
+                        programs = Nhk.GetPrograms(station, DateTime.Now, DateTime.Now.AddDays(1)).Result;
+                        break;
+                }
+
 
                 var pModel = new ProgramModel(_db);
                 pModel.Refresh(programs);

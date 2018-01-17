@@ -62,7 +62,7 @@ namespace Radikool6.Models
             var stationIds = programs.Select(p => p.StationId).Distinct();
             Db.Programs.RemoveRange(Db.Programs.Where(p => stationIds.Contains(p.StationId)));
             Db.SaveChanges();
-
+            
             Db.Programs.AddRange(programs);
             Db.SaveChanges();
         }
