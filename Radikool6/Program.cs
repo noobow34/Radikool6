@@ -29,7 +29,7 @@ namespace Radikool6
         /// </summary>
         private static void Init()
         {
-            
+            Schemas.Upgrade.Execute();
         }
     }
 }

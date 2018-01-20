@@ -1,0 +1,36 @@
+{
+  "hashes": {
+    "columns":{
+      "table_name": "text",
+      "hash": "text"
+    },
+    "primaryKey": ["table_name"]
+  },
+  "stations":{
+    "columns": {
+      "id": "text",
+      "region_id": "text",
+      "region_name": "text",
+      "area": "text",
+      "type": "text",
+      "code": "text",
+      "name": "text",
+      "sequence": "int",
+      "media_url": "text",
+      "timetable_url": "text"
+    },
+    "primaryKey": ["id"]
+  },
+  "programs":{
+    "columns": {
+      "id": "text",
+      "station_id": "text",
+      "start": "text",
+      "end": "text",
+      "title": "text",
+      "cast": "text",
+      "description": "text"
+    },
+    "primaryKey": ["id"]
+  }
+}

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Radikool6.Classes
@@ -33,6 +35,24 @@ namespace Radikool6.Classes
                 res = new DateTime(year, month, day, hour, min, sec, new GregorianCalendar());
                 return res;
 
+            }
+            
+            /// <summary>
+            /// sha256作成
+            /// </summary>
+            /// <param name="src"></param>
+            /// <returns></returns>
+            public static string Sha256(string src)
+            {
+                var res = "";
+
+                using (var sha256 = SHA256.Create())
+                {
+                    var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(src));
+                    res = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+                }
+
+                return res;
             }
         }
     }
