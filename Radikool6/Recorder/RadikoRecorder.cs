@@ -1,6 +1,6 @@
 ﻿namespace Radikool6.Recorder
 {
-    public class RadikoRecorder
+    public class RadikoRecorder : RecorderCore
     {
         
     }

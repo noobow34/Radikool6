@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Radikool6.Entities;
 
 namespace Radikool6
 {
@@ -14,6 +15,7 @@ namespace Radikool6
     {
         public static void Main(string[] args)
         {
+            Init();
             BuildWebHost(args).Run();
         }
 
@@ -21,5 +23,13 @@ namespace Radikool6
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
+
+        /// <summary>
+        /// 初期化
+        /// </summary>
+        private static void Init()
+        {
+            
+        }
     }
 }

@@ -1,7 +1,12 @@
-﻿using Radikool6.Classes;
+﻿using System;
+using Radikool6.Classes;
 using Radikool6.Entities;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -81,5 +86,68 @@ namespace Radikool6.Radio
 
             });
         }
+
+        /// <summary>
+        /// auth token取得
+        /// </summary>
+        /// <returns></returns>
+        public static Task<string> GetAuthToken()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    // auth token取得
+                    var req = (HttpWebRequest) WebRequest.Create(Define.Radiko.Auth1);
+                    req.Headers.Add("pragma", "no-cache");
+                    req.Headers.Add("x-radiko-app", "pc_html5");
+                    req.Headers.Add("x-radiko-app-version", "0.0.1");
+                    req.Headers.Add("x-radiko-device", "pc");
+                    req.Headers.Add("x-radiko-user", "dummy_user");
+
+                    var res = (HttpWebResponse) req.GetResponse();
+                    var token = res.Headers["X-Radiko-AuthToken"];
+                    int.TryParse(res.Headers["X-Radiko-KeyLength"], out var keyLength);
+                    int.TryParse(res.Headers["X-Radiko-KeyOffset"], out var keyOffset);
+
+
+                    // partial keyの元を取得
+                    req = (HttpWebRequest) WebRequest.Create(Define.Radiko.CommonJs);
+                    res = (HttpWebResponse) req.GetResponse();
+                    var js = "";
+                    using (var r = new StreamReader(res.GetResponseStream()))
+                    {
+                        js = r.ReadToEnd();
+                    }
+
+                    var m = Regex.Match(js, @"new RadikoJSPlayer.*{");
+                    var key = "";
+                    if (m.Success)
+                    {
+                        key = m.Value.Split(",")[2].Replace("'", "").Trim();
+                    }
+
+                    var partialKey =
+                        Convert.ToBase64String(Encoding.UTF8.GetBytes(key.Substring(keyOffset, keyLength)));
+
+                    // auto tokenを有効可
+                    req = (HttpWebRequest) WebRequest.Create(Define.Radiko.Auth2);
+                    req.Headers.Add("x-radiko-authtoken", token);
+                    req.Headers.Add("x-radiko-device", "pc");
+                    req.Headers.Add("x-radiko-partialkey", partialKey);
+                    req.Headers.Add("x-radiko-user", "dummy_user");
+                    res = (HttpWebResponse) req.GetResponse();
+
+                    return token;
+                }
+                catch (Exception e)
+                {
+                    var a = e.Message;
+                }
+
+                return "";
+            });
+        }
+
     }
 }

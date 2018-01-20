@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Radikool6.Classes;
 using Radikool6.Entities;
 
 namespace Radikool6
@@ -25,9 +26,11 @@ namespace Radikool6
         {
             services.AddDbContext<Db>(op =>
             {
-                op.UseSqlite(@"Data Source=data\data.db");
+                op.UseSqlite($"Data Source={Define.File.DbFile}");
             });
             services.AddMvc();
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

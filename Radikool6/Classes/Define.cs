@@ -7,6 +7,11 @@ namespace Radikool6.Classes
 {
     public class Define
     {
+        public class File
+        {
+            public const string DbFile = @"data\data.db";
+        }
+        
         public class Radiko
         {
             /// <summary>
@@ -81,18 +86,24 @@ namespace Radikool6.Classes
             /// <summary>
             /// 認証URL1
             /// </summary>
-            public const string Auth1 = "https://radiko.jp/v2/api/auth1_fms";
+            public const string Auth1 = "https://radiko.jp/v2/api/auth1";
 
             /// <summary>
             /// 認証URL2
             /// </summary>
-            public const string Auth2 = "https://radiko.jp/v2/api/auth2_fms";
+            public const string Auth2 = "https://radiko.jp/v2/api/auth2";
 
             /// <summary>
             /// rtmpdumpの引数
             /// </summary>
             public const string RtmpdumpArgs = "-r \"rtmpe://f-radiko.smartstream.ne.jp/[CH]/_definst_\" -a \"[CH]/_definst_\" -W \"[SWF]\" -C S: -C S: -C S: -C S:[TOKEN] -y \"simul-stream.stream?ucid=null\"";
 
+            /// <summary>
+            /// common.js
+            /// </summary>
+            public const string CommonJs = "http://radiko.jp/apps/js/playerCommon.js";
+            
+            
             /// <summary>
             /// rtmpgwの引数
             /// </summary>
@@ -105,7 +116,15 @@ namespace Radikool6.Classes
             /// </summary>
             public const string StationStream = "http://radiko.jp/v2/station/stream_smh_multi/[CH].xml";
 
+            /// <summary>
+            /// playlist.m3u8
+            /// </summary>
+            public const string PlayList = "http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8";
+            
             public const string FfmpegArgs = "";
+            
+            //                var args = $"-headers 'X-Radiko-AuthToken: {t.Result}' -i '{url}' -t 00:00:30 -acodec copy test.aac";
+
 
         }
         

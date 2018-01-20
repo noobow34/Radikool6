@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
+using Radikool6.Radio;
 
 namespace Radikool6.Controllers
 {
@@ -14,8 +16,7 @@ namespace Radikool6.Controllers
 
         public HomeController(Db db)
         {
-            Radio.Radiko.GetStations();
-            var p = db.Programs.ToList();
+
         }
 
         public IActionResult Index()
