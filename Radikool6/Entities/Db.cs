@@ -13,7 +13,7 @@ namespace Radikool6.Entities
         public DbSet<Program> Programs { get; set; }
         public DbSet<Station> Stations { get; set; }
 
-        private bool _notInjection = false;
+        private readonly bool _notInjection = false;
         public Db(DbContextOptions<Db> options) : base(options)
         {
         }
