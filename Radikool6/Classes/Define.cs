@@ -9,7 +9,7 @@ namespace Radikool6.Classes
     {
         public class File
         {
-            public const string DbFile = @"data\data2.db";
+            public const string DbFile = @"data\data.db";
         }
         
         public class Radiko

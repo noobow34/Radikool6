@@ -13,7 +13,7 @@ namespace Radikool6.BackgroundTask
             _timer = new Timer(1000);
             _timer.Elapsed += (sender, eventArgs) =>
             {
-                Console.WriteLine(DateTime.Now);
+                
             };
            
         }
