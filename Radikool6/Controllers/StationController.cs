@@ -24,14 +24,14 @@ namespace Radikool6.Controllers
         /// <param name="type"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/station/{type}")]
-        public async Task<ApiResponse> Get(string type)
+        [Route("api/station/")]
+        public async Task<ApiResponse> Get()
         {
             return await Execute(() =>
             {
                 var model = new StationModel(_db);
                 Result.Result = true;
-                Result.Data = model.Get(type);
+                Result.Data = model.Get();
             });
 
         }

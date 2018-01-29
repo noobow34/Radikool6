@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatToolbarModule} from '@angular/material';
+import {MatButtonModule, MatExpansionModule, MatToolbarModule} from '@angular/material';
 import { ContentComponent } from './content/content.component';
 import {StateService} from './state.service';
 import { TimetableComponent } from './timetable/timetable.component';
@@ -14,6 +14,7 @@ import { LibraryComponent } from './library/library.component';
 import { SettingComponent } from './setting/setting.component';
 import { ReserveComponent } from './reserve/reserve.component';
 import { RadioPlayerComponent } from './radio-player/radio-player.component';
+import {StationService} from './station.service';
 
 
 @NgModule({
@@ -32,10 +33,13 @@ import { RadioPlayerComponent } from './radio-player/radio-player.component';
     HttpClientModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatExpansionModule,
+
   ],
   providers: [
-    StateService
+    StateService,
+    StationService
     ],
   bootstrap: [AppComponent]
 })

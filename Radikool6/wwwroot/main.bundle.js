@@ -99,6 +99,7 @@ var library_component_1 = __webpack_require__("../../../../../src/app/library/li
 var setting_component_1 = __webpack_require__("../../../../../src/app/setting/setting.component.ts");
 var reserve_component_1 = __webpack_require__("../../../../../src/app/reserve/reserve.component.ts");
 var radio_player_component_1 = __webpack_require__("../../../../../src/app/radio-player/radio-player.component.ts");
+var station_service_1 = __webpack_require__("../../../../../src/app/station.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -119,10 +120,12 @@ var AppModule = /** @class */ (function () {
                 http_1.HttpClientModule,
                 animations_1.BrowserAnimationsModule,
                 material_1.MatToolbarModule,
-                material_1.MatButtonModule
+                material_1.MatButtonModule,
+                material_1.MatExpansionModule,
             ],
             providers: [
-                state_service_1.StateService
+                state_service_1.StateService,
+                station_service_1.StationService
             ],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -527,10 +530,62 @@ exports.StateService = StateService;
 
 /***/ }),
 
+/***/ "../../../../../src/app/station.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var StationService = /** @class */ (function (_super) {
+    __extends(StationService, _super);
+    function StationService(http) {
+        var _this = _super.call(this, http) || this;
+        /**
+         * 放送局取得
+         * @returns {Observable<Object>}
+         */
+        _this.get = function () {
+            return _this.http.get('./api/station/');
+        };
+        return _this;
+    }
+    StationService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], StationService);
+    return StationService;
+}(base_service_1.BaseService));
+exports.StationService = StationService;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  timetable works!\n</p>\n"
+module.exports = "<mat-accordion>\n  <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n    <mat-expansion-panel-header>\n      <mat-panel-title>{{r}}</mat-panel-title>\n    </mat-expansion-panel-header>\n    <ul>\n      <li *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</li>\n    </ul>\n  </mat-expansion-panel>\n</mat-accordion>\n"
 
 /***/ }),
 
@@ -568,10 +623,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var station_service_1 = __webpack_require__("../../../../../src/app/station.service.ts");
 var TimetableComponent = /** @class */ (function () {
-    function TimetableComponent() {
+    function TimetableComponent(stationService) {
+        this.stationService = stationService;
+        this.radiko = {};
+        this.radikoRegions = [];
+        /**
+         * 番組表表示
+         * @param {Station} station
+         */
+        this.setStation = function (station) {
+            console.log(station);
+        };
     }
     TimetableComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.stationService.get().subscribe(function (res) {
+            // 種別、地域ごとに分類する
+            var stations = res.data;
+            _this.radiko = {};
+            _this.radikoRegions = [];
+            var nhk = {};
+            for (var _i = 0, stations_1 = stations; _i < stations_1.length; _i++) {
+                var station = stations_1[_i];
+                if (station.type === 'radiko') {
+                    if (!(station.regionName in _this.radiko)) {
+                        _this.radiko[station.regionName] = [];
+                        _this.radikoRegions.push(station.regionName);
+                    }
+                    _this.radiko[station.regionName].push(station);
+                }
+            }
+            console.log(_this.radikoRegions);
+        });
     };
     TimetableComponent = __decorate([
         core_1.Component({
@@ -579,7 +664,7 @@ var TimetableComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/timetable/timetable.component.html"),
             styles: [__webpack_require__("../../../../../src/app/timetable/timetable.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [station_service_1.StationService])
     ], TimetableComponent);
     return TimetableComponent;
 }());

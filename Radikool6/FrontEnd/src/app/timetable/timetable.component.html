@@ -1,3 +1,10 @@
-<p>
-  timetable works!
-</p>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let r of radikoRegions">
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{r}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <ul>
+      <li *ngFor="let s of radiko[r]" (click)="setStation(s)">{{s.name}}</li>
+    </ul>
+  </mat-expansion-panel>
+</mat-accordion>

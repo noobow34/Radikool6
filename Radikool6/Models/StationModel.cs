@@ -27,9 +27,9 @@ namespace Radikool6.Models
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public List<Station> Get(string type)
+        public List<Station> Get(string type = "")
         {
-            return Db.Stations.Where(s => s.Type == type).OrderBy(s => s.Sequence).ToList();
+            return string.IsNullOrWhiteSpace(type) ? Db.Stations.OrderBy(s => s.Sequence).ToList() : Db.Stations.Where(s => s.Type == type).OrderBy(s => s.Sequence).ToList();
         }
         
         /// <summary>
