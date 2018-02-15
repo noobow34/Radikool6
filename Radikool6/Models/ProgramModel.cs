@@ -15,44 +15,40 @@ namespace Radikool6.Models
         /// <summary>
         /// 番組検索
         /// </summary>
-        /// <param name="stationId"></param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="keyword"></param>
+        /// <param name="cond"></param>
         /// <returns></returns>
-        public List<Entities.Program> Search(string stationId, string from, string to, string keyword)
+        public List<Entities.Program> Search(ProgramSearchCondition cond)
         {
-            var fromDate = Utility.Text.StringToDate(from);
-            var toDate = Utility.Text.StringToDate(to);
-            
-            List<Entities.Program>res = new List<Entities.Program>();
             var q = Db.Programs.Where(p => p.Id != null);
-            if (!string.IsNullOrWhiteSpace(stationId))
+            if (!string.IsNullOrWhiteSpace(cond.StationId))
             {
-                q = q.Where(p => p.StationId == stationId);
+                q = q.Where(p => p.StationId == cond.StationId);
             }
 
-            if (fromDate > DateTime.MinValue)
+            if (cond.From != null)
             {
-                q = q.Where(p => p.End > fromDate);
-            }
-            if (toDate > DateTime.MinValue)
-            {
-                q = q.Where(p => p.Start < toDate);
+                q = q.Where(p => p.End > cond.From);
             }
 
-            if (!string.IsNullOrWhiteSpace(keyword))
+            if (cond.To != null)
             {
-                q = q.Where(p => p.Title.Contains(keyword) || p.Cast.Contains(keyword) || p.Description.Contains(keyword));
+                q = q.Where(p => p.Start < cond.To);
             }
 
-            res = q.OrderBy(p => p.StationId).ThenBy(p => p.Start).ToList();
+            if (!string.IsNullOrWhiteSpace(cond.Keyword))
+            {
+                q = q.Where(p =>
+                    p.Title.Contains(cond.Keyword) || p.Cast.Contains(cond.Keyword) ||
+                    p.Description.Contains(cond.Keyword));
+            }
+
+            var res = q.OrderBy(p => p.StationId).ThenBy(p => p.Start).ToList();
 
 
             return res;
         }
-        
-        
+
+
         /// <summary>
         /// 番組データ更新
         /// </summary>

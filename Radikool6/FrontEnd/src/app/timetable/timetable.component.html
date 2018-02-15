@@ -8,3 +8,6 @@
     </ul>
   </mat-expansion-panel>
 </mat-accordion>
+<ul>
+  <li *ngFor="let p of programs" (click)="showProgramDetail(p)">{{p.title}}</li>
+</ul>

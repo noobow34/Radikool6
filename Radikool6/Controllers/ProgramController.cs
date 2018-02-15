@@ -21,50 +21,71 @@ namespace Radikool6.Controllers
         /// <summary>
         /// 番組表検索
         /// </summary>
-        /// <param name="stationId"></param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="keyword"></param>
+        /// <param name="cond"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("api/program/")]
-        public async Task<ApiResponse> Index(string stationId = "", string from = "", string to = "",
-            string keyword = "")
+        public async Task<ApiResponse> Index([FromBody] ProgramSearchCondition cond)
         {
             return await Execute(() =>
             {
                 var pModel = new ProgramModel(_db);
-                Result.Data = pModel.Search(stationId, from, to, keyword);
+                var res = pModel.Search(cond);
+
+                if (res.Count == 0 && string.IsNullOrWhiteSpace(cond.Keyword) && cond.Refresh)
+                {
+                    this.RefreshPrograms(cond.StationId);
+                    res = pModel.Search(cond);
+                }
+                Result.Data = res;
                 Result.Result = true;
             });
         }
 
+        /// <summary>
+        /// サーバから番組表取得
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/program/{stationId}")]
         public async Task<ApiResponse> Post(string stationId)
         {
             return await Execute(() =>
             {
-                var sModel = new StationModel(_db);
-                var station = sModel.GetById(stationId);
-                if (station == null) return;
-                var programs = new List<Entities.Program>();
-                switch (station.Type)
-                {
-                    case Define.Radiko.TypeName:
-                        programs = Radiko.GetPrograms(station).Result;
-                        break;
-                    case Define.Nhk.TypeName:
-                        programs = Nhk.GetPrograms(station, DateTime.Now, DateTime.Now.AddDays(1)).Result;
-                        break;
-                }
-
-
-                var pModel = new ProgramModel(_db);
-                pModel.Refresh(programs);
-                Result.Data = programs;
+                Result.Data = this.RefreshPrograms(stationId);
                 Result.Result = true;
             });
+        }
+
+
+        /// <summary>
+        /// 番組表取得処理
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns></returns>
+        private List<Entities.Program> RefreshPrograms(string stationId)
+        {
+            var sModel = new StationModel(_db);
+            var station = sModel.GetById(stationId);
+            var programs = new List<Entities.Program>();
+            if (station == null) return programs;
+
+            switch (station.Type)
+            {
+                case Define.Radiko.TypeName:
+                    programs = Radiko.GetPrograms(station).Result;
+                    break;
+                case Define.Nhk.TypeName:
+                    programs = Nhk.GetPrograms(station, DateTime.Now, DateTime.Now.AddDays(1)).Result;
+                    break;
+            }
+
+
+            var pModel = new ProgramModel(_db);
+            pModel.Refresh(programs);
+
+            return programs;
         }
     }
 }
