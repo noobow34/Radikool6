@@ -11,6 +11,7 @@ namespace Radikool6.Entities
     {
         public DbSet<Hash> Hashes { get; set; }
         public DbSet<Program> Programs { get; set; }
+        public DbSet<Reserve> Reserves { get; set; }
         public DbSet<Station> Stations { get; set; }
 
         private readonly bool _notInjection = false;

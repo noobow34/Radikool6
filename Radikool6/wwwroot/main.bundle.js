@@ -102,6 +102,7 @@ var station_service_1 = __webpack_require__("../../../../../src/app/station.serv
 var program_service_1 = __webpack_require__("../../../../../src/app/program.service.ts");
 var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/reserve-edit/reserve-edit.component.ts");
 var reserve_list_component_1 = __webpack_require__("../../../../../src/app/reserve-list/reserve-list.component.ts");
+var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -130,7 +131,8 @@ var AppModule = /** @class */ (function () {
             providers: [
                 state_service_1.StateService,
                 station_service_1.StationService,
-                program_service_1.ProgramService
+                program_service_1.ProgramService,
+                reserve_service_1.ReserveService
             ],
             entryComponents: [
                 reserve_edit_component_1.ReserveEditComponent
@@ -467,11 +469,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.service.ts");
 var ReserveEditComponent = /** @class */ (function () {
-    function ReserveEditComponent(dialogRef, data) {
+    function ReserveEditComponent(dialogRef, data, reserveService) {
         this.dialogRef = dialogRef;
         this.data = data;
+        this.reserveService = reserveService;
         console.log(data.program);
+        this.reserveService.update({ stationId: data.program.stationId, start: data.program.start, end: data.program.end }).subscribe(function (res) {
+            console.log(res);
+        });
     }
     ReserveEditComponent.prototype.ngOnInit = function () {
     };
@@ -482,7 +489,7 @@ var ReserveEditComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/reserve-edit/reserve-edit.component.scss")]
         }),
         __param(1, core_1.Inject(material_1.MAT_DIALOG_DATA)),
-        __metadata("design:paramtypes", [material_1.MatDialogRef, Object])
+        __metadata("design:paramtypes", [material_1.MatDialogRef, Object, reserve_service_1.ReserveService])
     ], ReserveEditComponent);
     return ReserveEditComponent;
 }());
@@ -532,10 +539,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.service.ts");
 var ReserveListComponent = /** @class */ (function () {
-    function ReserveListComponent() {
+    function ReserveListComponent(reserveService) {
+        this.reserveService = reserveService;
     }
     ReserveListComponent.prototype.ngOnInit = function () {
+        this.reserveService.get().subscribe(function (res) {
+            console.log(res);
+        });
     };
     ReserveListComponent = __decorate([
         core_1.Component({
@@ -543,11 +555,71 @@ var ReserveListComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/reserve-list/reserve-list.component.html"),
             styles: [__webpack_require__("../../../../../src/app/reserve-list/reserve-list.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [reserve_service_1.ReserveService])
     ], ReserveListComponent);
     return ReserveListComponent;
 }());
 exports.ReserveListComponent = ReserveListComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/reserve.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ReserveService = /** @class */ (function (_super) {
+    __extends(ReserveService, _super);
+    function ReserveService(http) {
+        var _this = _super.call(this, http) || this;
+        /**
+         * 予約取得
+         * @returns {Observable<Object>}
+         */
+        _this.get = function () {
+            return _this.http.get('./api/reserve');
+        };
+        /**
+         * 予約保存
+         * @param {Reserve} reserve
+         * @returns {Observable<Object>}
+         */
+        _this.update = function (reserve) {
+            return _this.http.post('./api/reserve', reserve);
+        };
+        return _this;
+    }
+    ReserveService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], ReserveService);
+    return ReserveService;
+}(base_service_1.BaseService));
+exports.ReserveService = ReserveService;
 
 
 /***/ }),

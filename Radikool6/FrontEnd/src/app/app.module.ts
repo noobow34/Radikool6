@@ -17,6 +17,7 @@ import {StationService} from './station.service';
 import {ProgramService} from './program.service';
 import { ReserveEditComponent } from './reserve-edit/reserve-edit.component';
 import { ReserveListComponent } from './reserve-list/reserve-list.component';
+import {ReserveService} from './reserve.service';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ReserveListComponent } from './reserve-list/reserve-list.component';
   providers: [
     StateService,
     StationService,
-    ProgramService
+    ProgramService,
+    ReserveService
     ],
   entryComponents:[
     ReserveEditComponent

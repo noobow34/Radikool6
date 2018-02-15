@@ -32,5 +32,12 @@
       "description": "text"
     },
     "primaryKey": ["id"]
+  },
+  "reserves": {
+    "columns": {
+      "id": "text",
+      "content": "text"
+    },
+    "primaryKey": ["id"]
   }
 }
