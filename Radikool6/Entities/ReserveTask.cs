@@ -10,12 +10,21 @@ namespace Radikool6.Entities
         [Key]
         [Column("id")]
         public string Id { get; set; }
-        
+
         [Column("start")]
         public DateTime Start { get; set; }
-        
+
         [Column("end")]
-        public DateTime End { get; set; }       
-        
+        public DateTime End { get; set; }
+
+        [ForeignKey("Reserve")]
+        [Column("reserve_id")]
+        public string ReserveId { get; set; }
+
+        public Reserve Reserve { get; set; }
+
+        [NotMapped]
+        public Station Station { get; set; }
+
     }
 }

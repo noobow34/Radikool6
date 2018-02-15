@@ -56,5 +56,8 @@ namespace Radikool6.Entities
 
         [NotMapped]
         public bool Enabled { get; set; } = true;
+        
+        [JsonIgnore]
+        public ICollection<ReserveTask> ReserveTasks { get; set; }
     }
 }

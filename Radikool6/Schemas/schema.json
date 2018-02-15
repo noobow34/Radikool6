@@ -39,5 +39,14 @@
       "content": "text"
     },
     "primaryKey": ["id"]
+  },
+  "reserve_tasks": {
+    "columns": {
+      "id": "text",
+      "start": "text",
+      "end": "text",
+      "reserve_id": "text"
+    },
+    "primaryKey": ["id"]
   }
 }
