@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -29,7 +29,7 @@ namespace Radikool6.Schemas
                 JsonConvert.DeserializeObject<Dictionary<string, Table>>(
                     File.ReadAllText("Schemas/schema.json"));
 
-            using (var con = new SQLiteConnection($"Data Source={Define.File.DbFile}"))
+            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
             {
                 con.Open();
                 using (var trn = con.BeginTransaction())
@@ -53,7 +53,7 @@ namespace Radikool6.Schemas
         }
 
 
-        private static void CreateTable(SQLiteTransaction trn, string tableName, Table table, bool check = true)
+        private static void CreateTable(SqliteTransaction trn, string tableName, Table table, bool check = true)
         {
             var createQuery =
                 $"CREATE TABLE IF NOT EXISTS {tableName}({string.Join(",", table.Columns.Select(c => c.Key + " " + c.Value))}{(table.PrimaryKey?.Length > 0 ? " ,PRIMARY KEY(" + string.Join(",", table.PrimaryKey) + ")" : "")})";
@@ -64,12 +64,12 @@ namespace Radikool6.Schemas
             {
                 // ハッシュチェック
                 var count = 0;
-                using (var cmd = new SQLiteCommand("", trn.Connection, trn))
+                using (var cmd = new SqliteCommand("", trn.Connection, trn))
                 {
                     cmd.CommandText =
                         "SELECT COUNT(table_name) FROM hashes WHERE table_name = @table_name AND hash = @hash";
-                    cmd.Parameters.Add(new SQLiteParameter("table_name", tableName));
-                    cmd.Parameters.Add(new SQLiteParameter("hash", hash));
+                    cmd.Parameters.Add(new SqliteParameter("table_name", tableName));
+                    cmd.Parameters.Add(new SqliteParameter("hash", hash));
 
                     count = Convert.ToInt32(cmd.ExecuteScalar());
                 }
@@ -79,17 +79,17 @@ namespace Radikool6.Schemas
                     // 既存データ退避
                     try
                     {
-                        using (var cmd = new SQLiteCommand("", trn.Connection, trn))
+                        /*using (var cmd = new SqliteCommand("", trn.Connection, trn))
                         {
                             cmd.CommandText = $"SELECT * FROM {tableName}";
-                            using (var da = new SQLiteDataAdapter(cmd))
+                            using (var da = new sqlited(cmd))
                             {
                                 da.Fill(orgData);
                             }
-                        }
+                        }*/
 
                         // 既存テーブル削除
-                        using (var cmd = new SQLiteCommand("", trn.Connection, trn))
+                        using (var cmd = new SqliteCommand("", trn.Connection, trn))
                         {
                             cmd.CommandText = $"DROP TABLE {tableName}";
                             cmd.ExecuteNonQuery();
@@ -101,7 +101,7 @@ namespace Radikool6.Schemas
                     }
 
                     // ハッシュ登録
-                    using (var cmd = new SQLiteCommand("", trn.Connection, trn))
+                    using (var cmd = new SqliteCommand("", trn.Connection, trn))
                     {
                         cmd.CommandText = @"REPLACE INTO 
                                                 hashes 
@@ -114,8 +114,8 @@ namespace Radikool6.Schemas
                                                 @table_name,
                                                 @hash 
                                              )";
-                        cmd.Parameters.Add(new SQLiteParameter("table_name", tableName));
-                        cmd.Parameters.Add(new SQLiteParameter("hash", hash));
+                        cmd.Parameters.Add(new SqliteParameter("table_name", tableName));
+                        cmd.Parameters.Add(new SqliteParameter("hash", hash));
                         cmd.ExecuteNonQuery();
                     }
 
@@ -123,7 +123,7 @@ namespace Radikool6.Schemas
 
             }
 
-            using (var cmd = new SQLiteCommand("", trn.Connection, trn))
+            using (var cmd = new SqliteCommand("", trn.Connection, trn))
             {
                 cmd.CommandText = createQuery;
                 cmd.ExecuteNonQuery();
@@ -146,11 +146,12 @@ namespace Radikool6.Schemas
             // 既存データ移送
             if (orgData.Rows.Count <= 0) return;
 
+            /*
             var data = new DataTable();
-            using (var cmd = new SQLiteCommand("", trn.Connection, trn))
+            using (var cmd = new SqliteCommand("", trn.Connection, trn))
             {
                 cmd.CommandText = $"SELECT * FROM {tableName}";
-                using (var da = new SQLiteDataAdapter(cmd))
+                using (var da = new SqliteDataAdapter(cmd))
                 {
                     da.FillSchema(data, SchemaType.Mapped);
                 }
@@ -179,7 +180,7 @@ namespace Radikool6.Schemas
 
             foreach (DataRow row in data.Rows)
             {
-                using (var cmd = new SQLiteCommand("", trn.Connection, trn))
+                using (var cmd = new SqliteCommand("", trn.Connection, trn))
                 {
                     cmd.CommandText = $@"INSERT INTO
                                              {tableName}
@@ -190,11 +191,12 @@ namespace Radikool6.Schemas
                                          (
                                              {string.Join(",", cols.OrderBy(c => c).Select(c => "@" + c))}
                                          ) ";
-                    cols.ForEach(c => { cmd.Parameters.Add(new SQLiteParameter(c, row[c])); });
+                    cols.ForEach(c => { cmd.Parameters.Add(new SqliteParameter(c, row[c])); });
 
                     cmd.ExecuteNonQuery();
                 }
             }
+            */
 
         }
     }

@@ -46,6 +46,12 @@ export class TimetableComponent implements OnInit {
     });
   }
 
+  public onClickRefresh = () => {
+    this.stationService.refresh('radiko').subscribe(res => {
+      console.log(res);
+    });
+  }
+
   /**
    * 番組表表示
    * @param {Station} station

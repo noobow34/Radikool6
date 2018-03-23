@@ -765,6 +765,14 @@ var StationService = /** @class */ (function (_super) {
     function StationService(http) {
         var _this = _super.call(this, http) || this;
         /**
+         * 放送局再取得
+         * @param {string} type
+         * @returns {Observable<Object>}
+         */
+        _this.refresh = function (type) {
+            return _this.http.post("./api/station/" + type, {});
+        };
+        /**
          * 放送局取得
          * @returns {Observable<Object>}
          */
@@ -787,7 +795,7 @@ exports.StationService = StationService;
 /***/ "../../../../../src/app/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-accordion>\n  <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n    <mat-expansion-panel-header>\n      <mat-panel-title>{{r}}</mat-panel-title>\n    </mat-expansion-panel-header>\n    <ul>\n      <li *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</li>\n    </ul>\n  </mat-expansion-panel>\n</mat-accordion>\n<ul>\n  <li *ngFor=\"let p of programs\" (click)=\"showProgramDetail(p)\">{{p.title}}</li>\n</ul>\n"
+module.exports = "<button (click)=\"onClickRefresh()\">refresh</button>\n<mat-accordion>\n  <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n    <mat-expansion-panel-header>\n      <mat-panel-title>{{r}}</mat-panel-title>\n    </mat-expansion-panel-header>\n    <ul>\n      <li *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</li>\n    </ul>\n  </mat-expansion-panel>\n</mat-accordion>\n<ul>\n  <li *ngFor=\"let p of programs\" (click)=\"showProgramDetail(p)\">{{p.title}}</li>\n</ul>\n"
 
 /***/ }),
 
@@ -840,6 +848,11 @@ var TimetableComponent = /** @class */ (function () {
         this.radikoRegions = [];
         this.date = moment();
         this.programs = [];
+        this.onClickRefresh = function () {
+            _this.stationService.refresh('radiko').subscribe(function (res) {
+                console.log(res);
+            });
+        };
         /**
          * 番組表表示
          * @param {Station} station

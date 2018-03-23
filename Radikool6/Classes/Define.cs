@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace Radikool6.Classes
     {
         public class File
         {
-            public const string DbFile = @"data\data.db";
+            public static readonly string DbFile = Path.Combine("data", "data.db");
         }
         
         public class Radiko

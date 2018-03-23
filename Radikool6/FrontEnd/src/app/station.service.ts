@@ -8,6 +8,16 @@ export class StationService extends BaseService{
 
   constructor(http: HttpClient) { super(http); }
 
+
+  /**
+   * 放送局再取得
+   * @param {string} type
+   * @returns {Observable<Object>}
+   */
+  public refresh = (type: string) => {
+    return this.http.post<ApiResult>(`./api/station/${type}`, {});
+  }
+
   /**
    * 放送局取得
    * @returns {Observable<Object>}
