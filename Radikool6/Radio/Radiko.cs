@@ -65,12 +65,10 @@ namespace Radikool6.Radio
         {
             return Task.Factory.StartNew(() =>
             {
-                var res = new List<Entities.Program>();
                 var doc = XDocument.Load(Define.Radiko.WeeklyTimeTable.Replace("[stationCode]", station.Code));
 
-                foreach (var prog in doc.Descendants("prog"))
-                {
-                    res.Add(new Entities.Program()
+                return doc.Descendants("prog")
+                    .Select(prog => new Entities.Program()
                     {
                         Id = station.Code + prog.Attribute("ft")?.Value,
                         Start = Utility.Text.StringToDate(prog.Attribute("ft")?.Value),
@@ -79,10 +77,8 @@ namespace Radikool6.Radio
                         Cast = prog.Element("pfm")?.Value.Trim(),
                         Description = prog.Element("info")?.Value.Trim(),
                         StationId = station.Id
-                    });
-                }
-
-                return res;
+                    })
+                    .ToList();
 
             });
         }

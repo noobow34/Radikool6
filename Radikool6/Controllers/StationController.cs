@@ -27,6 +27,7 @@ namespace Radikool6.Controllers
         [Route("api/station/")]
         public async Task<ApiResponse> Get()
         {
+            
             return await Execute(() =>
             {
                 var model = new StationModel(_db);
