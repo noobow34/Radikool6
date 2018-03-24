@@ -7,7 +7,8 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatDialogModule, MatExpansionModule, MatListModule, MatProgressSpinnerModule, MatSelectModule,
+  MatButtonModule, MatDialogModule, MatExpansionModule, MatInputModule, MatListModule, MatProgressSpinnerModule,
+  MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
 import { ContentComponent } from './components/content/content.component';
@@ -50,7 +51,8 @@ import { ConfigComponent } from './components/config/config.component';
     MatDialogModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatInputModule
   ],
   providers: [
     StateService,

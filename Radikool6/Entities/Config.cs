@@ -5,11 +5,11 @@ namespace Radikool6.Entities
 {
     public class Config
     {
-        [Key]
+        [Key] 
         [Column("id")] 
         public string Id { get; set; }
 
-        [Column("content")] 
+        [Column("content")]
         public string Content { get; set; }
     }
 }

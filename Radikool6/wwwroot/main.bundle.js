@@ -134,7 +134,8 @@ var AppModule = /** @class */ (function () {
                 material_1.MatDialogModule,
                 material_1.MatListModule,
                 material_1.MatProgressSpinnerModule,
-                material_1.MatSelectModule
+                material_1.MatSelectModule,
+                material_1.MatInputModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -159,7 +160,7 @@ exports.AppModule = AppModule;
 /***/ "../../../../../src/app/components/config/config.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  config works!\n</p>\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
 
 /***/ }),
 
@@ -200,11 +201,27 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var config_service_1 = __webpack_require__("../../../../../src/app/services/config.service.ts");
 var ConfigComponent = /** @class */ (function () {
     function ConfigComponent(configService) {
+        var _this = this;
         this.configService = configService;
+        this.config = {};
+        this.encodeSettings = [];
+        this.save = function () {
+            _this.configService.update(_this.config).subscribe(function (res) {
+                console.log(res);
+            });
+        };
     }
     ConfigComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.configService.getEncodeSettings().subscribe(function (res) {
-            console.log(res);
+            if (res.result) {
+                _this.encodeSettings = res.data;
+            }
+        });
+        this.configService.get().subscribe(function (res) {
+            if (res.result) {
+                _this.config = res.data;
+            }
         });
     };
     ConfigComponent = __decorate([
@@ -938,6 +955,12 @@ var ConfigService = /** @class */ (function (_super) {
     __extends(ConfigService, _super);
     function ConfigService(http) {
         var _this = _super.call(this, http) || this;
+        _this.get = function () {
+            return _this.http.get('./api/config/');
+        };
+        _this.update = function (config) {
+            return _this.http.post('./api/config', config);
+        };
         _this.getEncodeSettings = function () {
             return _this.http.get('./api/encode_settings/');
         };

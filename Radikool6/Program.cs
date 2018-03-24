@@ -49,7 +49,7 @@ namespace Radikool6
             }
             else
             {
-                Global.EncKey = Guid.NewGuid().ToString();
+                Global.EncKey = Guid.NewGuid().ToString("N");
                 File.WriteAllText(Define.File.KeyFile, Global.EncKey);
             }
             Schemas.Upgrade.Execute();
