@@ -1,6 +1,5 @@
 <div class="container">
   <div class="sidebar">
-    <button (click)="onClickRefresh()">refresh</button>
     <mat-accordion>
       <mat-expansion-panel *ngFor="let r of radikoRegions">
         <mat-expansion-panel-header>
@@ -13,6 +12,12 @@
     </mat-accordion>
   </div>
   <div class="timetable">
+    <mat-form-field>
+      <mat-select [(value)]="date" (change)="setDate()">
+        <mat-option [value]="day.format('YYYY-MM-DD')" *ngFor="let day of days">{{day | date: 'MM/dd'}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-accordion *ngIf="!loadingProgram">
       <mat-expansion-panel *ngFor="let p of programs">
         <mat-expansion-panel-header>
@@ -23,9 +28,15 @@
         <div>
           {{p.description}}
         </div>
-        <button mat-raised-button (click)="editReserve('single', p)">単発予約</button>
-        <button mat-raised-button (click)="editReserve('weekly', p)">毎週予約</button>
-        <button mat-raised-button (click)="editReserve('daily', p)">毎日予約</button>
+        <div *ngIf="p.reservable">
+          <button mat-raised-button (click)="editReserve('single', p)">単発予約</button>
+          <button mat-raised-button (click)="editReserve('weekly', p)">毎週予約</button>
+          <button mat-raised-button (click)="editReserve('daily', p)">毎日予約</button>
+        </div>
+        <div *ngIf="!p.reservable">
+          <button mat-raised-button (click)="getTimefree(p)">ダウンロード</button>
+        </div>
+
       </mat-expansion-panel>
 
     </mat-accordion>

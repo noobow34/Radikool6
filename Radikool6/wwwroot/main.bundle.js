@@ -104,6 +104,7 @@ var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/compo
 var reserve_list_component_1 = __webpack_require__("../../../../../src/app/components/reserve-list/reserve-list.component.ts");
 var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
 var time_pipe_1 = __webpack_require__("../../../../../src/app/pipes/time.pipe.ts");
+var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -124,13 +125,15 @@ var AppModule = /** @class */ (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 http_1.HttpClientModule,
+                forms_1.FormsModule,
                 animations_1.BrowserAnimationsModule,
                 material_1.MatToolbarModule,
                 material_1.MatButtonModule,
                 material_1.MatExpansionModule,
                 material_1.MatDialogModule,
                 material_1.MatListModule,
-                material_1.MatProgressSpinnerModule
+                material_1.MatProgressSpinnerModule,
+                material_1.MatSelectModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -346,7 +349,7 @@ exports.RadioPlayerComponent = RadioPlayerComponent;
 /***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  reserve-edit works!\n</p>\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
 
 /***/ }),
 
@@ -389,17 +392,48 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
+var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
 var ReserveEditComponent = /** @class */ (function () {
-    function ReserveEditComponent(dialogRef, data, reserveService) {
+    function ReserveEditComponent(dialogRef, data, reserveService, stationService) {
+        var _this = this;
         this.dialogRef = dialogRef;
         this.data = data;
         this.reserveService = reserveService;
+        this.stationService = stationService;
+        this.reserve = {};
+        this.stations = [];
+        this.save = function () {
+            _this.reserveService.update(_this.reserve).subscribe(function (res) {
+                if (res.result) {
+                    _this.dialogRef.close(true);
+                }
+            });
+        };
         console.log(data.program);
-        this.reserveService.update({ stationId: data.program.stationId, start: data.program.start, end: data.program.end }).subscribe(function (res) {
-            console.log(res);
-        });
+        if (data.program) {
+            this.reserve = {
+                stationId: data.program.stationId,
+                start: data.program.start,
+                end: data.program.end
+            };
+        }
+        else {
+            this.reserve = Object.assign({}, data.reserve);
+        }
+        console.log(this.reserve);
+        /*
+            this.reserveService.update({ stationId: data.program.stationId, start: data.program.start, end: data.program.end }).subscribe(res =>{
+              console.log(res);
+            });
+        */
     }
     ReserveEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.stationService.get().subscribe(function (res) {
+            if (res.result) {
+                _this.stations = res.data;
+            }
+        });
     };
     ReserveEditComponent = __decorate([
         core_1.Component({
@@ -408,7 +442,8 @@ var ReserveEditComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.scss")]
         }),
         __param(1, core_1.Inject(material_1.MAT_DIALOG_DATA)),
-        __metadata("design:paramtypes", [material_1.MatDialogRef, Object, reserve_service_1.ReserveService])
+        __metadata("design:paramtypes", [material_1.MatDialogRef, Object, reserve_service_1.ReserveService,
+            station_service_1.StationService])
     ], ReserveEditComponent);
     return ReserveEditComponent;
 }());
@@ -420,7 +455,7 @@ exports.ReserveEditComponent = ReserveEditComponent;
 /***/ "../../../../../src/app/components/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <table>\n    <thead>\n      <tr>\n        <th>放送局</th>\n        <th>開始</th>\n        <th>終了</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let reserve of reserves\" (click)=\"editReserve(reserve)\">\n        <td>{{reserve.stationId}}</td>\n        <td>{{reserve.start}}</td>\n        <td>{{reserve.end}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <table>\n    <thead>\n      <tr>\n        <th>放送局</th>\n        <th>開始</th>\n        <th>終了</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let reserve of reserves\" (click)=\"editReserve(reserve)\">\n        <td>{{reserve.stationId}}</td>\n        <td>{{reserve.start | date: 'yyyy/MM/dd HH:mm'}}</td>\n        <td>{{reserve.end  | date: 'yyyy/MM/dd HH:mm'}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
 
 /***/ }),
 
@@ -459,27 +494,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
-var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var ReserveListComponent = /** @class */ (function () {
-    function ReserveListComponent(reserveService, dialog) {
+    function ReserveListComponent(reserveService, stateService) {
+        var _this = this;
         this.reserveService = reserveService;
-        this.dialog = dialog;
+        this.stateService = stateService;
         this.reserves = [];
+        this.init = function () {
+            _this.reserveService.get().subscribe(function (res) {
+                if (res.result) {
+                    _this.reserves = res.data;
+                }
+            });
+        };
         /**
          * 予約編集
          * @param {Reserve} reserve
          */
         this.editReserve = function (reserve) {
-            console.log(reserve);
+            _this.stateService.editReserve({ reserve: reserve }, function (res) {
+                if (res) {
+                    _this.init();
+                }
+            });
         };
     }
     ReserveListComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.reserveService.get().subscribe(function (res) {
-            if (res.result) {
-                _this.reserves = res.data;
-            }
-        });
+        this.init();
     };
     ReserveListComponent = __decorate([
         core_1.Component({
@@ -488,7 +530,7 @@ var ReserveListComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/components/reserve-list/reserve-list.component.scss")]
         }),
         __metadata("design:paramtypes", [reserve_service_1.ReserveService,
-            material_1.MatDialog])
+            state_service_1.StateService])
     ], ReserveListComponent);
     return ReserveListComponent;
 }());
@@ -561,7 +603,7 @@ exports.SettingComponent = SettingComponent;
 /***/ "../../../../../src/app/components/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <button (click)=\"onClickRefresh()\">refresh</button>\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n        <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n        <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field>\n      <mat-select [(value)]=\"date\" (change)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n          <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n          <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimefree(p)\">ダウンロード</button>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -602,18 +644,18 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
 var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
 var moment = __webpack_require__("../../../../moment/moment.js");
-var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
-var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var TimetableComponent = /** @class */ (function () {
-    function TimetableComponent(stationService, programService, dialog) {
+    function TimetableComponent(stationService, programService, stateService) {
         var _this = this;
         this.stationService = stationService;
         this.programService = programService;
-        this.dialog = dialog;
+        this.stateService = stateService;
         this.radiko = {};
         this.radikoRegions = [];
-        this.date = moment();
+        this.date = moment().format('YYYY-MM-DD');
         this.programs = [];
+        this.days = [];
         this.loadingStation = false;
         this.loadingProgram = false;
         this.onClickRefresh = function () {
@@ -626,17 +668,40 @@ var TimetableComponent = /** @class */ (function () {
          * @param {Station} station
          */
         this.setStation = function (station) {
-            var cond = {
+            _this.stationId = station.id;
+            var condition = {
                 stationId: station.id,
-                from: _this.date.format('YYYY-MM-DD 05:00:00'),
-                to: _this.date.clone().add(1, 'days').format('YYYY-MM-DD 04:59:59'),
+                from: _this.date + " 05:00:00",
+                to: moment(_this.date).add(1, 'days').format('YYYY-MM-DD 04:59:59'),
                 refresh: true
             };
+            _this.search(condition);
+        };
+        this.setDate = function () {
+            var condition = {
+                stationId: _this.stationId,
+                from: _this.date + " 05:00:00",
+                to: moment(_this.date).add(1, 'days').format('YYYY-MM-DD 04:59:59'),
+                refresh: true
+            };
+            _this.search(condition);
+        };
+        this.search = function (condition) {
             _this.loadingProgram = true;
-            _this.programService.search(cond).subscribe(function (res) {
+            _this.programService.search(condition).subscribe(function (res) {
                 if (res.result) {
-                    _this.programs = res.data;
-                    console.log(_this.programs);
+                    _this.programs = res.data.programs;
+                    var now = moment();
+                    _this.programs.forEach(function (p) {
+                        p.reservable = moment(p.end) >= moment();
+                    });
+                    var min = moment(res.data.range[0]);
+                    var max = moment(res.data.range[1]);
+                    _this.days = [];
+                    while (min < max) {
+                        _this.days.push(moment(min));
+                        min.add(1, 'days');
+                    }
                 }
                 _this.loadingProgram = false;
             });
@@ -647,14 +712,14 @@ var TimetableComponent = /** @class */ (function () {
          * @param {Program} program
          */
         this.editReserve = function (type, program) {
-            var dialogRef = _this.dialog.open(reserve_edit_component_1.ReserveEditComponent, {
-                width: '250px',
-                data: { program: program }
+            _this.stateService.editReserve({ program: program }, function () {
             });
-            dialogRef.afterClosed().subscribe(function (result) {
-                console.log('The dialog was closed');
-            });
-            console.log(program);
+        };
+        /**
+         * タイムフリー
+         * @param {Program} program
+         */
+        this.getTimeFree = function (program) {
         };
     }
     TimetableComponent.prototype.ngOnInit = function () {
@@ -686,7 +751,7 @@ var TimetableComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [station_service_1.StationService,
             program_service_1.ProgramService,
-            material_1.MatDialog])
+            state_service_1.StateService])
     ], TimetableComponent);
     return TimetableComponent;
 }());
@@ -976,16 +1041,30 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
 var http_1 = __webpack_require__("../../../common/esm5/http.js");
 var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
+var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
 var StateService = /** @class */ (function (_super) {
     __extends(StateService, _super);
-    function StateService(http) {
+    function StateService(http, dialog) {
         var _this = _super.call(this, http) || this;
+        _this.dialog = dialog;
         _this.selectedContent = new Subject_1.Subject();
+        _this.editReserve = function (data, callback) {
+            var dialogRef = _this.dialog.open(reserve_edit_component_1.ReserveEditComponent, {
+                width: '250px',
+                disableClose: true,
+                data: data
+            });
+            dialogRef.afterClosed().subscribe(function (res) {
+                callback(res);
+            });
+        };
         return _this;
     }
     StateService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
+        __metadata("design:paramtypes", [http_1.HttpClient,
+            material_1.MatDialog])
     ], StateService);
     return StateService;
 }(base_service_1.BaseService));

@@ -48,6 +48,17 @@ namespace Radikool6.Models
             return res;
         }
 
+        /// <summary>
+        /// データの範囲を取得
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns></returns>
+        public DateTime[] GetRange(string stationId)
+        {
+            var min = Db.Programs.Where(p => p.StationId == stationId).Min(p => p.Start);
+            var max = Db.Programs.Where(p => p.StationId == stationId).Max(p => p.Start);
+            return new[] {min, max};
+        }
 
         /// <summary>
         /// 番組データ更新

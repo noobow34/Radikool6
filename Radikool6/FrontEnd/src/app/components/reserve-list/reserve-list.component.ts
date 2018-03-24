@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ReserveService} from '../../services/reserve.service';
 import {Reserve} from '../../interfaces/reserve';
-import {ReserveEditComponent} from '../reserve-edit/reserve-edit.component';
-import {MatDialog} from "@angular/material";
+import {StateService} from '../../services/state.service';
 
 @Component({
   selector: 'app-reserve-list',
@@ -15,9 +14,14 @@ export class ReserveListComponent implements OnInit {
 
   constructor(
     private reserveService: ReserveService,
-    public dialog: MatDialog) { }
+    public stateService: StateService) { }
 
   ngOnInit() {
+    this.init();
+  }
+
+
+  private init = () => {
     this.reserveService.get().subscribe(res => {
       if (res.result){
         this.reserves = res.data;
@@ -30,10 +34,11 @@ export class ReserveListComponent implements OnInit {
    * @param {Reserve} reserve
    */
   public editReserve = (reserve: Reserve) => {
-    console.log(reserve);
-
-
-
+    this.stateService.editReserve({ reserve: reserve}, (res) => {
+      if (res){
+        this.init();
+      }
+    });
   }
 
 }

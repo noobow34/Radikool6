@@ -4,8 +4,8 @@ import {Station} from '../../interfaces/station';
 import {ProgramService} from '../../services/program.service';
 import moment = require('moment');
 import {Program, ProgramSearchCondition} from '../../interfaces/program';
-import {MatDialog} from '@angular/material';
-import {ReserveEditComponent} from "../reserve-edit/reserve-edit.component";
+import {StateService} from '../../services/state.service';
+import {Moment} from "moment";
 
 @Component({
   selector: 'app-timetable',
@@ -16,15 +16,18 @@ export class TimetableComponent implements OnInit {
 
   public radiko = {};
   public radikoRegions = [];
-  public date = moment();
-  public programs:Program[] = [];
+  public date = moment().format('YYYY-MM-DD');
+  public stationId;
+
+  public programs: Program[] = [];
+  public days: Moment[] = [];
 
   public loadingStation = false;
   public loadingProgram = false;
 
   constructor(private stationService: StationService,
               private programService: ProgramService,
-              public dialog: MatDialog) {
+              private stateService: StateService) {
   }
 
   ngOnInit() {
@@ -60,21 +63,51 @@ export class TimetableComponent implements OnInit {
    * @param {Station} station
    */
   public setStation = (station: Station) => {
-    const cond: ProgramSearchCondition = {
+    this.stationId = station.id;
+    const condition: ProgramSearchCondition = {
       stationId: station.id,
-      from: this.date.format('YYYY-MM-DD 05:00:00'),
-      to:  this.date.clone().add(1, 'days').format('YYYY-MM-DD 04:59:59'),
+      from: `${this.date} 05:00:00`,
+      to: moment(this.date).add(1, 'days').format('YYYY-MM-DD 04:59:59'),
       refresh: true
     };
+    this.search(condition);
+
+  }
+
+  public setDate = () => {
+    const condition: ProgramSearchCondition = {
+      stationId: this.stationId,
+      from: `${this.date} 05:00:00`,
+      to: moment(this.date).add(1, 'days').format('YYYY-MM-DD 04:59:59'),
+      refresh: true
+    };
+    this.search(condition);
+  }
+
+  private search = (condition: ProgramSearchCondition) => {
     this.loadingProgram = true;
-    this.programService.search(cond).subscribe(res => {
-      if (res.result){
-        this.programs = res.data as Program[];
-        console.log(this.programs);
+    this.programService.search(condition).subscribe(res => {
+      if (res.result) {
+        this.programs = res.data.programs;
+
+        const now = moment();
+        this.programs.forEach(p => {
+          p.reservable = moment(p.end) >= moment();
+        });
+
+        let min = moment(res.data.range[0]);
+        let max = moment(res.data.range[1]);
+        this.days = [];
+        while (min < max) {
+          this.days.push(moment(min));
+
+          min.add(1, 'days');
+        }
       }
       this.loadingProgram = false;
     });
   }
+
 
   /**
    * 番組詳細表示
@@ -82,17 +115,18 @@ export class TimetableComponent implements OnInit {
    * @param {Program} program
    */
   public editReserve = (type: string, program: Program) => {
-    let dialogRef = this.dialog.open(ReserveEditComponent, {
-      width: '250px',
-      data: { program: program }
+    this.stateService.editReserve({program: program}, () => {
+
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  }
 
+  /**
+   * タイムフリー
+   * @param {Program} program
+   */
+  public getTimeFree = (program: Program) => {
 
-    console.log(program);
   }
 
 

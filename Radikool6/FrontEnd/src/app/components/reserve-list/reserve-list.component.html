@@ -10,8 +10,8 @@
     <tbody>
       <tr *ngFor="let reserve of reserves" (click)="editReserve(reserve)">
         <td>{{reserve.stationId}}</td>
-        <td>{{reserve.start}}</td>
-        <td>{{reserve.end}}</td>
+        <td>{{reserve.start | date: 'yyyy/MM/dd HH:mm'}}</td>
+        <td>{{reserve.end  | date: 'yyyy/MM/dd HH:mm'}}</td>
       </tr>
     </tbody>
   </table>

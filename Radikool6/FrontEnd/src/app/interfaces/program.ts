@@ -6,6 +6,7 @@ export interface Program {
   start: Date;
   stationId: string;
   title: string;
+  reservable?: boolean;
 }
 
 export interface ProgramSearchCondition {

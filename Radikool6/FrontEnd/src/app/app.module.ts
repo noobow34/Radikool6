@@ -7,7 +7,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatDialogModule, MatExpansionModule, MatListModule, MatProgressSpinnerModule,
+  MatButtonModule, MatDialogModule, MatExpansionModule, MatListModule, MatProgressSpinnerModule, MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
 import { ContentComponent } from './components/content/content.component';
@@ -22,6 +22,7 @@ import { ReserveEditComponent } from './components/reserve-edit/reserve-edit.com
 import { ReserveListComponent } from './components/reserve-list/reserve-list.component';
 import {ReserveService} from './services/reserve.service';
 import { TimePipe } from './pipes/time.pipe';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -40,13 +41,15 @@ import { TimePipe } from './pipes/time.pipe';
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
     MatExpansionModule,
     MatDialogModule,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSelectModule
   ],
   providers: [
     StateService,

@@ -37,7 +37,7 @@ namespace Radikool6.Controllers
                     this.RefreshPrograms(cond.StationId);
                     res = pModel.Search(cond);
                 }
-                Result.Data = res;
+                Result.Data = new { programs = res, range = pModel.GetRange(cond.StationId)};
                 Result.Result = true;
             });
         }

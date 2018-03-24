@@ -1,3 +1,16 @@
-<p>
-  reserve-edit works!
-</p>
+<form (submit)="save()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-select placeholder="放送局" [(value)]="reserve.stationId">
+        <mat-option *ngFor="let station of stations" [value]="station.id">
+          {{station.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button type="submit" mat-button>保存</button>
+    <button type="button" mat-button mat-dialog-close>キャンセル</button>
+  </mat-dialog-actions>
+</form>
+
