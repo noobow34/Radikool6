@@ -3,25 +3,25 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatDialogModule, MatExpansionModule, MatListModule, MatProgressSpinnerModule,
   MatToolbarModule
 } from '@angular/material';
-import { ContentComponent } from './content/content.component';
-import {StateService} from './state.service';
-import { TimetableComponent } from './timetable/timetable.component';
-import { LibraryComponent } from './library/library.component';
-import { SettingComponent } from './setting/setting.component';
-import { RadioPlayerComponent } from './radio-player/radio-player.component';
-import {StationService} from './station.service';
-import {ProgramService} from './program.service';
-import { ReserveEditComponent } from './reserve-edit/reserve-edit.component';
-import { ReserveListComponent } from './reserve-list/reserve-list.component';
-import {ReserveService} from './reserve.service';
-import { TimePipe } from './time.pipe';
+import { ContentComponent } from './components/content/content.component';
+import {StateService} from './services/state.service';
+import { TimetableComponent } from './components/timetable/timetable.component';
+import { LibraryComponent } from './components/library/library.component';
+import { SettingComponent } from './components/setting/setting.component';
+import { RadioPlayerComponent } from './components/radio-player/radio-player.component';
+import {StationService} from './services/station.service';
+import {ProgramService} from './services/program.service';
+import { ReserveEditComponent } from './components/reserve-edit/reserve-edit.component';
+import { ReserveListComponent } from './components/reserve-list/reserve-list.component';
+import {ReserveService} from './services/reserve.service';
+import { TimePipe } from './pipes/time.pipe';
 
 
 @NgModule({

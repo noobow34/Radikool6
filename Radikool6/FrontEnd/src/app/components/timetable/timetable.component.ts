@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {StationService} from '../station.service';
-import {Station} from '../station';
-import {ProgramService} from '../program.service';
+import {StationService} from '../../services/station.service';
+import {Station} from '../../interfaces/station';
+import {ProgramService} from '../../services/program.service';
 import moment = require('moment');
-import {Program, ProgramSearchCondition} from '../program';
+import {Program, ProgramSearchCondition} from '../../interfaces/program';
 import {MatDialog} from '@angular/material';
 import {ReserveEditComponent} from "../reserve-edit/reserve-edit.component";
 
@@ -78,9 +78,10 @@ export class TimetableComponent implements OnInit {
 
   /**
    * 番組詳細表示
+   * @param type
    * @param {Program} program
    */
-  public showProgramDetail = (program: Program) => {
+  public editReserve = (type: string, program: Program) => {
     let dialogRef = this.dialog.open(ReserveEditComponent, {
       width: '250px',
       data: { program: program }

@@ -5,11 +5,10 @@
         <th>放送局</th>
         <th>開始</th>
         <th>終了</th>
-
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let reserve of reserves">
+      <tr *ngFor="let reserve of reserves" (click)="editReserve(reserve)">
         <td>{{reserve.stationId}}</td>
         <td>{{reserve.start}}</td>
         <td>{{reserve.end}}</td>

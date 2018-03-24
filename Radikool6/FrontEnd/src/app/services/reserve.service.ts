@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BaseService} from './base.service';
 import {HttpClient} from '@angular/common/http';
-import {Reserve} from './reserve';
-import {ApiResult} from './api-result';
+import {Reserve} from '../interfaces/reserve';
+import {ApiResult} from '../interfaces/api-result';
 
 @Injectable()
 export class ReserveService extends BaseService{

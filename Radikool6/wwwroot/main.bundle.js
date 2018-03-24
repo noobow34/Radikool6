@@ -88,22 +88,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var app_component_1 = __webpack_require__("../../../../../src/app/app.component.ts");
-var toolbar_component_1 = __webpack_require__("../../../../../src/app/toolbar/toolbar.component.ts");
+var toolbar_component_1 = __webpack_require__("../../../../../src/app/components/toolbar/toolbar.component.ts");
 var http_1 = __webpack_require__("../../../common/esm5/http.js");
 var animations_1 = __webpack_require__("../../../platform-browser/esm5/animations.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
-var content_component_1 = __webpack_require__("../../../../../src/app/content/content.component.ts");
-var state_service_1 = __webpack_require__("../../../../../src/app/state.service.ts");
-var timetable_component_1 = __webpack_require__("../../../../../src/app/timetable/timetable.component.ts");
-var library_component_1 = __webpack_require__("../../../../../src/app/library/library.component.ts");
-var setting_component_1 = __webpack_require__("../../../../../src/app/setting/setting.component.ts");
-var radio_player_component_1 = __webpack_require__("../../../../../src/app/radio-player/radio-player.component.ts");
-var station_service_1 = __webpack_require__("../../../../../src/app/station.service.ts");
-var program_service_1 = __webpack_require__("../../../../../src/app/program.service.ts");
-var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/reserve-edit/reserve-edit.component.ts");
-var reserve_list_component_1 = __webpack_require__("../../../../../src/app/reserve-list/reserve-list.component.ts");
-var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.service.ts");
-var time_pipe_1 = __webpack_require__("../../../../../src/app/time.pipe.ts");
+var content_component_1 = __webpack_require__("../../../../../src/app/components/content/content.component.ts");
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
+var timetable_component_1 = __webpack_require__("../../../../../src/app/components/timetable/timetable.component.ts");
+var library_component_1 = __webpack_require__("../../../../../src/app/components/library/library.component.ts");
+var setting_component_1 = __webpack_require__("../../../../../src/app/components/setting/setting.component.ts");
+var radio_player_component_1 = __webpack_require__("../../../../../src/app/components/radio-player/radio-player.component.ts");
+var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
+var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
+var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
+var reserve_list_component_1 = __webpack_require__("../../../../../src/app/components/reserve-list/reserve-list.component.ts");
+var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
+var time_pipe_1 = __webpack_require__("../../../../../src/app/pipes/time.pipe.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -151,46 +151,14 @@ exports.AppModule = AppModule;
 
 /***/ }),
 
-/***/ "../../../../../src/app/base.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var BaseService = /** @class */ (function () {
-    function BaseService(http) {
-        this.http = http;
-    }
-    BaseService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], BaseService);
-    return BaseService;
-}());
-exports.BaseService = BaseService;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/content/content.component.html":
+/***/ "../../../../../src/app/components/content/content.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-setting *ngIf=\"selectedContent === 'setting'\"></app-setting>\n<app-radio-player></app-radio-player>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/content/content.component.scss":
+/***/ "../../../../../src/app/components/content/content.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -208,7 +176,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/content/content.component.ts":
+/***/ "../../../../../src/app/components/content/content.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -224,7 +192,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var state_service_1 = __webpack_require__("../../../../../src/app/state.service.ts");
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var ContentComponent = /** @class */ (function () {
     function ContentComponent(stateService) {
         this.stateService = stateService;
@@ -241,8 +209,8 @@ var ContentComponent = /** @class */ (function () {
     ContentComponent = __decorate([
         core_1.Component({
             selector: 'app-content',
-            template: __webpack_require__("../../../../../src/app/content/content.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/content/content.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/content/content.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/content/content.component.scss")]
         }),
         __metadata("design:paramtypes", [state_service_1.StateService])
     ], ContentComponent);
@@ -253,14 +221,14 @@ exports.ContentComponent = ContentComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/library/library.component.html":
+/***/ "../../../../../src/app/components/library/library.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<p>\n  library works!\n</p>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/library/library.component.scss":
+/***/ "../../../../../src/app/components/library/library.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -278,7 +246,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/library/library.component.ts":
+/***/ "../../../../../src/app/components/library/library.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -302,8 +270,8 @@ var LibraryComponent = /** @class */ (function () {
     LibraryComponent = __decorate([
         core_1.Component({
             selector: 'app-library',
-            template: __webpack_require__("../../../../../src/app/library/library.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/library/library.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/library/library.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/library/library.component.scss")]
         }),
         __metadata("design:paramtypes", [])
     ], LibraryComponent);
@@ -314,67 +282,14 @@ exports.LibraryComponent = LibraryComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/program.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var base_service_1 = __webpack_require__("../../../../../src/app/base.service.ts");
-var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var ProgramService = /** @class */ (function (_super) {
-    __extends(ProgramService, _super);
-    function ProgramService(http) {
-        var _this = _super.call(this, http) || this;
-        /**
-         * 番組検索
-         * @param {ProgramSearchCondition} cond
-         * @returns {Observable<Object>}
-         */
-        _this.search = function (cond) {
-            return _this.http.post('./api/program/', cond);
-        };
-        return _this;
-    }
-    ProgramService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], ProgramService);
-    return ProgramService;
-}(base_service_1.BaseService));
-exports.ProgramService = ProgramService;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/radio-player/radio-player.component.html":
+/***/ "../../../../../src/app/components/radio-player/radio-player.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<p>\n  radio-player works!\n</p>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/radio-player/radio-player.component.scss":
+/***/ "../../../../../src/app/components/radio-player/radio-player.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -392,7 +307,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/radio-player/radio-player.component.ts":
+/***/ "../../../../../src/app/components/radio-player/radio-player.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -416,8 +331,8 @@ var RadioPlayerComponent = /** @class */ (function () {
     RadioPlayerComponent = __decorate([
         core_1.Component({
             selector: 'app-radio-player',
-            template: __webpack_require__("../../../../../src/app/radio-player/radio-player.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/radio-player/radio-player.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/radio-player/radio-player.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/radio-player/radio-player.component.scss")]
         }),
         __metadata("design:paramtypes", [])
     ], RadioPlayerComponent);
@@ -428,14 +343,14 @@ exports.RadioPlayerComponent = RadioPlayerComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/reserve-edit/reserve-edit.component.html":
+/***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<p>\n  reserve-edit works!\n</p>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/reserve-edit/reserve-edit.component.scss":
+/***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -453,7 +368,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/reserve-edit/reserve-edit.component.ts":
+/***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -473,7 +388,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
-var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.service.ts");
+var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
 var ReserveEditComponent = /** @class */ (function () {
     function ReserveEditComponent(dialogRef, data, reserveService) {
         this.dialogRef = dialogRef;
@@ -489,8 +404,8 @@ var ReserveEditComponent = /** @class */ (function () {
     ReserveEditComponent = __decorate([
         core_1.Component({
             selector: 'app-reserve-edit',
-            template: __webpack_require__("../../../../../src/app/reserve-edit/reserve-edit.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/reserve-edit/reserve-edit.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.scss")]
         }),
         __param(1, core_1.Inject(material_1.MAT_DIALOG_DATA)),
         __metadata("design:paramtypes", [material_1.MatDialogRef, Object, reserve_service_1.ReserveService])
@@ -502,14 +417,14 @@ exports.ReserveEditComponent = ReserveEditComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/reserve-list/reserve-list.component.html":
+/***/ "../../../../../src/app/components/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <table>\n    <thead>\n      <tr>\n        <th>放送局</th>\n        <th>開始</th>\n        <th>終了</th>\n\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let reserve of reserves\">\n        <td>{{reserve.stationId}}</td>\n        <td>{{reserve.start}}</td>\n        <td>{{reserve.end}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <table>\n    <thead>\n      <tr>\n        <th>放送局</th>\n        <th>開始</th>\n        <th>終了</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let reserve of reserves\" (click)=\"editReserve(reserve)\">\n        <td>{{reserve.stationId}}</td>\n        <td>{{reserve.start}}</td>\n        <td>{{reserve.end}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/reserve-list/reserve-list.component.scss":
+/***/ "../../../../../src/app/components/reserve-list/reserve-list.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -527,7 +442,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/reserve-list/reserve-list.component.ts":
+/***/ "../../../../../src/app/components/reserve-list/reserve-list.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -543,11 +458,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.service.ts");
+var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
+var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var ReserveListComponent = /** @class */ (function () {
-    function ReserveListComponent(reserveService) {
+    function ReserveListComponent(reserveService, dialog) {
         this.reserveService = reserveService;
+        this.dialog = dialog;
         this.reserves = [];
+        /**
+         * 予約編集
+         * @param {Reserve} reserve
+         */
+        this.editReserve = function (reserve) {
+            console.log(reserve);
+        };
     }
     ReserveListComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -560,10 +484,11 @@ var ReserveListComponent = /** @class */ (function () {
     ReserveListComponent = __decorate([
         core_1.Component({
             selector: 'app-reserve-list',
-            template: __webpack_require__("../../../../../src/app/reserve-list/reserve-list.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/reserve-list/reserve-list.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/reserve-list/reserve-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/reserve-list/reserve-list.component.scss")]
         }),
-        __metadata("design:paramtypes", [reserve_service_1.ReserveService])
+        __metadata("design:paramtypes", [reserve_service_1.ReserveService,
+            material_1.MatDialog])
     ], ReserveListComponent);
     return ReserveListComponent;
 }());
@@ -572,74 +497,14 @@ exports.ReserveListComponent = ReserveListComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/reserve.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var base_service_1 = __webpack_require__("../../../../../src/app/base.service.ts");
-var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var ReserveService = /** @class */ (function (_super) {
-    __extends(ReserveService, _super);
-    function ReserveService(http) {
-        var _this = _super.call(this, http) || this;
-        /**
-         * 予約取得
-         * @returns {Observable<Object>}
-         */
-        _this.get = function () {
-            return _this.http.get('./api/reserve');
-        };
-        /**
-         * 予約保存
-         * @param {Reserve} reserve
-         * @returns {Observable<Object>}
-         */
-        _this.update = function (reserve) {
-            return _this.http.post('./api/reserve', reserve);
-        };
-        return _this;
-    }
-    ReserveService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], ReserveService);
-    return ReserveService;
-}(base_service_1.BaseService));
-exports.ReserveService = ReserveService;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/setting/setting.component.html":
+/***/ "../../../../../src/app/components/setting/setting.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<p>\n  setting works!\n</p>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/setting/setting.component.scss":
+/***/ "../../../../../src/app/components/setting/setting.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -657,7 +522,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/setting/setting.component.ts":
+/***/ "../../../../../src/app/components/setting/setting.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -681,8 +546,8 @@ var SettingComponent = /** @class */ (function () {
     SettingComponent = __decorate([
         core_1.Component({
             selector: 'app-setting',
-            template: __webpack_require__("../../../../../src/app/setting/setting.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/setting/setting.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/setting/setting.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/setting/setting.component.scss")]
         }),
         __metadata("design:paramtypes", [])
     ], SettingComponent);
@@ -693,161 +558,14 @@ exports.SettingComponent = SettingComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/state.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var base_service_1 = __webpack_require__("../../../../../src/app/base.service.ts");
-var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
-var StateService = /** @class */ (function (_super) {
-    __extends(StateService, _super);
-    function StateService(http) {
-        var _this = _super.call(this, http) || this;
-        _this.selectedContent = new Subject_1.Subject();
-        return _this;
-    }
-    StateService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], StateService);
-    return StateService;
-}(base_service_1.BaseService));
-exports.StateService = StateService;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/station.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var base_service_1 = __webpack_require__("../../../../../src/app/base.service.ts");
-var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var StationService = /** @class */ (function (_super) {
-    __extends(StationService, _super);
-    function StationService(http) {
-        var _this = _super.call(this, http) || this;
-        /**
-         * 放送局再取得
-         * @param {string} type
-         * @returns {Observable<Object>}
-         */
-        _this.refresh = function (type) {
-            return _this.http.post("./api/station/" + type, {});
-        };
-        /**
-         * 放送局取得
-         * @returns {Observable<Object>}
-         */
-        _this.get = function () {
-            return _this.http.get('./api/station/');
-        };
-        return _this;
-    }
-    StationService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], StationService);
-    return StationService;
-}(base_service_1.BaseService));
-exports.StationService = StationService;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/time.pipe.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var moment = __webpack_require__("../../../../moment/moment.js");
-var TimePipe = /** @class */ (function () {
-    function TimePipe() {
-    }
-    TimePipe.prototype.transform = function (value, args) {
-        if (!value) {
-            return null;
-        }
-        var date = moment(value);
-        var hour = date.hour();
-        if (hour < 5) {
-            hour += 24;
-        }
-        return ('00' + hour).substr(-2) + ":" + date.format('mm');
-    };
-    TimePipe = __decorate([
-        core_1.Pipe({
-            name: 'time'
-        })
-    ], TimePipe);
-    return TimePipe;
-}());
-exports.TimePipe = TimePipe;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/timetable/timetable.component.html":
+/***/ "../../../../../src/app/components/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <button (click)=\"onClickRefresh()\">refresh</button>\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <button (click)=\"onClickRefresh()\">refresh</button>\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n        <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n        <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/timetable/timetable.component.scss":
+/***/ "../../../../../src/app/components/timetable/timetable.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -865,7 +583,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/timetable/timetable.component.ts":
+/***/ "../../../../../src/app/components/timetable/timetable.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -881,11 +599,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var station_service_1 = __webpack_require__("../../../../../src/app/station.service.ts");
-var program_service_1 = __webpack_require__("../../../../../src/app/program.service.ts");
+var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
+var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
 var moment = __webpack_require__("../../../../moment/moment.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
-var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/reserve-edit/reserve-edit.component.ts");
+var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
 var TimetableComponent = /** @class */ (function () {
     function TimetableComponent(stationService, programService, dialog) {
         var _this = this;
@@ -925,9 +643,10 @@ var TimetableComponent = /** @class */ (function () {
         };
         /**
          * 番組詳細表示
+         * @param type
          * @param {Program} program
          */
-        this.showProgramDetail = function (program) {
+        this.editReserve = function (type, program) {
             var dialogRef = _this.dialog.open(reserve_edit_component_1.ReserveEditComponent, {
                 width: '250px',
                 data: { program: program }
@@ -962,8 +681,8 @@ var TimetableComponent = /** @class */ (function () {
     TimetableComponent = __decorate([
         core_1.Component({
             selector: 'app-timetable',
-            template: __webpack_require__("../../../../../src/app/timetable/timetable.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/timetable/timetable.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/timetable/timetable.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/timetable/timetable.component.scss")]
         }),
         __metadata("design:paramtypes", [station_service_1.StationService,
             program_service_1.ProgramService,
@@ -976,14 +695,14 @@ exports.TimetableComponent = TimetableComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/toolbar/toolbar.component.html":
+/***/ "../../../../../src/app/components/toolbar/toolbar.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<mat-toolbar color=\"primary\">\n  <button type=\"button\" mat-button (click)=\"setContent('timetable')\">番組表</button>\n  <button type=\"button\" mat-button (click)=\"setContent('reserve')\">予約</button>\n  <button type=\"button\" mat-button (click)=\"setContent('library')\">ライブラリ</button>\n  <button type=\"button\" mat-button (click)=\"setContent('setting')\">設定</button>\n</mat-toolbar>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/toolbar/toolbar.component.scss":
+/***/ "../../../../../src/app/components/toolbar/toolbar.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -1001,7 +720,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/toolbar/toolbar.component.ts":
+/***/ "../../../../../src/app/components/toolbar/toolbar.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1017,7 +736,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var state_service_1 = __webpack_require__("../../../../../src/app/state.service.ts");
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var ToolbarComponent = /** @class */ (function () {
     function ToolbarComponent(stateService) {
         var _this = this;
@@ -1031,14 +750,306 @@ var ToolbarComponent = /** @class */ (function () {
     ToolbarComponent = __decorate([
         core_1.Component({
             selector: 'app-toolbar',
-            template: __webpack_require__("../../../../../src/app/toolbar/toolbar.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/toolbar/toolbar.component.scss")]
+            template: __webpack_require__("../../../../../src/app/components/toolbar/toolbar.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/toolbar/toolbar.component.scss")]
         }),
         __metadata("design:paramtypes", [state_service_1.StateService])
     ], ToolbarComponent);
     return ToolbarComponent;
 }());
 exports.ToolbarComponent = ToolbarComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/pipes/time.pipe.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var moment = __webpack_require__("../../../../moment/moment.js");
+var TimePipe = /** @class */ (function () {
+    function TimePipe() {
+    }
+    TimePipe.prototype.transform = function (value, args) {
+        if (!value) {
+            return null;
+        }
+        var date = moment(value);
+        var hour = date.hour();
+        if (hour < 5) {
+            hour += 24;
+        }
+        return ('00' + hour).substr(-2) + ":" + date.format('mm');
+    };
+    TimePipe = __decorate([
+        core_1.Pipe({
+            name: 'time'
+        })
+    ], TimePipe);
+    return TimePipe;
+}());
+exports.TimePipe = TimePipe;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/base.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var BaseService = /** @class */ (function () {
+    function BaseService(http) {
+        this.http = http;
+    }
+    BaseService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], BaseService);
+    return BaseService;
+}());
+exports.BaseService = BaseService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/program.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ProgramService = /** @class */ (function (_super) {
+    __extends(ProgramService, _super);
+    function ProgramService(http) {
+        var _this = _super.call(this, http) || this;
+        /**
+         * 番組検索
+         * @param {ProgramSearchCondition} cond
+         * @returns {Observable<Object>}
+         */
+        _this.search = function (cond) {
+            return _this.http.post('./api/program/', cond);
+        };
+        return _this;
+    }
+    ProgramService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], ProgramService);
+    return ProgramService;
+}(base_service_1.BaseService));
+exports.ProgramService = ProgramService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/reserve.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ReserveService = /** @class */ (function (_super) {
+    __extends(ReserveService, _super);
+    function ReserveService(http) {
+        var _this = _super.call(this, http) || this;
+        /**
+         * 予約取得
+         * @returns {Observable<Object>}
+         */
+        _this.get = function () {
+            return _this.http.get('./api/reserve');
+        };
+        /**
+         * 予約保存
+         * @param {Reserve} reserve
+         * @returns {Observable<Object>}
+         */
+        _this.update = function (reserve) {
+            return _this.http.post('./api/reserve', reserve);
+        };
+        return _this;
+    }
+    ReserveService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], ReserveService);
+    return ReserveService;
+}(base_service_1.BaseService));
+exports.ReserveService = ReserveService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/state.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
+var StateService = /** @class */ (function (_super) {
+    __extends(StateService, _super);
+    function StateService(http) {
+        var _this = _super.call(this, http) || this;
+        _this.selectedContent = new Subject_1.Subject();
+        return _this;
+    }
+    StateService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], StateService);
+    return StateService;
+}(base_service_1.BaseService));
+exports.StateService = StateService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/station.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var StationService = /** @class */ (function (_super) {
+    __extends(StationService, _super);
+    function StationService(http) {
+        var _this = _super.call(this, http) || this;
+        /**
+         * 放送局再取得
+         * @param {string} type
+         * @returns {Observable<Object>}
+         */
+        _this.refresh = function (type) {
+            return _this.http.post("./api/station/" + type, {});
+        };
+        /**
+         * 放送局取得
+         * @returns {Observable<Object>}
+         */
+        _this.get = function () {
+            return _this.http.get('./api/station/');
+        };
+        return _this;
+    }
+    StationService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], StationService);
+    return StationService;
+}(base_service_1.BaseService));
+exports.StationService = StationService;
 
 
 /***/ }),

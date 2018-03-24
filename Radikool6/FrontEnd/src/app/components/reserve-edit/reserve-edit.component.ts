@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Program} from '../program';
-import {Reserve} from '../reserve';
-import {ReserveService} from '../reserve.service';
+import {Program} from '../../interfaces/program';
+import {Reserve} from '../../interfaces/reserve';
+import {ReserveService} from '../../services/reserve.service';
 
 @Component({
   selector: 'app-reserve-edit',

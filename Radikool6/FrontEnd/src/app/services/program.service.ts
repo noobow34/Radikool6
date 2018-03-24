@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BaseService} from './base.service';
 import {HttpClient} from '@angular/common/http';
-import {ProgramSearchCondition} from './program';
-import {ApiResult} from "./api-result";
+import {ProgramSearchCondition} from '../interfaces/program';
+import {ApiResult} from '../interfaces/api-result';
 
 @Injectable()
 export class ProgramService extends BaseService{
