@@ -1,4 +1,11 @@
 {
+  "configs": {
+    "columns": {
+      "id": "text",
+      "content": "text"
+    },
+    "primaryKey": ["id"]
+  },
   "hashes": {
     "columns":{
       "table_name": "text",

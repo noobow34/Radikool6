@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BaseService} from './base.service';
 import {HttpClient} from '@angular/common/http';
 import {Reserve} from './reserve';
+import {ApiResult} from './api-result';
 
 @Injectable()
 export class ReserveService extends BaseService{
@@ -13,7 +14,7 @@ export class ReserveService extends BaseService{
    * @returns {Observable<Object>}
    */
   public get = () => {
-    return this.http.get('./api/reserve');
+    return this.http.get<ApiResult<Reserve[]>>('./api/reserve');
   }
 
   /**
@@ -22,7 +23,7 @@ export class ReserveService extends BaseService{
    * @returns {Observable<Object>}
    */
   public update = (reserve: Reserve) => {
-    return this.http.post('./api/reserve', reserve);
+    return this.http.post<ApiResult>('./api/reserve', reserve);
   }
 
 }

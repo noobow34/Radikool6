@@ -53,9 +53,9 @@ namespace Radikool6.BackgroundTask
                 tasks.ForEach(t =>
                 {
                     // 予約実行
-                    if (this._recorders.All(r => r.Id != t.Id))
+                    if (_recorders.All(r => r.Id != t.Id))
                     {
-                        this._recorders.Add(Recorder.GetRecorder(t));
+                        _recorders.Add(Recorder.GetRecorder(t));
                     }
                 });
             }

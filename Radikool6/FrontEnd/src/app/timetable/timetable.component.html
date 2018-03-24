@@ -1,14 +1,33 @@
-<button (click)="onClickRefresh()">refresh</button>
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let r of radikoRegions">
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{r}}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <ul>
-      <li *ngFor="let s of radiko[r]" (click)="setStation(s)">{{s.name}}</li>
-    </ul>
-  </mat-expansion-panel>
-</mat-accordion>
-<ul>
-  <li *ngFor="let p of programs" (click)="showProgramDetail(p)">{{p.title}}</li>
-</ul>
+<div class="container">
+  <div class="sidebar">
+    <button (click)="onClickRefresh()">refresh</button>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let r of radikoRegions">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{r}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item *ngFor="let s of radiko[r]" (click)="setStation(s)">{{s.name}}</mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="timetable">
+    <mat-accordion *ngIf="!loadingProgram">
+      <mat-expansion-panel *ngFor="let p of programs">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{p.start| time}} {{p.title}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          {{p.description}}
+        </div>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+    <mat-spinner *ngIf="loadingProgram"></mat-spinner>
+  </div>
+</div>
+

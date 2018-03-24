@@ -1,5 +1,5 @@
-export interface ApiResult {
+export interface ApiResult<T = any> {
   result: boolean;
   errors: string[];
-  data: any;
+  data: T;
 }

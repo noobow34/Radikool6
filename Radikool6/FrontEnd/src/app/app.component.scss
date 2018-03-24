@@ -1,0 +1,11 @@
+.main{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  & > *:last-child {
+    flex-grow: 1;
+    min-height: 100px;
+    overflow: auto;
+  }
+}

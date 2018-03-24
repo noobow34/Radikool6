@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatDialogModule, MatExpansionModule, MatToolbarModule} from '@angular/material';
+import {
+  MatButtonModule, MatDialogModule, MatExpansionModule, MatListModule, MatProgressSpinnerModule,
+  MatToolbarModule
+} from '@angular/material';
 import { ContentComponent } from './content/content.component';
 import {StateService} from './state.service';
 import { TimetableComponent } from './timetable/timetable.component';
@@ -18,6 +21,7 @@ import {ProgramService} from './program.service';
 import { ReserveEditComponent } from './reserve-edit/reserve-edit.component';
 import { ReserveListComponent } from './reserve-list/reserve-list.component';
 import {ReserveService} from './reserve.service';
+import { TimePipe } from './time.pipe';
 
 
 @NgModule({
@@ -30,7 +34,8 @@ import {ReserveService} from './reserve.service';
     SettingComponent,
     RadioPlayerComponent,
     ReserveEditComponent,
-    ReserveListComponent
+    ReserveListComponent,
+    TimePipe
   ],
   imports: [
     BrowserModule,
@@ -39,8 +44,9 @@ import {ReserveService} from './reserve.service';
     MatToolbarModule,
     MatButtonModule,
     MatExpansionModule,
-    MatDialogModule
-
+    MatDialogModule,
+    MatListModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     StateService,

@@ -1,3 +1,19 @@
-<p>
-  reserve-list works!
-</p>
+<div class="container">
+  <table>
+    <thead>
+      <tr>
+        <th>放送局</th>
+        <th>開始</th>
+        <th>終了</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reserve of reserves">
+        <td>{{reserve.stationId}}</td>
+        <td>{{reserve.start}}</td>
+        <td>{{reserve.end}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

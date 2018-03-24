@@ -20,7 +20,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-toolbar></app-toolbar>\n<app-content></app-content>\n"
+module.exports = "<div class=\"main\">\n  <app-toolbar></app-toolbar>\n  <app-content></app-content>\n</div>\n\n"
 
 /***/ }),
 
@@ -32,7 +32,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".main {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100vh; }\n  .main > *:last-child {\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1;\n    min-height: 100px;\n    overflow: auto; }\n", ""]);
 
 // exports
 
@@ -103,6 +103,7 @@ var program_service_1 = __webpack_require__("../../../../../src/app/program.serv
 var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/reserve-edit/reserve-edit.component.ts");
 var reserve_list_component_1 = __webpack_require__("../../../../../src/app/reserve-list/reserve-list.component.ts");
 var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.service.ts");
+var time_pipe_1 = __webpack_require__("../../../../../src/app/time.pipe.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -117,7 +118,8 @@ var AppModule = /** @class */ (function () {
                 setting_component_1.SettingComponent,
                 radio_player_component_1.RadioPlayerComponent,
                 reserve_edit_component_1.ReserveEditComponent,
-                reserve_list_component_1.ReserveListComponent
+                reserve_list_component_1.ReserveListComponent,
+                time_pipe_1.TimePipe
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -126,7 +128,9 @@ var AppModule = /** @class */ (function () {
                 material_1.MatToolbarModule,
                 material_1.MatButtonModule,
                 material_1.MatExpansionModule,
-                material_1.MatDialogModule
+                material_1.MatDialogModule,
+                material_1.MatListModule,
+                material_1.MatProgressSpinnerModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -501,7 +505,7 @@ exports.ReserveEditComponent = ReserveEditComponent;
 /***/ "../../../../../src/app/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  reserve-list works!\n</p>\n"
+module.exports = "<div class=\"container\">\n  <table>\n    <thead>\n      <tr>\n        <th>放送局</th>\n        <th>開始</th>\n        <th>終了</th>\n\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let reserve of reserves\">\n        <td>{{reserve.stationId}}</td>\n        <td>{{reserve.start}}</td>\n        <td>{{reserve.end}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
 
 /***/ }),
 
@@ -513,7 +517,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n", ""]);
 
 // exports
 
@@ -543,10 +547,14 @@ var reserve_service_1 = __webpack_require__("../../../../../src/app/reserve.serv
 var ReserveListComponent = /** @class */ (function () {
     function ReserveListComponent(reserveService) {
         this.reserveService = reserveService;
+        this.reserves = [];
     }
     ReserveListComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.reserveService.get().subscribe(function (res) {
-            console.log(res);
+            if (res.result) {
+                _this.reserves = res.data;
+            }
         });
     };
     ReserveListComponent = __decorate([
@@ -792,10 +800,50 @@ exports.StationService = StationService;
 
 /***/ }),
 
+/***/ "../../../../../src/app/time.pipe.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var moment = __webpack_require__("../../../../moment/moment.js");
+var TimePipe = /** @class */ (function () {
+    function TimePipe() {
+    }
+    TimePipe.prototype.transform = function (value, args) {
+        if (!value) {
+            return null;
+        }
+        var date = moment(value);
+        var hour = date.hour();
+        if (hour < 5) {
+            hour += 24;
+        }
+        return ('00' + hour).substr(-2) + ":" + date.format('mm');
+    };
+    TimePipe = __decorate([
+        core_1.Pipe({
+            name: 'time'
+        })
+    ], TimePipe);
+    return TimePipe;
+}());
+exports.TimePipe = TimePipe;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button (click)=\"onClickRefresh()\">refresh</button>\n<mat-accordion>\n  <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n    <mat-expansion-panel-header>\n      <mat-panel-title>{{r}}</mat-panel-title>\n    </mat-expansion-panel-header>\n    <ul>\n      <li *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</li>\n    </ul>\n  </mat-expansion-panel>\n</mat-accordion>\n<ul>\n  <li *ngFor=\"let p of programs\" (click)=\"showProgramDetail(p)\">{{p.title}}</li>\n</ul>\n"
+module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <button (click)=\"onClickRefresh()\">refresh</button>\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -807,7 +855,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.sidebar {\n  width: 25vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n.timetable {\n  width: 75vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n@media screen and (max-width: 767px) {\n  .container {\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column; }\n  .sidebar, .timetable {\n    width: 100vw; } }\n", ""]);
 
 // exports
 
@@ -848,6 +896,8 @@ var TimetableComponent = /** @class */ (function () {
         this.radikoRegions = [];
         this.date = moment();
         this.programs = [];
+        this.loadingStation = false;
+        this.loadingProgram = false;
         this.onClickRefresh = function () {
             _this.stationService.refresh('radiko').subscribe(function (res) {
                 console.log(res);
@@ -864,11 +914,13 @@ var TimetableComponent = /** @class */ (function () {
                 to: _this.date.clone().add(1, 'days').format('YYYY-MM-DD 04:59:59'),
                 refresh: true
             };
+            _this.loadingProgram = true;
             _this.programService.search(cond).subscribe(function (res) {
                 if (res.result) {
                     _this.programs = res.data;
                     console.log(_this.programs);
                 }
+                _this.loadingProgram = false;
             });
         };
         /**

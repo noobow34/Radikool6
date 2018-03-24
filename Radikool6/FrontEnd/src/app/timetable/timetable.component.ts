@@ -19,6 +19,9 @@ export class TimetableComponent implements OnInit {
   public date = moment();
   public programs:Program[] = [];
 
+  public loadingStation = false;
+  public loadingProgram = false;
+
   constructor(private stationService: StationService,
               private programService: ProgramService,
               public dialog: MatDialog) {
@@ -63,11 +66,13 @@ export class TimetableComponent implements OnInit {
       to:  this.date.clone().add(1, 'days').format('YYYY-MM-DD 04:59:59'),
       refresh: true
     };
+    this.loadingProgram = true;
     this.programService.search(cond).subscribe(res => {
       if (res.result){
         this.programs = res.data as Program[];
         console.log(this.programs);
       }
+      this.loadingProgram = false;
     });
   }
 

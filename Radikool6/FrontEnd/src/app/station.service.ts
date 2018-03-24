@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BaseService} from './base.service';
 import {HttpClient} from '@angular/common/http';
 import {ApiResult} from './api-result';
+import {Station} from './station';
 
 @Injectable()
 export class StationService extends BaseService{
@@ -15,7 +16,7 @@ export class StationService extends BaseService{
    * @returns {Observable<Object>}
    */
   public refresh = (type: string) => {
-    return this.http.post<ApiResult>(`./api/station/${type}`, {});
+    return this.http.post<ApiResult<Station[]>>(`./api/station/${type}`, {});
   }
 
   /**
@@ -23,7 +24,7 @@ export class StationService extends BaseService{
    * @returns {Observable<Object>}
    */
   public get = () => {
-    return this.http.get<ApiResult>('./api/station/');
+    return this.http.get<ApiResult<Station[]>>('./api/station/');
   }
 
 }
