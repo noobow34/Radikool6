@@ -14,7 +14,6 @@ import { ContentComponent } from './components/content/content.component';
 import {StateService} from './services/state.service';
 import { TimetableComponent } from './components/timetable/timetable.component';
 import { LibraryComponent } from './components/library/library.component';
-import { SettingComponent } from './components/setting/setting.component';
 import { RadioPlayerComponent } from './components/radio-player/radio-player.component';
 import {StationService} from './services/station.service';
 import {ProgramService} from './services/program.service';
@@ -22,7 +21,9 @@ import { ReserveEditComponent } from './components/reserve-edit/reserve-edit.com
 import { ReserveListComponent } from './components/reserve-list/reserve-list.component';
 import {ReserveService} from './services/reserve.service';
 import { TimePipe } from './pipes/time.pipe';
-import {FormsModule} from "@angular/forms";
+import {FormsModule} from '@angular/forms';
+import {ConfigService} from './services/config.service';
+import { ConfigComponent } from './components/config/config.component';
 
 
 @NgModule({
@@ -32,11 +33,11 @@ import {FormsModule} from "@angular/forms";
     ContentComponent,
     TimetableComponent,
     LibraryComponent,
-    SettingComponent,
     RadioPlayerComponent,
     ReserveEditComponent,
     ReserveListComponent,
-    TimePipe
+    TimePipe,
+    ConfigComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +56,8 @@ import {FormsModule} from "@angular/forms";
     StateService,
     StationService,
     ProgramService,
-    ReserveService
+    ReserveService,
+    ConfigService
     ],
   entryComponents:[
     ReserveEditComponent

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
+using Microsoft.AspNetCore.HttpOverrides;
 using Newtonsoft.Json;
 using Radikool6.Classes;
 
@@ -59,7 +63,7 @@ namespace Radikool6.Schemas
                 $"CREATE TABLE IF NOT EXISTS {tableName}({string.Join(",", table.Columns.Select(c => c.Key + " " + c.Value))}{(table.PrimaryKey?.Length > 0 ? " ,PRIMARY KEY(" + string.Join(",", table.PrimaryKey) + ")" : "")})";
 
             var hash = Utility.Text.Sha256(createQuery);
-            var orgData = new DataTable();
+            var orgData = new List<Dictionary<string, object>>();
             if (check)
             {
                 // ハッシュチェック
@@ -79,14 +83,24 @@ namespace Radikool6.Schemas
                     // 既存データ退避
                     try
                     {
-                        /*using (var cmd = new SqliteCommand("", trn.Connection, trn))
+                        using (var cmd = new SqliteCommand("", trn.Connection, trn))
                         {
                             cmd.CommandText = $"SELECT * FROM {tableName}";
-                            using (var da = new sqlited(cmd))
+                            using (var reader = cmd.ExecuteReader())
                             {
-                                da.Fill(orgData);
+                                while (reader.Read())
+                                {
+                                    var row = new Dictionary<string, object>();
+                                    
+                                    for(var i=0;i<reader.FieldCount;i++)
+                                    {
+                                        row[reader.GetName(i)] = reader.GetValue(i);
+                                    }
+                                    orgData.Add(row);
+                                }
+                                
                             }
-                        }*/
+                        }
 
                         // 既存テーブル削除
                         using (var cmd = new SqliteCommand("", trn.Connection, trn))
@@ -144,41 +158,41 @@ namespace Radikool6.Schemas
                 }*/
 
             // 既存データ移送
-            if (orgData.Rows.Count <= 0) return;
+            if (orgData.Count <= 0) return;
 
-            /*
-            var data = new DataTable();
+            
+            var data = new List<Dictionary<string, object>>();
+            var cols = new List<string>();
             using (var cmd = new SqliteCommand("", trn.Connection, trn))
             {
-                cmd.CommandText = $"SELECT * FROM {tableName}";
-                using (var da = new SqliteDataAdapter(cmd))
+                cmd.CommandText = $"SELECT * FROM {tableName} LIMIT 1";
+                using (var reader = cmd.ExecuteReader())
                 {
-                    da.FillSchema(data, SchemaType.Mapped);
-                }
+                    reader.Read();
+                    
 
-                foreach (DataRow row in orgData.Rows)
-                {
-                    var add = data.NewRow();
-
-                    foreach (DataColumn col in orgData.Columns)
+                    foreach (var orgRow in orgData)
                     {
-                        if (data.Columns.Contains(col.ColumnName))
+                        var row = new Dictionary<string, object>();
+                        for (var i = 0; i < reader.FieldCount; i++)
                         {
-                            add[col.ColumnName] = row[col.ColumnName];
+                            var colName = reader.GetName(i);
+                            if (!orgRow.ContainsKey(colName)) continue;
+                            row[colName] = orgRow[colName];
+                            if (!cols.Contains(colName))
+                            {
+                                cols.Add(colName);
+                            }
                         }
+                        data.Add(row);
                     }
 
-                    data.Rows.Add(add);
+                    
                 }
+                
             }
 
-            var cols = new List<string>();
-            foreach (DataColumn col in data.Columns)
-            {
-                cols.Add(col.ColumnName);
-            }
-
-            foreach (DataRow row in data.Rows)
+            foreach (var row in data)
             {
                 using (var cmd = new SqliteCommand("", trn.Connection, trn))
                 {
@@ -196,7 +210,7 @@ namespace Radikool6.Schemas
                     cmd.ExecuteNonQuery();
                 }
             }
-            */
+            
 
         }
     }

@@ -96,7 +96,6 @@ var content_component_1 = __webpack_require__("../../../../../src/app/components
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var timetable_component_1 = __webpack_require__("../../../../../src/app/components/timetable/timetable.component.ts");
 var library_component_1 = __webpack_require__("../../../../../src/app/components/library/library.component.ts");
-var setting_component_1 = __webpack_require__("../../../../../src/app/components/setting/setting.component.ts");
 var radio_player_component_1 = __webpack_require__("../../../../../src/app/components/radio-player/radio-player.component.ts");
 var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
 var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
@@ -105,6 +104,8 @@ var reserve_list_component_1 = __webpack_require__("../../../../../src/app/compo
 var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
 var time_pipe_1 = __webpack_require__("../../../../../src/app/pipes/time.pipe.ts");
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
+var config_service_1 = __webpack_require__("../../../../../src/app/services/config.service.ts");
+var config_component_1 = __webpack_require__("../../../../../src/app/components/config/config.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -116,11 +117,11 @@ var AppModule = /** @class */ (function () {
                 content_component_1.ContentComponent,
                 timetable_component_1.TimetableComponent,
                 library_component_1.LibraryComponent,
-                setting_component_1.SettingComponent,
                 radio_player_component_1.RadioPlayerComponent,
                 reserve_edit_component_1.ReserveEditComponent,
                 reserve_list_component_1.ReserveListComponent,
-                time_pipe_1.TimePipe
+                time_pipe_1.TimePipe,
+                config_component_1.ConfigComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -139,7 +140,8 @@ var AppModule = /** @class */ (function () {
                 state_service_1.StateService,
                 station_service_1.StationService,
                 program_service_1.ProgramService,
-                reserve_service_1.ReserveService
+                reserve_service_1.ReserveService,
+                config_service_1.ConfigService
             ],
             entryComponents: [
                 reserve_edit_component_1.ReserveEditComponent
@@ -154,10 +156,76 @@ exports.AppModule = AppModule;
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/config/config.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  config works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/config/config.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/config/config.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var config_service_1 = __webpack_require__("../../../../../src/app/services/config.service.ts");
+var ConfigComponent = /** @class */ (function () {
+    function ConfigComponent(configService) {
+        this.configService = configService;
+    }
+    ConfigComponent.prototype.ngOnInit = function () {
+        this.configService.getEncodeSettings().subscribe(function (res) {
+            console.log(res);
+        });
+    };
+    ConfigComponent = __decorate([
+        core_1.Component({
+            selector: 'app-config',
+            template: __webpack_require__("../../../../../src/app/components/config/config.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/config/config.component.scss")]
+        }),
+        __metadata("design:paramtypes", [config_service_1.ConfigService])
+    ], ConfigComponent);
+    return ConfigComponent;
+}());
+exports.ConfigComponent = ConfigComponent;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/content/content.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-setting *ngIf=\"selectedContent === 'setting'\"></app-setting>\n<app-radio-player></app-radio-player>\n"
+module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-config *ngIf=\"selectedContent === 'config'\"></app-config>\n<app-radio-player></app-radio-player>\n"
 
 /***/ }),
 
@@ -539,67 +607,6 @@ exports.ReserveListComponent = ReserveListComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/setting/setting.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n  setting works!\n</p>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/setting/setting.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/setting/setting.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var SettingComponent = /** @class */ (function () {
-    function SettingComponent() {
-    }
-    SettingComponent.prototype.ngOnInit = function () {
-    };
-    SettingComponent = __decorate([
-        core_1.Component({
-            selector: 'app-setting',
-            template: __webpack_require__("../../../../../src/app/components/setting/setting.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/setting/setting.component.scss")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], SettingComponent);
-    return SettingComponent;
-}());
-exports.SettingComponent = SettingComponent;
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/components/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
@@ -763,7 +770,7 @@ exports.TimetableComponent = TimetableComponent;
 /***/ "../../../../../src/app/components/toolbar/toolbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\">\n  <button type=\"button\" mat-button (click)=\"setContent('timetable')\">番組表</button>\n  <button type=\"button\" mat-button (click)=\"setContent('reserve')\">予約</button>\n  <button type=\"button\" mat-button (click)=\"setContent('library')\">ライブラリ</button>\n  <button type=\"button\" mat-button (click)=\"setContent('setting')\">設定</button>\n</mat-toolbar>\n"
+module.exports = "<mat-toolbar color=\"primary\">\n  <button type=\"button\" mat-button (click)=\"setContent('timetable')\">番組表</button>\n  <button type=\"button\" mat-button (click)=\"setContent('reserve')\">予約</button>\n  <button type=\"button\" mat-button (click)=\"setContent('library')\">ライブラリ</button>\n  <button type=\"button\" mat-button (click)=\"setContent('config')\">設定</button>\n</mat-toolbar>\n"
 
 /***/ }),
 
@@ -895,6 +902,54 @@ var BaseService = /** @class */ (function () {
     return BaseService;
 }());
 exports.BaseService = BaseService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/config.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ConfigService = /** @class */ (function (_super) {
+    __extends(ConfigService, _super);
+    function ConfigService(http) {
+        var _this = _super.call(this, http) || this;
+        _this.getEncodeSettings = function () {
+            return _this.http.get('./api/encode_settings/');
+        };
+        return _this;
+    }
+    ConfigService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], ConfigService);
+    return ConfigService;
+}(base_service_1.BaseService));
+exports.ConfigService = ConfigService;
 
 
 /***/ }),
