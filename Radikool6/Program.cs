@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.AspNetCore;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Radikool6.BackgroundTask;
+using Radikool6.Classes;
 using Radikool6.Entities;
 
 namespace Radikool6
@@ -41,6 +43,15 @@ namespace Radikool6
         /// </summary>
         private static void Init()
         {
+            if (File.Exists(Define.File.KeyFile))
+            {
+                Global.EncKey = File.ReadAllText(Define.File.KeyFile);
+            }
+            else
+            {
+                Global.EncKey = Guid.NewGuid().ToString();
+                File.WriteAllText(Define.File.KeyFile, Global.EncKey);
+            }
             Schemas.Upgrade.Execute();
         }
     }
