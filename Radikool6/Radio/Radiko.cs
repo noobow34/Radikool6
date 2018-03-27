@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -87,8 +88,46 @@ namespace Radikool6.Radio
         /// auth token取得
         /// </summary>
         /// <returns></returns>
-        public static Task<string> GetAuthToken()
+        public static async Task<string> GetAuthToken()
         {
+            using (var client = new HttpClient())
+            {
+                // auth token取得
+                client.DefaultRequestHeaders.Add("pragma", "no-cache");
+                client.DefaultRequestHeaders.Add("x-radiko-app", "pc_html5");
+                client.DefaultRequestHeaders.Add("x-radiko-app-version", "0.0.1");
+                client.DefaultRequestHeaders.Add("x-radiko-device", "pc");
+                client.DefaultRequestHeaders.Add("x-radiko-user", "dummy_user");
+
+                var res = await client.GetAsync(Define.Radiko.Auth1);
+                var token = res.Headers.GetValues("X-Radiko-AuthToken").FirstOrDefault();
+                int.TryParse(res.Headers.GetValues("X-Radiko-KeyLength").FirstOrDefault(), out var keyLength);
+                int.TryParse(res.Headers.GetValues("X-Radiko-KeyOffset").FirstOrDefault(), out var keyOffset);
+
+                // partial keyの元を取得
+                client.DefaultRequestHeaders.Clear();
+                var js = await client.GetStringAsync(Define.Radiko.CommonJs);
+                
+                var m = Regex.Match(js, @"new RadikoJSPlayer.*{");
+                var key = "";
+                if (m.Success)
+                {
+                    key = m.Value.Split(",")[2].Replace("'", "").Trim();
+                }
+
+                var partialKey =
+                    Convert.ToBase64String(Encoding.UTF8.GetBytes(key.Substring(keyOffset, keyLength)));
+                
+                // auto tokenを有効可
+                client.DefaultRequestHeaders.Add("x-radiko-authtoken", token);
+                client.DefaultRequestHeaders.Add("x-radiko-device", "pc");
+                client.DefaultRequestHeaders.Add("x-radiko-partialkey", partialKey);
+                client.DefaultRequestHeaders.Add("x-radiko-user", "dummy_user");
+                res = await client.GetAsync(Define.Radiko.Auth2);
+
+                return token;
+            }
+            /*
             return Task.Factory.StartNew(() =>
             {
                 try
@@ -142,7 +181,7 @@ namespace Radikool6.Radio
                 }
 
                 return "";
-            });
+            });*/
         }
 
     }
