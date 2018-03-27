@@ -127,61 +127,6 @@ namespace Radikool6.Radio
 
                 return token;
             }
-            /*
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    // auth token取得
-                    var req = (HttpWebRequest) WebRequest.Create(Define.Radiko.Auth1);
-                    req.Headers.Add("pragma", "no-cache");
-                    req.Headers.Add("x-radiko-app", "pc_html5");
-                    req.Headers.Add("x-radiko-app-version", "0.0.1");
-                    req.Headers.Add("x-radiko-device", "pc");
-                    req.Headers.Add("x-radiko-user", "dummy_user");
-
-                    var res = (HttpWebResponse) req.GetResponse();
-                    var token = res.Headers["X-Radiko-AuthToken"];
-                    int.TryParse(res.Headers["X-Radiko-KeyLength"], out var keyLength);
-                    int.TryParse(res.Headers["X-Radiko-KeyOffset"], out var keyOffset);
-
-
-                    // partial keyの元を取得
-                    req = (HttpWebRequest) WebRequest.Create(Define.Radiko.CommonJs);
-                    res = (HttpWebResponse) req.GetResponse();
-                    var js = "";
-                    using (var r = new StreamReader(res.GetResponseStream()))
-                    {
-                        js = r.ReadToEnd();
-                    }
-
-                    var m = Regex.Match(js, @"new RadikoJSPlayer.*{");
-                    var key = "";
-                    if (m.Success)
-                    {
-                        key = m.Value.Split(",")[2].Replace("'", "").Trim();
-                    }
-
-                    var partialKey =
-                        Convert.ToBase64String(Encoding.UTF8.GetBytes(key.Substring(keyOffset, keyLength)));
-
-                    // auto tokenを有効可
-                    req = (HttpWebRequest) WebRequest.Create(Define.Radiko.Auth2);
-                    req.Headers.Add("x-radiko-authtoken", token);
-                    req.Headers.Add("x-radiko-device", "pc");
-                    req.Headers.Add("x-radiko-partialkey", partialKey);
-                    req.Headers.Add("x-radiko-user", "dummy_user");
-                    res = (HttpWebResponse) req.GetResponse();
-
-                    return token;
-                }
-                catch (Exception e)
-                {
-                    var a = e.Message;
-                }
-
-                return "";
-            });*/
         }
 
     }

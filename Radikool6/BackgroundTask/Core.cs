@@ -24,7 +24,8 @@ namespace Radikool6.BackgroundTask
 
         public void Run()
         {
-            _timer.Start();
+            var t = new RadikoRecorder(new ReserveTask(){ Station = new Station(){ Code = "ABC"}});
+       //     _timer.Start();
         }
 
         /// <summary>
