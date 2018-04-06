@@ -58,38 +58,20 @@ namespace Radikool6.BackgroundTask
 
 
 
-        private async Task Start()
+        public async Task Start()
         {
             try
             {
+                var t = Task.End - Task.Start;
                 _token = await Radio.Radiko.GetAuthToken();
                 var arg = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)
+                    .Replace("[TIME]", (Task.End - Task.Start).ToString(@"hh\:mm\:ss"))
                     .Replace("[CH]", Task.Station.Code);
-                _ffmpeg = new Process();
-                _ffmpeg.StartInfo.FileName = "ffmpeg";
-                _ffmpeg.StartInfo.Arguments = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)
-                    .Replace("[CH]", Task.Station.Code);
-                
-                
-                
-                
-                
-                _ffmpeg.StartInfo.RedirectStandardOutput = true;
-                _ffmpeg.StartInfo.RedirectStandardInput = true;
-                _ffmpeg.StartInfo.RedirectStandardError  = false;
-                _ffmpeg.StartInfo.CreateNoWindow = true;
-                _ffmpeg.StartInfo.UseShellExecute = false;
-                _ffmpeg.StartInfo.CreateNoWindow = false;
-                
-                
-                _ffmpeg.OutputDataReceived              += new DataReceivedEventHandler(process_OutputDataReceived);
-                _ffmpeg.ErrorDataReceived               += new DataReceivedEventHandler(process_OutputDataReceived);
-                _ffmpeg.Exited += new EventHandler(process_Exited);
-                
-                
-                
-                var ccc = _ffmpeg.Start();
+                CreateProcess(arg);
 
+                _ffmpeg.Start();
+                _ffmpeg.BeginOutputReadLine();
+                _ffmpeg.BeginErrorReadLine();
 
             }
             catch (Exception ex)

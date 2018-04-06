@@ -10,9 +10,8 @@ namespace Radikool6.BackgroundTask
     public class Core
     {
         private readonly Timer _timer;
-        private readonly List<Recorder> _recorders = new List<Recorder>();
-
-
+       // private readonly List<Recorder> _recorders = new List<Recorder>();
+        private readonly List<RadikoRecorder> _recorders = new List<RadikoRecorder>();
         public Core()
         {
             Init();
@@ -24,8 +23,7 @@ namespace Radikool6.BackgroundTask
 
         public void Run()
         {
-         //   var t = new RadikoRecorder(new ReserveTask(){ Station = new Station(){ Code = "ABC"}});
-       //     _timer.Start();
+            _timer.Start();
         }
 
         /// <summary>
@@ -50,7 +48,7 @@ namespace Radikool6.BackgroundTask
             using (var db = new Db())
             {
                 var rModel = new ReserveModel(db);
-                var tasks = rModel.GetTasks();
+                var tasks = rModel.GetTasks(true);
                 if (!tasks.Any()) return;
                 var cModel = new ConfigModel(db);
                 var config = cModel.Get();
@@ -59,7 +57,14 @@ namespace Radikool6.BackgroundTask
                     // 予約実行
                     if (_recorders.All(r => r.Id != t.Id))
                     {
-                        _recorders.Add(Recorder.GetRecorder(config, t));
+                    //    var recorder = Recorder.GetRecorder(config, t);
+                        var recorder = new RadikoRecorder(config, t);
+                        var task = recorder.Start();
+                        task.Wait();
+                        _recorders.Add(recorder);
+                        
+                        var logger = NLog.LogManager.GetCurrentClassLogger(); 
+                        logger.Info("録音開始");
                     }
                 });
 
