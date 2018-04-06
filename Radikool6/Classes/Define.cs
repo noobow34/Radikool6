@@ -87,10 +87,11 @@ namespace Radikool6.Classes
             /// </summary>
             public const string StationListFull = "http://radiko.jp/v3/station/region/full.xml";
 
+            
             /// <summary>
             /// 放送局一覧(都道府県ごと)
             /// </summary>
-            public const string StationListPref = "http://radiko.jp/v2/station/list/{area_id}.xml";
+            public const string StationListPref = "http://radiko.jp/v3/station/list/[AREA].xml";
 
             public const string Thumbnail = "http://radiko.jp/station/logo/[CH]/logo_small.png";
 

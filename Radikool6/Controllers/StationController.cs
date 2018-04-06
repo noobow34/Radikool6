@@ -51,7 +51,10 @@ namespace Radikool6.Controllers
                 switch (type)
                 {
                     case Define.Radiko.TypeName:
-                        stations = Radiko.GetStations().Result;
+                        var cMolde = new ConfigModel(_db);
+                        var config = cMolde.Get();
+                        var login = Radiko.Login(config.RadikoEmail, config.RadikoPassword).Result;
+                        stations = Radiko.GetStations(login).Result;
                         break;
                     case Define.Nhk.TypeName:
                         stations = Nhk.GetStations().Result;
@@ -65,6 +68,7 @@ namespace Radikool6.Controllers
                     trn.Commit();
                 }
 
+                Result.Data = stations;
                 Result.Result = true;
             });
         }

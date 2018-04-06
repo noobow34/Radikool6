@@ -96,6 +96,7 @@ namespace Radikool6.Controllers
             switch (station.Type)
             {
                 case Define.Radiko.TypeName:
+                    
                     programs = Radiko.GetPrograms(station).Result;
                     break;
                 case Define.Nhk.TypeName:

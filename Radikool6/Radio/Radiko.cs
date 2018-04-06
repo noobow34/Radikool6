@@ -65,12 +65,28 @@ namespace Radikool6.Radio
         /// 放送局取得
         /// </summary>
         /// <returns></returns>
-        public static Task<List<Station>> GetStations()
+        public static Task<List<Station>> GetStations(bool login)
         {
             return Task.Factory.StartNew(() =>
             {
+                var xmlUrl = Define.Radiko.StationListFull;
+                if (!login)
+                {
+                    // 地域判定をする
+                    using (var client = new HttpClient())
+                    {
+                        var text = client.GetStringAsync(Define.Radiko.AreaCheck).Result;
+                        var m = Regex.Match(text, @"JP[0-9]+");
+                        if (m.Success)
+                        {
+                            xmlUrl = Define.Radiko.StationListPref.Replace("[AREA]", m.Value);
+                        }
+                    }
+                }
+                
+                
                 var res = new List<Station>();
-                var doc = XDocument.Load(Define.Radiko.StationListFull);
+                var doc = XDocument.Load(xmlUrl);
 
                 // 放送局一覧
                 var sequence = 1;
@@ -83,7 +99,7 @@ namespace Radikool6.Radio
                         var code = station.Descendants("id").First().Value;
                         var name = station.Descendants("name").First().Value;
                         var logo = station.Descendants("logo").FirstOrDefault()?.Value;
-                        var areaId = station.Descendants("area_id").First().Value;
+                        var areaId = station.Descendants("area_id").FirstOrDefault()?.Value;
                         var url = station.Descendants("href").First().Value;
                         res.Add(new Station
                         {

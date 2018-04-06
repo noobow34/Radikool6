@@ -820,7 +820,7 @@ exports.ResetProgramComponent = ResetProgramComponent;
 /***/ "../../../../../src/app/components/reset-station/reset-station.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  reset-station works!\n</p>\n"
+module.exports = "<button mat-raised-button (click)=\"reset('radiko')\">radikoを初期化</button>\n<mat-list>\n  <mat-list-item *ngFor=\"let s of stations\">{{s.name}}</mat-list-item>\n</mat-list>\n"
 
 /***/ }),
 
@@ -858,10 +858,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
 var ResetStationComponent = /** @class */ (function () {
-    function ResetStationComponent() {
+    function ResetStationComponent(stationService) {
+        var _this = this;
+        this.stationService = stationService;
+        this.loading = false;
+        this.stations = [];
+        this.reset = function (type) {
+            _this.stationService.refresh(type).subscribe(function (res) {
+                if (res.result) {
+                    _this.stations = res.data;
+                }
+            });
+        };
     }
     ResetStationComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.stationService.get().subscribe(function (res) {
+            if (res.result) {
+                _this.stations = res.data;
+            }
+        });
     };
     ResetStationComponent = __decorate([
         core_1.Component({
@@ -869,7 +887,7 @@ var ResetStationComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [station_service_1.StationService])
     ], ResetStationComponent);
     return ResetStationComponent;
 }());

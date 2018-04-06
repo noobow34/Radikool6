@@ -1,3 +1,4 @@
-<p>
-  reset-station works!
-</p>
+<button mat-raised-button (click)="reset('radiko')">radikoを初期化</button>
+<mat-list>
+  <mat-list-item *ngFor="let s of stations">{{s.name}}</mat-list-item>
+</mat-list>
