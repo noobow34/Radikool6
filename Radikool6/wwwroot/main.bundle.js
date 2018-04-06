@@ -106,6 +106,9 @@ var time_pipe_1 = __webpack_require__("../../../../../src/app/pipes/time.pipe.ts
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
 var config_service_1 = __webpack_require__("../../../../../src/app/services/config.service.ts");
 var config_component_1 = __webpack_require__("../../../../../src/app/components/config/config.component.ts");
+var manage_component_1 = __webpack_require__("../../../../../src/app/components/manage/manage.component.ts");
+var reset_program_component_1 = __webpack_require__("../../../../../src/app/components/reset-program/reset-program.component.ts");
+var reset_station_component_1 = __webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -121,7 +124,10 @@ var AppModule = /** @class */ (function () {
                 reserve_edit_component_1.ReserveEditComponent,
                 reserve_list_component_1.ReserveListComponent,
                 time_pipe_1.TimePipe,
-                config_component_1.ConfigComponent
+                config_component_1.ConfigComponent,
+                manage_component_1.ManageComponent,
+                reset_program_component_1.ResetProgramComponent,
+                reset_station_component_1.ResetStationComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -135,7 +141,9 @@ var AppModule = /** @class */ (function () {
                 material_1.MatListModule,
                 material_1.MatProgressSpinnerModule,
                 material_1.MatSelectModule,
-                material_1.MatInputModule
+                material_1.MatInputModule,
+                material_1.MatCardModule,
+                material_1.MatCheckboxModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -160,7 +168,7 @@ exports.AppModule = AppModule;
 /***/ "../../../../../src/app/components/config/config.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n  </mat-form-field>\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
 
 /***/ }),
 
@@ -242,7 +250,7 @@ exports.ConfigComponent = ConfigComponent;
 /***/ "../../../../../src/app/components/content/content.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-config *ngIf=\"selectedContent === 'config'\"></app-config>\n<app-radio-player></app-radio-player>\n"
+module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-manage *ngIf=\"selectedContent === 'manage'\"></app-manage>\n<app-radio-player></app-radio-player>\n"
 
 /***/ }),
 
@@ -366,6 +374,68 @@ var LibraryComponent = /** @class */ (function () {
     return LibraryComponent;
 }());
 exports.LibraryComponent = LibraryComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/manage/manage.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<mat-list>\n  <mat-list-item (click)=\"selectedItem = 'config'\">一般設定</mat-list-item>\n  <mat-list-item (click)=\"selectedItem = 'resetStation'\">放送局初期化</mat-list-item>\n  <mat-list-item (click)=\"selectedItem = 'resetProgram'\"> 番組表取得</mat-list-item>\n</mat-list>\n<app-config *ngIf=\"selectedItem === 'config'\"></app-config>\n<app-reset-program *ngIf=\"selectedItem === 'resetProgram'\"></app-reset-program>\n<app-reset-station *ngIf=\"selectedItem === 'resetStation'\"></app-reset-station>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/manage/manage.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/manage/manage.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var ManageComponent = /** @class */ (function () {
+    function ManageComponent() {
+        this.selectedItem = 'config';
+    }
+    ManageComponent.prototype.ngOnInit = function () {
+    };
+    ManageComponent = __decorate([
+        core_1.Component({
+            selector: 'app-manage',
+            template: __webpack_require__("../../../../../src/app/components/manage/manage.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/manage/manage.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ManageComponent);
+    return ManageComponent;
+}());
+exports.ManageComponent = ManageComponent;
 
 
 /***/ }),
@@ -624,6 +694,190 @@ exports.ReserveListComponent = ReserveListComponent;
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/reset-program/reset-program.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p *ngIf=\"loading\">{{progress}}/{{total}}</p>\n<mat-card *ngFor=\"let r of radikoRegions\">\n  <mat-card-header>\n    <mat-card-title>\n      <mat-checkbox (change)=\"toggleCheck($event, r)\" [disabled]=\"loading\">{{r}}</mat-checkbox>\n    </mat-card-title>\n  </mat-card-header>\n  <mat-card-content>\n    <mat-checkbox [(ngModel)]=\"s.checked\" *ngFor=\"let s of radiko[r]\" [disabled]=\"loading\">{{s.name}}</mat-checkbox>\n  </mat-card-content>\n</mat-card>\n\n  <button mat-raised-button color=\"primary\" (click)=\"submit()\" [disabled]=\"loading\">再取得</button>\n\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/reset-program/reset-program.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/reset-program/reset-program.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
+var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
+var ResetProgramComponent = /** @class */ (function () {
+    function ResetProgramComponent(stationService, programService) {
+        var _this = this;
+        this.stationService = stationService;
+        this.programService = programService;
+        this.radiko = {};
+        this.radikoRegions = [];
+        this.total = 0;
+        this.progress = 0;
+        this.loading = false;
+        this.stations = [];
+        /**
+         * 地域全チェック／解除
+         * @param {MatCheckboxChange} e
+         * @param region
+         */
+        this.toggleCheck = function (e, region) {
+            _this.radiko[region].forEach(function (s) {
+                s.checked = e.checked;
+            });
+        };
+        this.submit = function () {
+            _this.loading = true;
+            var stationIds = _this.stations.filter(function (s) { return s.checked; }).map(function (s) { return s.id; });
+            _this.total = stationIds.length;
+            _this.progress = 1;
+            var i = 0;
+            var refresh = function () {
+                _this.programService.refresh(stationIds[i]).subscribe(function (res) {
+                    if (res.result) {
+                        i++;
+                        _this.progress++;
+                        if (i < stationIds.length) {
+                            refresh();
+                        }
+                        else {
+                            _this.loading = false;
+                        }
+                    }
+                });
+            };
+            refresh();
+        };
+    }
+    ResetProgramComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.stationService.get().subscribe(function (res) {
+            // 種別、地域ごとに分類する
+            _this.stations = res.data;
+            _this.radiko = {};
+            _this.radikoRegions = [];
+            var nhk = {};
+            for (var _i = 0, _a = _this.stations; _i < _a.length; _i++) {
+                var station = _a[_i];
+                if (station.type === 'radiko') {
+                    if (!(station.regionName in _this.radiko)) {
+                        _this.radiko[station.regionName] = [];
+                        _this.radikoRegions.push(station.regionName);
+                    }
+                    _this.radiko[station.regionName].push(station);
+                }
+            }
+        });
+    };
+    ResetProgramComponent = __decorate([
+        core_1.Component({
+            selector: 'app-reset-program',
+            template: __webpack_require__("../../../../../src/app/components/reset-program/reset-program.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/reset-program/reset-program.component.scss")]
+        }),
+        __metadata("design:paramtypes", [station_service_1.StationService,
+            program_service_1.ProgramService])
+    ], ResetProgramComponent);
+    return ResetProgramComponent;
+}());
+exports.ResetProgramComponent = ResetProgramComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/reset-station/reset-station.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  reset-station works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/reset-station/reset-station.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/reset-station/reset-station.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var ResetStationComponent = /** @class */ (function () {
+    function ResetStationComponent() {
+    }
+    ResetStationComponent.prototype.ngOnInit = function () {
+    };
+    ResetStationComponent = __decorate([
+        core_1.Component({
+            selector: 'app-reset-station',
+            template: __webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ResetStationComponent);
+    return ResetStationComponent;
+}());
+exports.ResetStationComponent = ResetStationComponent;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
@@ -787,7 +1041,7 @@ exports.TimetableComponent = TimetableComponent;
 /***/ "../../../../../src/app/components/toolbar/toolbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\">\n  <button type=\"button\" mat-button (click)=\"setContent('timetable')\">番組表</button>\n  <button type=\"button\" mat-button (click)=\"setContent('reserve')\">予約</button>\n  <button type=\"button\" mat-button (click)=\"setContent('library')\">ライブラリ</button>\n  <button type=\"button\" mat-button (click)=\"setContent('config')\">設定</button>\n</mat-toolbar>\n"
+module.exports = "<mat-toolbar color=\"primary\">\n  <button type=\"button\" mat-button (click)=\"setContent('timetable')\">番組表</button>\n  <button type=\"button\" mat-button (click)=\"setContent('reserve')\">予約</button>\n  <button type=\"button\" mat-button (click)=\"setContent('library')\">ライブラリ</button>\n  <button type=\"button\" mat-button (click)=\"setContent('manage')\">管理</button>\n</mat-toolbar>\n"
 
 /***/ }),
 
@@ -1016,6 +1270,14 @@ var ProgramService = /** @class */ (function (_super) {
          */
         _this.search = function (cond) {
             return _this.http.post('./api/program/', cond);
+        };
+        /**
+         * 番組表再取得
+         * @param {string} stationId
+         * @returns {Observable<Object>}
+         */
+        _this.refresh = function (stationId) {
+            return _this.http.post("./api/program/" + stationId, {});
         };
         return _this;
     }

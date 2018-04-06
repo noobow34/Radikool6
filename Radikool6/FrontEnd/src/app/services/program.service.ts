@@ -18,4 +18,13 @@ export class ProgramService extends BaseService{
     return this.http.post<ApiResult<{ programs: Program[], range: Date[]}>>('./api/program/', cond);
   }
 
+  /**
+   * 番組表再取得
+   * @param {string} stationId
+   * @returns {Observable<Object>}
+   */
+  public refresh = (stationId: string) => {
+    return this.http.post<ApiResult>(`./api/program/${stationId}`, {});
+  }
+
 }

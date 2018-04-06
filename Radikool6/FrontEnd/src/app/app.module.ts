@@ -7,7 +7,8 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatDialogModule, MatExpansionModule, MatInputModule, MatListModule, MatProgressSpinnerModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatExpansionModule, MatInputModule, MatListModule,
+  MatProgressSpinnerModule,
   MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
@@ -25,6 +26,9 @@ import { TimePipe } from './pipes/time.pipe';
 import {FormsModule} from '@angular/forms';
 import {ConfigService} from './services/config.service';
 import { ConfigComponent } from './components/config/config.component';
+import { ManageComponent } from './components/manage/manage.component';
+import { ResetProgramComponent } from './components/reset-program/reset-program.component';
+import { ResetStationComponent } from './components/reset-station/reset-station.component';
 
 
 @NgModule({
@@ -38,7 +42,10 @@ import { ConfigComponent } from './components/config/config.component';
     ReserveEditComponent,
     ReserveListComponent,
     TimePipe,
-    ConfigComponent
+    ConfigComponent,
+    ManageComponent,
+    ResetProgramComponent,
+    ResetStationComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +59,9 @@ import { ConfigComponent } from './components/config/config.component';
     MatListModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule,
+    MatCheckboxModule
   ],
   providers: [
     StateService,

@@ -9,4 +9,6 @@ export interface Station {
   sequence: string;
   mediaUrl: string;
   timetableUrl: string;
+
+  checked: boolean;
 }

@@ -3,7 +3,10 @@
     <input matInput placeholder="メールアドレス" name="radikoEmail" [(ngModel)]="config.radikoEmail" />
   </mat-form-field>
   <mat-form-field>
-    <input matInput placeholder="パスワード" name="radikoPassword" [(ngModel)]="config.radikoPassword" />
+    <input matInput placeholder="パスワード" type="password" name="radikoPassword" [(ngModel)]="config.radikoPassword" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="保存ファイル名" name="fileName" [(ngModel)]="config.fileName" />
   </mat-form-field>
   <button type="submit" mat-raised-button color="primary">保存</button>
 </form>

@@ -3,7 +3,7 @@
     public class CommonConfig
     {
         public string RadikoEmail { get; set; }
-        
         public string RadikoPassword { get; set; }
+        public string FileName { get; set; }
     }
 }
