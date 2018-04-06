@@ -8,14 +8,15 @@ namespace Radikool6.BackgroundTask
     {
         public string Id { get; set; }
         protected ReserveTask Task { get; set; }
+        protected CommonConfig Config { get; set; }
         
-        public static Recorder GetRecorder(ReserveTask task)
+        public static Recorder GetRecorder(CommonConfig config, ReserveTask task)
         {
             Recorder res = null;
             switch (task.Station.Type)
             {
                 case Define.Radiko.TypeName:
-                    res = new RadikoRecorder(task);
+                    res = new RadikoRecorder(config, task);
                     break;
 
             }
@@ -23,10 +24,12 @@ namespace Radikool6.BackgroundTask
             return res;
         }
 
-        protected Recorder(ReserveTask task)
+        protected Recorder(CommonConfig config, ReserveTask task = null)
         {
+            Config = config;
             Task = task;
-            Id = task.Id;
+            Id = task?.Id;
         }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Radikool6.Classes;
 using Radikool6.Entities;
 
@@ -12,6 +13,16 @@ namespace Radikool6.Models
         {
         }
 
+        /// <summary>
+        /// 番組情報取得
+        /// </summary>
+        /// <param name="programId"></param>
+        /// <returns></returns>
+        public Entities.Program Get(string programId)
+        {
+            return Db.Programs.Include(p => p.Station).FirstOrDefault(p => p.Id == programId);
+        }
+        
         /// <summary>
         /// 番組検索
         /// </summary>

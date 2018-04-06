@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
 using Radikool6.Entities;
+using Radikool6.Radio;
 
 namespace Radikool6
 {
@@ -21,6 +22,7 @@ namespace Radikool6
         
         public static void Main(string[] args)
         {
+           
             var logger = NLog.LogManager.GetCurrentClassLogger(); 
             logger.Info("test");
             

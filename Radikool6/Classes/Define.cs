@@ -53,8 +53,8 @@ namespace Radikool6.Classes
             /// <summary>
             /// ログインURL
             /// </summary>
-            //  public const string Login = "https://radiko.jp/ap/member/login/login";
-            public const string Login = "https://radiko.jp/ap/member/login/login_page";
+            public const string Login = "https://radiko.jp/ap/member/login/login";
+            //public const string Login = "https://radiko.jp/ap/member/login/login_page";
             //   https://radiko.jp/ap/member/login/login_page
 
             /// <summary>
@@ -116,6 +116,8 @@ namespace Radikool6.Classes
             public const string CommonJs = "http://radiko.jp/apps/js/playerCommon.js";
 
 
+            public const string TimeFreeM3U8 = "https://radiko.jp/v2/api/ts/playlist.m3u8?station_id=[CH]&ft=[FT]&to=[TO]";
+
             /// <summary>
             /// rtmpgwの引数
             /// </summary>
@@ -137,6 +139,8 @@ namespace Radikool6.Classes
 
             public const string FfmpegArgs = "-headers \"X-Radiko-AuthToken: [TOKEN]\" -i \"http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8\" -t 00:00:30 -acodec copy test1.aac";
 
+            
+            
             //                var args = $"-headers 'X-Radiko-AuthToken: {t.Result}' -i '{url}' -t 00:00:30 -acodec copy test.aac";
 
 

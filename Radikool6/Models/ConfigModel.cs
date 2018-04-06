@@ -17,7 +17,7 @@ namespace Radikool6.Models
         }
 
         /// <summary>
-        /// 設定取得
+        /// 一般設定取得
         /// </summary>
         /// <returns></returns>
         public CommonConfig Get()
@@ -33,6 +33,11 @@ namespace Radikool6.Models
             return res;
         }
 
+        /// <summary>
+        /// 一般設定更新
+        /// </summary>
+        /// <param name="commonConfig"></param>
+        /// <returns></returns>
         public bool Update(CommonConfig commonConfig)
         {
             commonConfig.RadikoEmail = Utility.Text.Encrypt(commonConfig.RadikoEmail, Global.EncKey);

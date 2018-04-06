@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Radikool6.BackgroundTask;
 using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
@@ -34,7 +35,7 @@ namespace Radikool6.Controllers
 
                 if (res.Count == 0 && string.IsNullOrWhiteSpace(cond.Keyword) && cond.Refresh)
                 {
-                    this.RefreshPrograms(cond.StationId);
+                    RefreshPrograms(cond.StationId);
                     res = pModel.Search(cond);
                 }
                 Result.Data = new { programs = res, range = pModel.GetRange(cond.StationId)};
@@ -54,6 +55,27 @@ namespace Radikool6.Controllers
             return await Execute(() =>
             {
                 Result.Data = this.RefreshPrograms(stationId);
+                Result.Result = true;
+            });
+        }
+        
+        [HttpGet]
+        [Route("api/program/tf/{programId}")]
+        public async Task<ApiResponse> Download(string programId)
+        {
+            return await Execute(() =>
+            {
+                var pModel = new ProgramModel(_db);
+                var program = pModel.Get(programId);
+
+                var cModel = new ConfigModel(_db);
+                var config = cModel.Get();
+                
+                if (program != null)
+                {
+                    var rr = new RadikoRecorder(config);
+                    rr.TimeFree(program);
+                }
                 Result.Result = true;
             });
         }
@@ -87,5 +109,8 @@ namespace Radikool6.Controllers
 
             return programs;
         }
+
+        
+        
     }
 }

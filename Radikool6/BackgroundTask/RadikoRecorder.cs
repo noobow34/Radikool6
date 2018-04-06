@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Radikool6.Classes;
 using Radikool6.Entities;
+using Radikool6.Radio;
 
 namespace Radikool6.BackgroundTask
 {
@@ -11,10 +12,51 @@ namespace Radikool6.BackgroundTask
         private string _token;
         private Process _ffmpeg;
 
-        public RadikoRecorder(ReserveTask task) : base(task)
+        public RadikoRecorder(CommonConfig config, ReserveTask task = null) : base(config, task)
         {
-            Start();
+        //    Start();
         }
+
+        public async Task TimeFree(Entities.Program program)
+        {
+            
+            var m3U8 = await Radiko.GetTimeFreeM3U8(program);
+            var arg = $"-i {m3U8} -acodec copy \"{program.Title}.aac\"";
+            CreateProcess(arg);
+
+        //    await System.Threading.Tasks.Task.Factory.StartNew(() =>
+        //    {
+                _ffmpeg.Start();
+
+                _ffmpeg.BeginOutputReadLine();
+                _ffmpeg.BeginErrorReadLine();
+         //   });
+
+        }
+
+        private void CreateProcess(string arg)
+        {
+            _ffmpeg = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "ffmpeg",
+                    Arguments = arg,
+                    RedirectStandardOutput = true,
+                    RedirectStandardInput = true,
+                    RedirectStandardError = false,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                }
+            };
+
+            
+            _ffmpeg.OutputDataReceived += process_OutputDataReceived;
+            _ffmpeg.ErrorDataReceived += process_OutputDataReceived;
+            _ffmpeg.Exited += process_Exited;
+        }
+
+
 
         private async Task Start()
         {

@@ -24,7 +24,7 @@ namespace Radikool6.BackgroundTask
 
         public void Run()
         {
-            var t = new RadikoRecorder(new ReserveTask(){ Station = new Station(){ Code = "ABC"}});
+         //   var t = new RadikoRecorder(new ReserveTask(){ Station = new Station(){ Code = "ABC"}});
        //     _timer.Start();
         }
 
@@ -49,16 +49,20 @@ namespace Radikool6.BackgroundTask
         {
             using (var db = new Db())
             {
-                var model = new ReserveModel(db);
-                var tasks = model.GetTasks();
+                var rModel = new ReserveModel(db);
+                var tasks = rModel.GetTasks();
+                if (!tasks.Any()) return;
+                var cModel = new ConfigModel(db);
+                var config = cModel.Get();
                 tasks.ForEach(t =>
                 {
                     // 予約実行
                     if (_recorders.All(r => r.Id != t.Id))
                     {
-                        _recorders.Add(Recorder.GetRecorder(t));
+                        _recorders.Add(Recorder.GetRecorder(config, t));
                     }
                 });
+
             }
         }
     }
