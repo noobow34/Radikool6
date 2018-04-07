@@ -19,7 +19,10 @@ namespace Radikool6.Models
         /// <returns></returns>
         public List<Reserve> Get()
         {
-            return Db.Reserves.ToList();
+            var res = Db.Reserves.ToList();
+            var stations = Db.Stations.Where(s => res.Select(r => r.StationId).Distinct().Contains(s.Id)).ToList();            
+            res.ForEach(r => { r.StationName = stations.FirstOrDefault(s => s.Id == r.StationId)?.Name; });
+            return res;
         }
 
         /// <summary>

@@ -143,7 +143,9 @@ var AppModule = /** @class */ (function () {
                 material_1.MatSelectModule,
                 material_1.MatInputModule,
                 material_1.MatCardModule,
-                material_1.MatCheckboxModule
+                material_1.MatCheckboxModule,
+                material_1.MatTableModule,
+                material_1.MatSortModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -610,7 +612,7 @@ exports.ReserveEditComponent = ReserveEditComponent;
 /***/ "../../../../../src/app/components/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <table>\n    <thead>\n      <tr>\n        <th>放送局</th>\n        <th>開始</th>\n        <th>終了</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let reserve of reserves\" (click)=\"editReserve(reserve)\">\n        <td>{{reserve.stationId}}</td>\n        <td>{{reserve.start | date: 'yyyy/MM/dd HH:mm'}}</td>\n        <td>{{reserve.end  | date: 'yyyy/MM/dd HH:mm'}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -650,16 +652,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
+var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var ReserveListComponent = /** @class */ (function () {
     function ReserveListComponent(reserveService, stateService) {
         var _this = this;
         this.reserveService = reserveService;
         this.stateService = stateService;
         this.reserves = [];
+        // mat-table
+        this.dataSource = new material_1.MatTableDataSource();
+        this.displayedColumns = ['stationName', 'start', 'end'];
         this.init = function () {
             _this.reserveService.get().subscribe(function (res) {
                 if (res.result) {
                     _this.reserves = res.data;
+                    _this.dataSource = new material_1.MatTableDataSource(_this.reserves);
+                    _this.dataSource.sort = _this.sort;
                 }
             });
         };
@@ -678,6 +686,10 @@ var ReserveListComponent = /** @class */ (function () {
     ReserveListComponent.prototype.ngOnInit = function () {
         this.init();
     };
+    __decorate([
+        core_1.ViewChild(material_1.MatSort),
+        __metadata("design:type", material_1.MatSort)
+    ], ReserveListComponent.prototype, "sort", void 0);
     ReserveListComponent = __decorate([
         core_1.Component({
             selector: 'app-reserve-list',

@@ -40,7 +40,13 @@ namespace Radikool6.Entities
         }
         
         [NotMapped]
+        public string Name { get; set; }
+        
+        [NotMapped]
         public string StationId { get; set; }
+        
+        [NotMapped]
+        public string StationName { get; set; }
         
         [NotMapped]
         public DateTime Start { get; set; }
@@ -59,5 +65,6 @@ namespace Radikool6.Entities
         
         [JsonIgnore]
         public ICollection<ReserveTask> ReserveTasks { get; set; }
+
     }
 }

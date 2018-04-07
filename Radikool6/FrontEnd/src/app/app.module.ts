@@ -9,7 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatExpansionModule, MatInputModule, MatListModule,
   MatProgressSpinnerModule,
-  MatSelectModule,
+  MatSelectModule, MatSortModule, MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 import { ContentComponent } from './components/content/content.component';
@@ -61,7 +61,9 @@ import { ResetStationComponent } from './components/reset-station/reset-station.
     MatSelectModule,
     MatInputModule,
     MatCardModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     StateService,

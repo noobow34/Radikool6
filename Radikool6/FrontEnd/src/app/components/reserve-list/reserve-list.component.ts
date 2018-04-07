@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ReserveService} from '../../services/reserve.service';
 import {Reserve} from '../../interfaces/reserve';
 import {StateService} from '../../services/state.service';
+import {MatSort, MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-reserve-list',
@@ -11,6 +12,12 @@ import {StateService} from '../../services/state.service';
 export class ReserveListComponent implements OnInit {
 
   public reserves: Reserve[] = [];
+
+  // mat-table
+  public dataSource = new MatTableDataSource();
+  public displayedColumns = ['stationName', 'start', 'end'];
+  @ViewChild(MatSort) sort: MatSort;
+
 
   constructor(
     private reserveService: ReserveService,
@@ -25,6 +32,8 @@ export class ReserveListComponent implements OnInit {
     this.reserveService.get().subscribe(res => {
       if (res.result){
         this.reserves = res.data;
+        this.dataSource = new MatTableDataSource(this.reserves);
+        this.dataSource.sort = this.sort;
       }
     });
   }

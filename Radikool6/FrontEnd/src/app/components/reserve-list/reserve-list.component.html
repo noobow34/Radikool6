@@ -1,18 +1,19 @@
-<div class="container">
-  <table>
-    <thead>
-      <tr>
-        <th>放送局</th>
-        <th>開始</th>
-        <th>終了</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let reserve of reserves" (click)="editReserve(reserve)">
-        <td>{{reserve.stationId}}</td>
-        <td>{{reserve.start | date: 'yyyy/MM/dd HH:mm'}}</td>
-        <td>{{reserve.end  | date: 'yyyy/MM/dd HH:mm'}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="stationName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>
+    <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.stationName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="start">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>
+    <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="end">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>
+    <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
