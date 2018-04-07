@@ -26,4 +26,8 @@ export class ReserveService extends BaseService{
     return this.http.post<ApiResult>('./api/reserve', reserve);
   }
 
+  public delete = (reserveId) => {
+    return this.http.delete<ApiResult>(`./api/reserve/${reserveId}`);
+  }
+
 }

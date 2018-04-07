@@ -145,7 +145,9 @@ var AppModule = /** @class */ (function () {
                 material_1.MatCardModule,
                 material_1.MatCheckboxModule,
                 material_1.MatTableModule,
-                material_1.MatSortModule
+                material_1.MatSortModule,
+                material_1.MatDatepickerModule,
+                material_1.MatNativeDateModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -506,7 +508,7 @@ exports.RadioPlayerComponent = RadioPlayerComponent;
 /***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <input matInput placeholder=\"予約名\" name=\"name\" [(ngModel)]=\"reserve.name\" />\n    </mat-form-field>\n    <mat-form-field>\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"startPicker\" placeholder=\"開始日時\" name=\"start\" [(ngModel)]=\"startDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"startPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #startPicker></mat-datepicker>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"startHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"startMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"endPicker\" placeholder=\"終了日時\" name=\"end\" [(ngModel)]=\"endDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"endPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #endPicker></mat-datepicker>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"endHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"endMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"button\" mat-raised-button (click)=\"delete()\" *ngIf=\"reserve.id\">削除</button>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
 
 /***/ }),
 
@@ -550,6 +552,7 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
 var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
+var moment = __webpack_require__("../../../../moment/moment.js");
 var ReserveEditComponent = /** @class */ (function () {
     function ReserveEditComponent(dialogRef, data, reserveService, stationService) {
         var _this = this;
@@ -559,7 +562,24 @@ var ReserveEditComponent = /** @class */ (function () {
         this.stationService = stationService;
         this.reserve = {};
         this.stations = [];
+        this.hours = [];
+        this.minutes = [];
+        /**
+         * 削除
+         */
+        this.delete = function () {
+            _this.reserveService.delete(_this.reserve.id).subscribe(function (res) {
+                if (res.result) {
+                    _this.dialogRef.close(true);
+                }
+            });
+        };
+        /**
+         * 保存
+         */
         this.save = function () {
+            _this.reserve.start = moment(_this.startDate).hour(_this.startHour).minute(_this.startMinute).toDate();
+            _this.reserve.end = moment(_this.endDate).hour(_this.endHour).minute(_this.endMinute).toDate();
             _this.reserveService.update(_this.reserve).subscribe(function (res) {
                 if (res.result) {
                     _this.dialogRef.close(true);
@@ -569,6 +589,7 @@ var ReserveEditComponent = /** @class */ (function () {
         console.log(data.program);
         if (data.program) {
             this.reserve = {
+                name: this.data.program.title,
                 stationId: data.program.stationId,
                 start: data.program.start,
                 end: data.program.end
@@ -577,15 +598,23 @@ var ReserveEditComponent = /** @class */ (function () {
         else {
             this.reserve = Object.assign({}, data.reserve);
         }
-        console.log(this.reserve);
-        /*
-            this.reserveService.update({ stationId: data.program.stationId, start: data.program.start, end: data.program.end }).subscribe(res =>{
-              console.log(res);
-            });
-        */
+        var start = moment(this.reserve.start);
+        var end = moment(this.reserve.end);
+        this.startDate = start.toDate();
+        this.startHour = start.hour();
+        this.startMinute = start.minute();
+        this.endDate = end.toDate();
+        this.endHour = end.hour();
+        this.endMinute = end.minute();
     }
     ReserveEditComponent.prototype.ngOnInit = function () {
         var _this = this;
+        for (var i = 0; i < 24; i++) {
+            this.hours.push(i);
+        }
+        for (var i = 0; i < 60; i++) {
+            this.minutes.push(i);
+        }
         this.stationService.get().subscribe(function (res) {
             if (res.result) {
                 _this.stations = res.data;
@@ -612,7 +641,7 @@ exports.ReserveEditComponent = ReserveEditComponent;
 /***/ "../../../../../src/app/components/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
+module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"name\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.name}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -661,7 +690,7 @@ var ReserveListComponent = /** @class */ (function () {
         this.reserves = [];
         // mat-table
         this.dataSource = new material_1.MatTableDataSource();
-        this.displayedColumns = ['stationName', 'start', 'end'];
+        this.displayedColumns = ['name', 'stationName', 'start', 'end'];
         this.init = function () {
             _this.reserveService.get().subscribe(function (res) {
                 if (res.result) {
@@ -1369,6 +1398,9 @@ var ReserveService = /** @class */ (function (_super) {
         _this.update = function (reserve) {
             return _this.http.post('./api/reserve', reserve);
         };
+        _this.delete = function (reserveId) {
+            return _this.http.delete("./api/reserve/" + reserveId);
+        };
         return _this;
     }
     ReserveService = __decorate([
@@ -1421,7 +1453,7 @@ var StateService = /** @class */ (function (_super) {
         _this.selectedContent = new Subject_1.Subject();
         _this.editReserve = function (data, callback) {
             var dialogRef = _this.dialog.open(reserve_edit_component_1.ReserveEditComponent, {
-                width: '250px',
+                //width: '250px',
                 disableClose: true,
                 data: data
             });

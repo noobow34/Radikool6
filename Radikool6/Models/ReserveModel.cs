@@ -49,7 +49,19 @@ namespace Radikool6.Models
             }
 
             Db.SaveChanges();
-            this.RefreshTasks(reserve);
+            RefreshTasks(reserve);
+            return true;
+        }
+
+        /// <summary>
+        /// 予約削除
+        /// </summary>
+        /// <param name="reserveId"></param>
+        /// <returns></returns>
+        public bool Delete(string reserveId)
+        {
+            Db.Reserves.Remove(Db.Reserves.Find(reserveId));
+            Db.SaveChanges();
             return true;
         }
 
@@ -100,7 +112,7 @@ namespace Radikool6.Models
             List<ReserveTask> res;
             if (active)
             {
-                res = Db.ReserveTasks.Include(t => t.Reserve).Where(t => t.Start <= DateTime.Now && t.End > DateTime.Now).OrderBy(t => t.Start)
+                res = Db.ReserveTasks.Include(t => t.Reserve).Where(t => t.Start <= DateTime.UtcNow && t.End > DateTime.UtcNow).OrderBy(t => t.Start)
                     .ToList();
             }
             else

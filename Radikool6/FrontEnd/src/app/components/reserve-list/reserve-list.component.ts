@@ -15,7 +15,7 @@ export class ReserveListComponent implements OnInit {
 
   // mat-table
   public dataSource = new MatTableDataSource();
-  public displayedColumns = ['stationName', 'start', 'end'];
+  public displayedColumns = ['name', 'stationName', 'start', 'end'];
   @ViewChild(MatSort) sort: MatSort;
 
 
@@ -25,6 +25,7 @@ export class ReserveListComponent implements OnInit {
 
   ngOnInit() {
     this.init();
+
   }
 
 

@@ -1,4 +1,9 @@
 <mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>
+    <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.name}} </mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="stationName">
     <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>
     <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.stationName}} </mat-cell>

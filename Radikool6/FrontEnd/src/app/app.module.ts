@@ -7,7 +7,8 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatExpansionModule, MatInputModule, MatListModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule, MatExpansionModule,
+  MatInputModule, MatListModule, MatNativeDateModule,
   MatProgressSpinnerModule,
   MatSelectModule, MatSortModule, MatTableModule,
   MatToolbarModule
@@ -63,7 +64,9 @@ import { ResetStationComponent } from './components/reset-station/reset-station.
     MatCardModule,
     MatCheckboxModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     StateService,

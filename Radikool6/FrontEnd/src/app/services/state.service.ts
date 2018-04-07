@@ -18,7 +18,7 @@ export class StateService extends BaseService{
 
   public editReserve = (data, callback) => {
     let dialogRef = this.dialog.open(ReserveEditComponent, {
-      width: '250px',
+      //width: '250px',
       disableClose: true,
       data: data
     });

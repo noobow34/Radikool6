@@ -49,5 +49,21 @@ namespace Radikool6.Controllers
                 Result.Result = model.Update(reserve);
             });
         }
+        
+        /// <summary>
+        /// 予約削除
+        /// </summary>
+        /// <param name="reserveId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("api/reserve/{reserveId}")]
+        public async Task<ApiResponse> Delete(string reserveId)
+        {
+            return await Execute(() =>
+            {
+                var model = new ReserveModel(_db);
+                Result.Result = model.Delete(reserveId);
+            });
+        }
     }
 }

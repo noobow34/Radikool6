@@ -5,6 +5,7 @@ import {Reserve} from '../../interfaces/reserve';
 import {ReserveService} from '../../services/reserve.service';
 import {StationService} from '../../services/station.service';
 import {Station} from '../../interfaces/station';
+import moment = require("moment");
 
 @Component({
   selector: 'app-reserve-edit',
@@ -14,6 +15,15 @@ import {Station} from '../../interfaces/station';
 export class ReserveEditComponent implements OnInit {
   public reserve: Reserve = {};
   public stations: Station[] = [];
+  public hours: number[] = [];
+  public minutes: number[] = [];
+
+  public startDate;
+  public startHour;
+  public startMinute;
+  public endDate;
+  public endHour;
+  public endMinute;
 
 
   constructor(
@@ -26,6 +36,7 @@ export class ReserveEditComponent implements OnInit {
 
     if(data.program){
       this.reserve = {
+        name: this.data.program.title,
         stationId: data.program.stationId,
         start: data.program.start,
         end: data.program.end
@@ -35,15 +46,27 @@ export class ReserveEditComponent implements OnInit {
       this.reserve = Object.assign({}, data.reserve);
     }
 
-    console.log(this.reserve);
-/*
-    this.reserveService.update({ stationId: data.program.stationId, start: data.program.start, end: data.program.end }).subscribe(res =>{
-      console.log(res);
-    });
-*/
+    const start = moment(this.reserve.start);
+    const end = moment(this.reserve.end);
+
+    this.startDate = start.toDate();
+    this.startHour = start.hour();
+    this.startMinute = start.minute();
+
+    this.endDate = end.toDate();
+    this.endHour = end.hour();
+    this.endMinute = end.minute();
+
   }
 
   ngOnInit() {
+    for(let i=0 ; i<24 ; i++){
+      this.hours.push(i);
+    }
+    for(let i=0 ; i<60 ; i++){
+      this.minutes.push(i);
+    }
+
     this.stationService.get().subscribe(res => {
       if(res.result){
         this.stations = res.data;
@@ -51,7 +74,25 @@ export class ReserveEditComponent implements OnInit {
     });
   }
 
+
+  /**
+   * 削除
+   */
+  public delete = () => {
+    this.reserveService.delete(this.reserve.id).subscribe(res =>{
+      if(res.result) {
+        this.dialogRef.close(true);
+      }
+    });
+  }
+
+  /**
+   * 保存
+   */
   public save = () => {
+    this.reserve.start = moment(this.startDate).hour(this.startHour).minute(this.startMinute).toDate();
+    this.reserve.end = moment(this.endDate).hour(this.endHour).minute(this.endMinute).toDate();
+
     this.reserveService.update(this.reserve).subscribe(res =>{
       if(res.result) {
         this.dialogRef.close(true);
