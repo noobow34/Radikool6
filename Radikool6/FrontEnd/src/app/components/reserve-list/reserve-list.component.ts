@@ -3,6 +3,8 @@ import {ReserveService} from '../../services/reserve.service';
 import {Reserve} from '../../interfaces/reserve';
 import {StateService} from '../../services/state.service';
 import {MatSort, MatTableDataSource} from '@angular/material';
+import {TaskService} from '../../services/task.service';
+import {ReserveTask} from '../../interfaces/reserveTask';
 
 @Component({
   selector: 'app-reserve-list',
@@ -12,6 +14,7 @@ import {MatSort, MatTableDataSource} from '@angular/material';
 export class ReserveListComponent implements OnInit {
 
   public reserves: Reserve[] = [];
+  public tasks:ReserveTask[] = [];
 
   // mat-table
   public dataSource = new MatTableDataSource();
@@ -21,6 +24,7 @@ export class ReserveListComponent implements OnInit {
 
   constructor(
     private reserveService: ReserveService,
+    private taskService: TaskService,
     public stateService: StateService) { }
 
   ngOnInit() {
@@ -37,6 +41,16 @@ export class ReserveListComponent implements OnInit {
         this.dataSource.sort = this.sort;
       }
     });
+console.log(this.taskService.get());
+
+    setInterval(() => {
+      this.taskService.get().subscribe(res => {
+        if(res.result){
+          this.tasks = res.data;
+        }
+      });
+
+    }, 1000);
   }
 
   /**

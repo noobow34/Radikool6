@@ -10,6 +10,7 @@ namespace Radikool6.BackgroundTask
     public class Core
     {
         private readonly Timer _timer;
+        private bool _lock = false;
        // private readonly List<Recorder> _recorders = new List<Recorder>();
         private readonly List<RadikoRecorder> _recorders = new List<RadikoRecorder>();
         public Core()
@@ -24,6 +25,15 @@ namespace Radikool6.BackgroundTask
         public void Run()
         {
             _timer.Start();
+        }
+
+        /// <summary>
+        /// 録音ステータス取得
+        /// </summary>
+        /// <returns></returns>
+        public List<ReserveTask> GetStatus()
+        {
+            return _recorders.Select(r => r.GetStatus()).ToList();
         }
 
         /// <summary>
@@ -45,30 +55,36 @@ namespace Radikool6.BackgroundTask
         /// <param name="e"></param>
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            using (var db = new Db())
+            if (!_lock)
             {
-                var rModel = new ReserveModel(db);
-                var tasks = rModel.GetTasks(true);
-                if (!tasks.Any()) return;
-                var cModel = new ConfigModel(db);
-                var config = cModel.Get();
-                tasks.ForEach(t =>
+                _lock = true;
+                using (var db = new Db())
                 {
-                    // 予約実行
-                    if (_recorders.All(r => r.Id != t.Id))
+                    var rModel = new ReserveModel(db);
+                    var tasks = rModel.GetTasks(true);
+                    if (!tasks.Any()) return;
+                    var cModel = new ConfigModel(db);
+                    var config = cModel.Get();
+                    tasks.ForEach(t =>
                     {
-                    //    var recorder = Recorder.GetRecorder(config, t);
-                        var recorder = new RadikoRecorder(config, t);
-                        var task = recorder.Start();
-                        task.Wait();
-                        _recorders.Add(recorder);
-                        
-                        var logger = NLog.LogManager.GetCurrentClassLogger(); 
-                        logger.Info("録音開始");
-                    }
-                });
+                        // 予約実行
+                        if (_recorders.All(r => r.Id != t.Id))
+                        {
+                            //    var recorder = Recorder.GetRecorder(config, t);
+                            var recorder = new RadikoRecorder(config, t);
+                            _recorders.Add(recorder);
+                            recorder.Start();
+                            var logger = NLog.LogManager.GetCurrentClassLogger();
+                            logger.Info("録音開始");
+                        }
+                    });
 
+                }
+
+                _lock = false;
             }
         }
+        
+        
     }
 }

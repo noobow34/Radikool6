@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Radikool6.Classes;
@@ -20,6 +21,7 @@ namespace Radikool6.BackgroundTask
         public async Task TimeFree(Entities.Program program)
         {
             
+            StartTime = DateTime.Now;
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
             var arg = $"-i {m3U8} -acodec copy \"{program.Title}.aac\"";
             CreateProcess(arg);
@@ -32,6 +34,11 @@ namespace Radikool6.BackgroundTask
                 _ffmpeg.BeginErrorReadLine();
          //   });
 
+        }
+
+        public ReserveTask GetStatus()
+        {
+            return new ReserveTask(){ Start = StartTime, End = Task.End, Status = (DateTime.Now - StartTime).ToString(@"hh\:mm\:ss")};
         }
 
         private void CreateProcess(string arg)
@@ -62,6 +69,7 @@ namespace Radikool6.BackgroundTask
         {
             try
             {
+                StartTime = DateTime.Now;
                 var t = Task.End - Task.Start;
                 _token = await Radio.Radiko.GetAuthToken();
                 var arg = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)

@@ -30,6 +30,7 @@ import { ConfigComponent } from './components/config/config.component';
 import { ManageComponent } from './components/manage/manage.component';
 import { ResetProgramComponent } from './components/reset-program/reset-program.component';
 import { ResetStationComponent } from './components/reset-station/reset-station.component';
+import {TaskService} from './services/task.service';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { ResetStationComponent } from './components/reset-station/reset-station.
     StationService,
     ProgramService,
     ReserveService,
-    ConfigService
+    ConfigService,
+    TaskService
     ],
   entryComponents:[
     ReserveEditComponent

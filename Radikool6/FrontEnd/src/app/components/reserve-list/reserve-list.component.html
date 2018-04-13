@@ -22,3 +22,6 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+<ul>
+  <li *ngFor="let task of tasks">{{task.status}}</li>
+</ul>

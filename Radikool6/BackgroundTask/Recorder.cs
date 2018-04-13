@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Radikool6.Classes;
 using Radikool6.Entities;
 
@@ -9,6 +10,7 @@ namespace Radikool6.BackgroundTask
         public string Id { get; set; }
         protected ReserveTask Task { get; set; }
         protected CommonConfig Config { get; set; }
+        protected DateTime StartTime { get; set; }
         
         public static Recorder GetRecorder(CommonConfig config, ReserveTask task)
         {

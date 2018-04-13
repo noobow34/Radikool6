@@ -25,6 +25,9 @@ namespace Radikool6.Entities
 
         [NotMapped]
         public Station Station { get; set; }
+        
+        [NotMapped]
+        public string Status { get; set; }
 
     }
 }

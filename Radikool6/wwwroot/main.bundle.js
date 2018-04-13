@@ -109,6 +109,7 @@ var config_component_1 = __webpack_require__("../../../../../src/app/components/
 var manage_component_1 = __webpack_require__("../../../../../src/app/components/manage/manage.component.ts");
 var reset_program_component_1 = __webpack_require__("../../../../../src/app/components/reset-program/reset-program.component.ts");
 var reset_station_component_1 = __webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.ts");
+var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -154,7 +155,8 @@ var AppModule = /** @class */ (function () {
                 station_service_1.StationService,
                 program_service_1.ProgramService,
                 reserve_service_1.ReserveService,
-                config_service_1.ConfigService
+                config_service_1.ConfigService,
+                task_service_1.TaskService
             ],
             entryComponents: [
                 reserve_edit_component_1.ReserveEditComponent
@@ -641,7 +643,7 @@ exports.ReserveEditComponent = ReserveEditComponent;
 /***/ "../../../../../src/app/components/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"name\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.name}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
+module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"name\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.name}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n<ul>\n  <li *ngFor=\"let task of tasks\">{{task.status}}</li>\n</ul>\n"
 
 /***/ }),
 
@@ -682,12 +684,15 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var reserve_service_1 = __webpack_require__("../../../../../src/app/services/reserve.service.ts");
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
 var ReserveListComponent = /** @class */ (function () {
-    function ReserveListComponent(reserveService, stateService) {
+    function ReserveListComponent(reserveService, taskService, stateService) {
         var _this = this;
         this.reserveService = reserveService;
+        this.taskService = taskService;
         this.stateService = stateService;
         this.reserves = [];
+        this.tasks = [];
         // mat-table
         this.dataSource = new material_1.MatTableDataSource();
         this.displayedColumns = ['name', 'stationName', 'start', 'end'];
@@ -699,6 +704,14 @@ var ReserveListComponent = /** @class */ (function () {
                     _this.dataSource.sort = _this.sort;
                 }
             });
+            console.log(_this.taskService.get());
+            setInterval(function () {
+                _this.taskService.get().subscribe(function (res) {
+                    if (res.result) {
+                        _this.tasks = res.data;
+                    }
+                });
+            }, 1000);
         };
         /**
          * 予約編集
@@ -726,6 +739,7 @@ var ReserveListComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/components/reserve-list/reserve-list.component.scss")]
         }),
         __metadata("design:paramtypes", [reserve_service_1.ReserveService,
+            task_service_1.TaskService,
             state_service_1.StateService])
     ], ReserveListComponent);
     return ReserveListComponent;
@@ -1531,6 +1545,58 @@ var StationService = /** @class */ (function (_super) {
     return StationService;
 }(base_service_1.BaseService));
 exports.StationService = StationService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/task.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var TaskService = /** @class */ (function (_super) {
+    __extends(TaskService, _super);
+    function TaskService(http) {
+        var _this = _super.call(this, http) || this;
+        /**
+         * 録音状態取得
+         * @returns {Observable<Object>}
+         */
+        _this.get = function () {
+            return _this.http.get('./api/task/');
+        };
+        return _this;
+    }
+    TaskService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], TaskService);
+    return TaskService;
+}(base_service_1.BaseService));
+exports.TaskService = TaskService;
 
 
 /***/ }),
