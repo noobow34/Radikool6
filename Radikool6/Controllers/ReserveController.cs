@@ -12,10 +12,8 @@ namespace Radikool6.Controllers
 {
     public class ReserveController : BaseController
     {
-        private readonly Db _db;
-        public ReserveController(Db db)
+        public ReserveController()
         {
-            _db = db;
         }
 
         /// <summary>
@@ -28,9 +26,12 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var model = new ReserveModel(_db);
-                Result.Result = true;
-                Result.Data = model.Get();
+                using (SqliteConnection)
+                {
+                    var model = new ReserveModel(SqliteConnection);
+                    Result.Result = true;
+                    Result.Data = model.Get();
+                }
             });
 
         }
@@ -45,8 +46,11 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var model = new ReserveModel(_db);
-                Result.Result = model.Update(reserve);
+                using (SqliteConnection)
+                {
+                    var model = new ReserveModel(SqliteConnection);
+                    Result.Result = model.Update(reserve);
+                }
             });
         }
         
@@ -61,8 +65,11 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var model = new ReserveModel(_db);
-                Result.Result = model.Delete(reserveId);
+                using (SqliteConnection)
+                {
+                    var model = new ReserveModel(SqliteConnection);
+                    Result.Result = model.Delete(reserveId);
+                }
             });
         }
     }

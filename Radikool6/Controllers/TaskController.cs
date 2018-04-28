@@ -6,12 +6,9 @@ using Radikool6.Entities;
 namespace Radikool6.Controllers
 {
     public class TaskController : BaseController
-    {
-        private readonly Db _db;
-        
-        public TaskController(Db db)
+    {       
+        public TaskController()
         {
-            _db = db;
         }
         
         /// <summary>

@@ -8,10 +8,8 @@ namespace Radikool6.Controllers
 {
     public class ConfigController : BaseController
     {
-        private readonly Db _db;
-        public ConfigController(Db db)
+        public ConfigController()
         {
-            _db = db;
         }
 
         
@@ -20,10 +18,13 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var cModel = new ConfigModel(_db);
-                var res = cModel.Get() ?? new CommonConfig();
-                Result.Data = res;
-                Result.Result = true;
+                using (SqliteConnection)
+                {
+                    var cModel = new ConfigModel(SqliteConnection);
+                    var res = cModel.Get() ?? new CommonConfig();
+                    Result.Data = res;
+                    Result.Result = true;
+                }
             });
         }
         
@@ -33,8 +34,11 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var cModel = new ConfigModel(_db);
-                Result.Result = cModel.Update(config);
+                using (SqliteConnection)
+                {
+                    var cModel = new ConfigModel(SqliteConnection);
+                    Result.Result = cModel.Update(config);
+                }
             });
         }
         
@@ -44,10 +48,13 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var cModel = new ConfigModel(_db);
-                var res = cModel.GetEncodeSettings();
-                Result.Data = res;
-                Result.Result = true;
+                using (SqliteConnection)
+                {
+                    var cModel = new ConfigModel(SqliteConnection);
+                    var res = cModel.GetEncodeSettings();
+                    Result.Data = res;
+                    Result.Result = true;
+                }
             });
         }
     }

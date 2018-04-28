@@ -6,14 +6,9 @@ namespace Radikool6.Models
 {
     public class BaseModel
     {
-        protected Db Db { get; private set; }
-        protected SqliteConnection SqliteConnection { get; set; }
-        public BaseModel(Db db)
-        {
-            this.Db = db;
-        }
+        protected SqliteConnection SqliteConnection { get; }
 
-        public BaseModel(SqliteConnection con)
+        protected BaseModel(SqliteConnection con)
         {
             SqliteConnection = con;
         }

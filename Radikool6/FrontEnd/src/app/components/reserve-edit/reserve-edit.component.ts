@@ -26,15 +26,14 @@ export class ReserveEditComponent implements OnInit {
   public endMinute;
 
 
-  constructor(
-    public dialogRef: MatDialogRef<ReserveEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:{program?: Program, reserve?: Reserve},
-    private reserveService: ReserveService,
-    private stationService: StationService) {
+  constructor(public dialogRef: MatDialogRef<ReserveEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: { program?: Program, reserve?: Reserve },
+              private reserveService: ReserveService,
+              private stationService: StationService) {
 
     console.log(data.program);
 
-    if(data.program){
+    if (data.program) {
       this.reserve = {
         name: this.data.program.title,
         stationId: data.program.stationId,
@@ -60,15 +59,15 @@ export class ReserveEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    for(let i=0 ; i<24 ; i++){
+    for (let i = 0; i < 24; i++) {
       this.hours.push(i);
     }
-    for(let i=0 ; i<60 ; i++){
+    for (let i = 0; i < 60; i++) {
       this.minutes.push(i);
     }
 
-    this.stationService.get().subscribe(res => {
-      if(res.result){
+    this.stationService.get('radiko').subscribe(res => {
+      if (res.result) {
         this.stations = res.data;
       }
     });
@@ -79,8 +78,8 @@ export class ReserveEditComponent implements OnInit {
    * 削除
    */
   public delete = () => {
-    this.reserveService.delete(this.reserve.id).subscribe(res =>{
-      if(res.result) {
+    this.reserveService.delete(this.reserve.id).subscribe(res => {
+      if (res.result) {
         this.dialogRef.close(true);
       }
     });
@@ -90,11 +89,11 @@ export class ReserveEditComponent implements OnInit {
    * 保存
    */
   public save = () => {
-    this.reserve.start = moment(this.startDate).hour(this.startHour).minute(this.startMinute).toDate();
-    this.reserve.end = moment(this.endDate).hour(this.endHour).minute(this.endMinute).toDate();
+    this.reserve.start = moment(this.startDate).hour(this.startHour).minute(this.startMinute).format('YYYY-MM-DD hh:mm:ss');
+    this.reserve.end = moment(this.endDate).hour(this.endHour).minute(this.endMinute).format('YYYY-MM-DD hh:mm:ss');
 
-    this.reserveService.update(this.reserve).subscribe(res =>{
-      if(res.result) {
+    this.reserveService.update(this.reserve).subscribe(res => {
+      if (res.result) {
         this.dialogRef.close(true);
       }
     });

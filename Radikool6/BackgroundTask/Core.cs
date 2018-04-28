@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using Microsoft.Data.Sqlite;
+using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
 
@@ -13,6 +15,8 @@ namespace Radikool6.BackgroundTask
         private bool _lock = false;
        // private readonly List<Recorder> _recorders = new List<Recorder>();
         private readonly List<RadikoRecorder> _recorders = new List<RadikoRecorder>();
+
+        
         public Core()
         {
             Init();
@@ -41,9 +45,10 @@ namespace Radikool6.BackgroundTask
         /// </summary>
         private static void Init()
         {
-            using (var db = new Db())
+            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
             {
-                var model = new ReserveModel(db);
+                con.Open();
+                var model = new ReserveModel(con);
                 model.RefreshTasks();
             }
         }
@@ -58,12 +63,13 @@ namespace Radikool6.BackgroundTask
             if (!_lock)
             {
                 _lock = true;
-                using (var db = new Db())
+                using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
                 {
-                    var rModel = new ReserveModel(db);
+                    con.Open();
+                    var rModel = new ReserveModel(con);
                     var tasks = rModel.GetTasks(true);
                     if (!tasks.Any()) return;
-                    var cModel = new ConfigModel(db);
+                    var cModel = new ConfigModel(con);
                     var config = cModel.Get();
                     tasks.ForEach(t =>
                     {

@@ -3,8 +3,8 @@ export interface Reserve {
   name?: string;
   stationId?: string;
   stationName?: string;
-  start?: Date;
-  end?: Date;
+  start?: string;
+  end?: string;
   formatId?: string;
   repeat?: string[];
   enabled?: boolean;

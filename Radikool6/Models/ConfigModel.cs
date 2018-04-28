@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using Dapper;
 using Microsoft.Data.Edm;
+using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 using Radikool6.Classes;
 using Radikool6.Entities;
@@ -12,7 +14,7 @@ namespace Radikool6.Models
 {
     public class ConfigModel : BaseModel
     {
-        public ConfigModel(Db db) : base(db)
+        public ConfigModel(SqliteConnection con) : base(con)
         {
         }
 
@@ -22,11 +24,13 @@ namespace Radikool6.Models
         /// <returns></returns>
         public CommonConfig Get()
         {
-            var config = Db.Configs.Find(Define.Config.Common);
+            var config = SqliteConnection
+                .Query<Config>("SELECT * FROM Configs WHERE Id = @id", new {id = Define.Config.Common})
+                .FirstOrDefault();
             if (config == null) return null;
 
             var res = JsonConvert.DeserializeObject<CommonConfig>(config.Content);
-            
+
             res.RadikoEmail = Utility.Text.Decrypt(res.RadikoEmail, Global.EncKey);
             res.RadikoPassword = Utility.Text.Decrypt(res.RadikoPassword, Global.EncKey);
 
@@ -42,30 +46,33 @@ namespace Radikool6.Models
         {
             commonConfig.RadikoEmail = Utility.Text.Encrypt(commonConfig.RadikoEmail, Global.EncKey);
             commonConfig.RadikoPassword = Utility.Text.Encrypt(commonConfig.RadikoPassword, Global.EncKey);
-            
-            
-            var orgConfig = Db.Configs.Find(Define.Config.Common);
-            if (orgConfig != null)
-            {
-                orgConfig.Content = JsonConvert.SerializeObject(commonConfig);
-            }
-            else
-            {
-                Db.Configs.Add(new Config()
-                {
-                    Id = Define.Config.Common,
-                    Content = JsonConvert.SerializeObject(commonConfig)
-                });
-            }
 
-            Db.SaveChanges();
+            const string query = @"REPLACE INTO 
+                                       Configs
+                                   (
+                                       Id,
+                                       Content
+                                   )
+                                   VALUES
+                                   (
+                                       @Id,
+                                       @Content
+                                   )";
+            SqliteConnection.Execute(query,
+                new {Id = Define.Config.Common, Content = JsonConvert.SerializeObject(commonConfig)});
             return true;
         }
-        
-        
+
+
+        /// <summary>
+        /// エンコード設定取得
+        /// </summary>
+        /// <returns></returns>
         public List<EncodeSetting> GetEncodeSettings()
         {
-            var config = Db.Configs.Find(Define.Config.EncodeSetting);
+            var config = SqliteConnection
+                .Query<Config>("SELECT * FROM Configs WHERE Id = @id", new {id = Define.Config.EncodeSetting})
+                .FirstOrDefault();
             List<EncodeSetting> res = null;
             try
             {
@@ -81,14 +88,20 @@ namespace Radikool6.Models
 
             if (res != null) return res;
             res = (new Define.EncodeSettings()).Default;
-            var json = JsonConvert.SerializeObject(res);
-            Db.Configs.Add(new Config
-            {
-                Id = Define.Config.EncodeSetting,
-                Content = json
-            });
-            Db.SaveChanges();
-            
+            const string query = @"INSERT INTO 
+                                       Configs
+                                   (
+                                       Id,
+                                       Content
+                                   )
+                                   VALUES
+                                   (
+                                       @Id,
+                                       @Content
+                                   )";
+            SqliteConnection.Execute(query,
+                new {Id = Define.Config.EncodeSetting, Content = JsonConvert.SerializeObject(res)});
+
             return res;
         }
     }

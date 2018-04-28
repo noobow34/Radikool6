@@ -580,8 +580,8 @@ var ReserveEditComponent = /** @class */ (function () {
          * 保存
          */
         this.save = function () {
-            _this.reserve.start = moment(_this.startDate).hour(_this.startHour).minute(_this.startMinute).toDate();
-            _this.reserve.end = moment(_this.endDate).hour(_this.endHour).minute(_this.endMinute).toDate();
+            _this.reserve.start = moment(_this.startDate).hour(_this.startHour).minute(_this.startMinute).format('YYYY-MM-DD hh:mm:ss');
+            _this.reserve.end = moment(_this.endDate).hour(_this.endHour).minute(_this.endMinute).format('YYYY-MM-DD hh:mm:ss');
             _this.reserveService.update(_this.reserve).subscribe(function (res) {
                 if (res.result) {
                     _this.dialogRef.close(true);
@@ -617,7 +617,7 @@ var ReserveEditComponent = /** @class */ (function () {
         for (var i = 0; i < 60; i++) {
             this.minutes.push(i);
         }
-        this.stationService.get().subscribe(function (res) {
+        this.stationService.get('radiko').subscribe(function (res) {
             if (res.result) {
                 _this.stations = res.data;
             }
@@ -838,7 +838,7 @@ var ResetProgramComponent = /** @class */ (function () {
     }
     ResetProgramComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.stationService.get().subscribe(function (res) {
+        this.stationService.get('radiko').subscribe(function (res) {
             // 種別、地域ごとに分類する
             _this.stations = res.data;
             _this.radiko = {};

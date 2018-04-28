@@ -24,7 +24,7 @@ export class ResetProgramComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stationService.get().subscribe(res => {
+    this.stationService.get('radiko').subscribe(res => {
       // 種別、地域ごとに分類する
       this.stations = res.data;
       this.radiko = {};

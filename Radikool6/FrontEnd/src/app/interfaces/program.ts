@@ -1,9 +1,9 @@
 export interface Program {
   cast: string;
   description: string;
-  end: Date;
+  end: string;
   id: string;
-  start: Date;
+  start: string;
   stationId: string;
   title: string;
   reservable?: boolean;

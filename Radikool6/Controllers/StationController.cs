@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Radikool6.Classes;
@@ -12,10 +13,8 @@ namespace Radikool6.Controllers
 {
     public class StationController : BaseController
     {
-        private readonly Db _db;
-        public StationController(Db db)
+        public StationController()
         {
-            _db = db;
         }
 
         /// <summary>
@@ -51,25 +50,30 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var stations = new List<Station>();
-                switch (type)
+                using (SqliteConnection)
                 {
-                    case Define.Radiko.TypeName:
-                        var cMolde = new ConfigModel(_db);
-                        var config = cMolde.Get();
-                        var login = !string.IsNullOrWhiteSpace(config?.RadikoEmail) && !string.IsNullOrEmpty(config.RadikoPassword) && Radiko.Login(config.RadikoEmail, config.RadikoPassword).Result;
-                        stations = Radiko.GetStations(login).Result;
-                        break;
-                    case Define.Nhk.TypeName:
-                        stations = Nhk.GetStations().Result;
-                        break;
+                    var stations = new List<Station>();
+                    switch (type)
+                    {
+                        case Define.Radiko.TypeName:
+                            var cMolde = new ConfigModel(SqliteConnection);
+                            var config = cMolde.Get();
+                            var login = !string.IsNullOrWhiteSpace(config?.RadikoEmail) &&
+                                        !string.IsNullOrEmpty(config.RadikoPassword) &&
+                                        Radiko.Login(config.RadikoEmail, config.RadikoPassword).Result;
+                            stations = Radiko.GetStations(login).Result;
+                            break;
+                        case Define.Nhk.TypeName:
+                            stations = Nhk.GetStations().Result;
+                            break;
+                    }
+
+                    var model = new StationModel(SqliteConnection);
+                    model.Refresh(stations);
+
+                    Result.Data = stations;
+                    Result.Result = true;
                 }
-
-                var model = new StationModel(SqliteConnection);
-                model.Refresh(stations);
-
-                Result.Data = stations;
-                Result.Result = true;
             });
         }
     }

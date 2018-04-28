@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Radikool6.BackgroundTask;
@@ -7,15 +8,14 @@ using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
 using Radikool6.Radio;
+using SQLitePCL;
 
 namespace Radikool6.Controllers
 {
     public class ProgramController : BaseController
     {
-        private readonly Db _db;
-        public ProgramController(Db db)
+        public ProgramController()
         {
-            _db = db;
         }
 
         
@@ -30,16 +30,20 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var pModel = new ProgramModel(_db);
-                var res = pModel.Search(cond);
-
-                if (res.Count == 0 && string.IsNullOrWhiteSpace(cond.Keyword) && cond.Refresh)
+                using (SqliteConnection)
                 {
-                    RefreshPrograms(cond.StationId);
-                    res = pModel.Search(cond);
+                    var pModel = new ProgramModel(SqliteConnection);
+                    var res = pModel.Search(cond);
+
+                    if (!res.Any() && string.IsNullOrWhiteSpace(cond.Keyword) && cond.Refresh)
+                    {
+                        RefreshPrograms(cond.StationId);
+                        res = pModel.Search(cond);
+                    }
+                    Result.Data = new { programs = res, range = pModel.GetRange(cond.StationId)};
+                    Result.Result = true;
                 }
-                Result.Data = new { programs = res, range = pModel.GetRange(cond.StationId)};
-                Result.Result = true;
+                
             });
         }
 
@@ -54,7 +58,7 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                Result.Data = this.RefreshPrograms(stationId);
+                Result.Data = RefreshPrograms(stationId);
                 Result.Result = true;
             });
         }
@@ -65,18 +69,22 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                var pModel = new ProgramModel(_db);
-                var program = pModel.Get(programId);
-
-                var cModel = new ConfigModel(_db);
-                var config = cModel.Get();
-                
-                if (program != null)
+                using (SqliteConnection)
                 {
-                    var rr = new RadikoRecorder(config);
-                    rr.TimeFree(program);
+                    var pModel = new ProgramModel(SqliteConnection);
+                    var program = pModel.Get(programId);
+
+                    var cModel = new ConfigModel(SqliteConnection);
+                    var config = cModel.Get();
+                
+                    if (program != null)
+                    {
+                        var rr = new RadikoRecorder(config);
+                        rr.TimeFree(program);
+                    }
+                    Result.Result = true;
                 }
-                Result.Result = true;
+                
             });
         }
 
@@ -107,7 +115,7 @@ namespace Radikool6.Controllers
                 }
 
 
-                var pModel = new ProgramModel(_db);
+                var pModel = new ProgramModel(SqliteConnection);
                 pModel.Refresh(programs);
                 
                 return programs;

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dapper;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using NLog.LayoutRenderers.Wrappers;
 using Radikool6.Classes;
 using Radikool6.Entities;
 
@@ -9,7 +12,7 @@ namespace Radikool6.Models
 {
     public class ProgramModel : BaseModel
     {
-        public ProgramModel(Db db) : base(db)
+        public ProgramModel(SqliteConnection con) : base(con)
         {
         }
 
@@ -20,9 +23,20 @@ namespace Radikool6.Models
         /// <returns></returns>
         public Entities.Program Get(string programId)
         {
-            return Db.Programs.Include(p => p.Station).FirstOrDefault(p => p.Id == programId);
+            var res = SqliteConnection
+                .Query<Entities.Program>("SELECT * FROM Programs WHERE Id = @id", new {id = programId})
+                .FirstOrDefault();
+            if (res != null)
+            {
+                res.Station = SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Id = @id", new
+                {
+                    id = res.StationId
+                }).FirstOrDefault();
+            }
+
+            return res;
         }
-        
+
         /// <summary>
         /// 番組検索
         /// </summary>
@@ -30,33 +44,52 @@ namespace Radikool6.Models
         /// <returns></returns>
         public List<Entities.Program> Search(ProgramSearchCondition cond)
         {
-            var q = Db.Programs.Where(p => p.Id != null);
+
+            var wheres = new List<string>();
+
+
+            //var q = Db.Programs.Where(p => p.Id != null);
             if (!string.IsNullOrWhiteSpace(cond.StationId))
             {
-                q = q.Where(p => p.StationId == cond.StationId);
+                wheres.Add("StationId = @StationId");
+                //  q = q.Where(p => p.StationId == cond.StationId);
             }
 
             if (cond.From != null)
             {
-                q = q.Where(p => p.End > cond.From);
+                wheres.Add("End > @From");
+                //q = q.Where(p => p.End > cond.From);
             }
 
             if (cond.To != null)
             {
-                q = q.Where(p => p.Start < cond.To);
+                wheres.Add("Start < @To");
+                //q = q.Where(p => p.Start < cond.To);
             }
 
             if (!string.IsNullOrWhiteSpace(cond.Keyword))
             {
+                wheres.Add("( Title LIKE @Keyword OR Cast LIKE @Keyword OR Description LIKE @Keyword)");
+                /*
                 q = q.Where(p =>
                     p.Title.Contains(cond.Keyword) || p.Cast.Contains(cond.Keyword) ||
-                    p.Description.Contains(cond.Keyword));
+                    p.Description.Contains(cond.Keyword));*/
             }
 
-            var res = q.OrderBy(p => p.StationId).ThenBy(p => p.Start).ToList();
+            var where = wheres.Any() ? $"WHERE {string.Join(" AND ", wheres)}" : "";
+
+            var query = $@"SELECT 
+                              * 
+                          FROM
+                              Programs 
+                          {where}
+                          ORDER BY StationId, Start";
+            var res = SqliteConnection.Query<Entities.Program>(query, cond);
+
+            //  var res = q.OrderBy(p => p.StationId).ThenBy(p => p.Start).ToList();
 
 
-            return res;
+            return res.ToList();
         }
 
         /// <summary>
@@ -66,8 +99,18 @@ namespace Radikool6.Models
         /// <returns></returns>
         public DateTime[] GetRange(string stationId)
         {
-            var min = Db.Programs.Where(p => p.StationId == stationId).Min(p => p.Start);
-            var max = Db.Programs.Where(p => p.StationId == stationId).Max(p => p.Start);
+            var max = SqliteConnection.Query<DateTime>("SELECT MAX(Start) FROM Programs WHERE StationId = @StationId",
+                new
+                {
+                    StationId = stationId
+                }).FirstOrDefault();
+
+            var min = SqliteConnection.Query<DateTime>("SELECT MIN(Start) FROM Programs WHERE StationId = @StationId",
+                new
+                {
+                    StationId = stationId
+                }).FirstOrDefault();
+
             return new[] {min, max};
         }
 
@@ -77,12 +120,39 @@ namespace Radikool6.Models
         /// <param name="programs"></param>
         public void Refresh(List<Entities.Program> programs)
         {
-            var stationIds = programs.Select(p => p.StationId).Distinct();
-            Db.Programs.RemoveRange(Db.Programs.Where(p => stationIds.Contains(p.StationId)));
-            Db.SaveChanges();
-            
-            Db.Programs.AddRange(programs);
-            Db.SaveChanges();
+            using (var trn = SqliteConnection.BeginTransaction())
+            {
+                var stationIds = programs.Select(p => p.StationId).Distinct();
+                SqliteConnection.Execute("DELETE FROM Programs WHERE StationId IN @StationIds",
+                    new {StationIds = programs.Select(p => p.StationId).Distinct().ToList()}, trn);
+
+                const string query = @"INSERT INTO 
+                                           Programs 
+                                       (
+                                           Id,
+                                           StationId,
+                                           Start,
+                                           End,
+                                           Title,
+                                           Cast,
+                                           Description
+                                       )
+                                       VALUES
+                                       (
+                                           @Id,
+                                           @StationId,
+                                           @Start,
+                                           @End,
+                                           @Title,
+                                           @Cast,
+                                           @Description
+                                       )";
+
+                programs.ForEach(p => { SqliteConnection.Execute(query, p, trn); });
+                trn.Commit();
+
+            }
+
         }
 
     }

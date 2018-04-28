@@ -20,13 +20,7 @@ namespace Radikool6
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Db>(op =>
-            {
-                op.UseSqlite($"Data Source={Define.File.DbFile}");
-            });
-            services.AddMvc();
-            
-            
+            services.AddMvc();   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
