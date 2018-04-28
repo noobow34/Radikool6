@@ -51,7 +51,7 @@ namespace Radikool6.BackgroundTask
                     Arguments = arg,
                     RedirectStandardOutput = true,
                     RedirectStandardInput = true,
-                    RedirectStandardError = false,
+                    RedirectStandardError = true,
                     CreateNoWindow = true,
                     UseShellExecute = false,
                 }
@@ -73,13 +73,16 @@ namespace Radikool6.BackgroundTask
                 var t = Task.End - Task.Start;
                 _token = await Radio.Radiko.GetAuthToken();
                 var arg = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)
-                    .Replace("[TIME]", (Task.End - Task.Start).ToString(@"hh\:mm\:ss"))
+                    .Replace("[TIME]", (Task.End - DateTime.Now).ToString(@"hh\:mm\:ss"))
                     .Replace("[CH]", Task.Station.Code);
                 CreateProcess(arg);
 
                 _ffmpeg.Start();
                 _ffmpeg.BeginOutputReadLine();
                 _ffmpeg.BeginErrorReadLine();
+                
+                var logger = NLog.LogManager.GetCurrentClassLogger();
+                logger.Info($"ffmpeg起動:{arg}");
 
             }
             catch (Exception ex)

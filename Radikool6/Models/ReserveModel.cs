@@ -144,7 +144,7 @@ namespace Radikool6.Models
             {
                 res = SqliteConnection
                     .Query<ReserveTask>("SELECT * FROM ReserveTasks WHERE Start <= @Now AND End > @Now ORDER BY Start",
-                        new {Now = DateTime.UtcNow}).ToList();
+                        new {Now = DateTime.Now}).ToList();
             }
             else
             {

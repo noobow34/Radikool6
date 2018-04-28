@@ -79,7 +79,7 @@ namespace Radikool6.BackgroundTask
                             //    var recorder = Recorder.GetRecorder(config, t);
                             var recorder = new RadikoRecorder(config, t);
                             _recorders.Add(recorder);
-                            recorder.Start();
+                            recorder.Start().Wait();
                             var logger = NLog.LogManager.GetCurrentClassLogger();
                             logger.Info("録音開始");
                         }
