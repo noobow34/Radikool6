@@ -1,59 +1,59 @@
 {
-  "configs": {
+  "Configs": {
     "columns": {
-      "id": "text",
-      "content": "text"
+      "Id": "text",
+      "Content": "text"
     },
-    "primaryKey": ["id"]
+    "primaryKey": ["Id"]
   },
-  "hashes": {
+  "Hashes": {
     "columns":{
-      "table_name": "text",
-      "hash": "text"
+      "TableName": "text",
+      "Hash": "text"
     },
-    "primaryKey": ["table_name"]
+    "primaryKey": ["TableName"]
   },
-  "stations":{
+  "Stations":{
     "columns": {
-      "id": "text",
-      "region_id": "text",
-      "region_name": "text",
-      "area": "text",
-      "type": "text",
-      "code": "text",
-      "name": "text",
-      "sequence": "int",
-      "media_url": "text",
-      "timetable_url": "text"
+      "Id": "text",
+      "RegionId": "text",
+      "RegionName": "text",
+      "Area": "text",
+      "Type": "text",
+      "Code": "text",
+      "Name": "text",
+      "Sequence": "int",
+      "MediaUrl": "text",
+      "TimetableUrl": "text"
     },
-    "primaryKey": ["id"]
+    "primaryKey": ["Id"]
   },
-  "programs":{
+  "Programs":{
     "columns": {
-      "id": "text",
-      "station_id": "text",
-      "start": "text",
-      "end": "text",
-      "title": "text",
-      "cast": "text",
-      "description": "text"
+      "Id": "text",
+      "StationId": "text",
+      "Start": "text",
+      "End": "text",
+      "Title": "text",
+      "Cast": "text",
+      "Description": "text"
     },
-    "primaryKey": ["id"]
+    "primaryKey": ["Id"]
   },
-  "reserves": {
+  "Reserves": {
     "columns": {
-      "id": "text",
-      "content": "text"
+      "Id": "text",
+      "Content": "text"
     },
-    "primaryKey": ["id"]
+    "primaryKey": ["Id"]
   },
-  "reserve_tasks": {
+  "ReserveTasks": {
     "columns": {
-      "id": "text",
-      "start": "text",
-      "end": "text",
-      "reserve_id": "text"
+      "Id": "text",
+      "Start": "text",
+      "End": "text",
+      "ReserveId": "text"
     },
-    "primaryKey": ["id"]
+    "primaryKey": ["Id"]
   }
 }

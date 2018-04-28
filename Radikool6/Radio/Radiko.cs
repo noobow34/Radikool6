@@ -92,14 +92,14 @@ namespace Radikool6.Radio
                 var sequence = 1;
                 foreach (var stations in doc.Descendants("stations"))
                 {
-                    var regionId = stations.Attribute("region_id")?.Value;
-                    var regionName = stations.Attribute("region_name")?.Value;
+                    var regionId = stations.Attribute("region_id")?.Value ?? "";
+                    var regionName = stations.Attribute("region_name")?.Value ?? "";
                     foreach (var station in stations.Descendants("station"))
                     {
                         var code = station.Descendants("id").First().Value;
                         var name = station.Descendants("name").First().Value;
-                        var logo = station.Descendants("logo").FirstOrDefault()?.Value;
-                        var areaId = station.Descendants("area_id").FirstOrDefault()?.Value;
+                        var logo = station.Descendants("logo").FirstOrDefault()?.Value ?? "";
+                        var areaId = station.Descendants("area_id").FirstOrDefault()?.Value ?? "";
                         var url = station.Descendants("href").First().Value;
                         res.Add(new Station
                         {

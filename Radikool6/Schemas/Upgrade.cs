@@ -39,10 +39,10 @@ namespace Radikool6.Schemas
                 using (var trn = con.BeginTransaction())
                 {
                     // 最初に管理用テーブルを作成する
-                    CreateTable(trn, "hashes", tables["hashes"], false);
+                    CreateTable(trn, "Hashes", tables["Hashes"], false);
 
                     // その他のテーブルを作成する
-                    foreach (var(tableName, table) in tables.Where(t => t.Key != "hashes"))
+                    foreach (var(tableName, table) in tables.Where(t => t.Key != "Hashes"))
                     {
                         CreateTable(trn, tableName, table);
                     }
@@ -71,7 +71,7 @@ namespace Radikool6.Schemas
                 using (var cmd = new SqliteCommand("", trn.Connection, trn))
                 {
                     cmd.CommandText =
-                        "SELECT COUNT(table_name) FROM hashes WHERE table_name = @table_name AND hash = @hash";
+                        "SELECT COUNT(TableName) FROM Hashes WHERE TableName = @table_name AND Hash = @hash";
                     cmd.Parameters.Add(new SqliteParameter("table_name", tableName));
                     cmd.Parameters.Add(new SqliteParameter("hash", hash));
 
@@ -118,10 +118,10 @@ namespace Radikool6.Schemas
                     using (var cmd = new SqliteCommand("", trn.Connection, trn))
                     {
                         cmd.CommandText = @"REPLACE INTO 
-                                                hashes 
+                                                Hashes 
                                             (
-                                                table_name, 
-                                                hash 
+                                                TableName, 
+                                                Hash 
                                             ) 
                                             VALUES 
                                             ( 

@@ -24,15 +24,19 @@ namespace Radikool6.Controllers
         /// <param name="type"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/station/")]
-        public async Task<ApiResponse> Get()
+        [Route("api/station/{type}")]
+        public async Task<ApiResponse> Get(string type)
         {
             
             return await Execute(() =>
             {
-                var model = new StationModel(_db);
-                Result.Result = true;
-                Result.Data = model.Get();
+                using (SqliteConnection)
+                {
+                    var model = new StationModel(SqliteConnection);
+                    Result.Result = true;
+                    Result.Data = model.Get(type);
+                }
+                
             });
 
         }
@@ -53,7 +57,7 @@ namespace Radikool6.Controllers
                     case Define.Radiko.TypeName:
                         var cMolde = new ConfigModel(_db);
                         var config = cMolde.Get();
-                        var login = Radiko.Login(config.RadikoEmail, config.RadikoPassword).Result;
+                        var login = !string.IsNullOrWhiteSpace(config?.RadikoEmail) && !string.IsNullOrEmpty(config.RadikoPassword) && Radiko.Login(config.RadikoEmail, config.RadikoPassword).Result;
                         stations = Radiko.GetStations(login).Result;
                         break;
                     case Define.Nhk.TypeName:
@@ -61,12 +65,8 @@ namespace Radikool6.Controllers
                         break;
                 }
 
-                var model = new StationModel(_db);
-                using (var trn = _db.Database.BeginTransaction())
-                {
-                    model.Refresh(stations);
-                    trn.Commit();
-                }
+                var model = new StationModel(SqliteConnection);
+                model.Refresh(stations);
 
                 Result.Data = stations;
                 Result.Result = true;

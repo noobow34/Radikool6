@@ -5,7 +5,7 @@ import {ProgramService} from '../../services/program.service';
 import moment = require('moment');
 import {Program, ProgramSearchCondition} from '../../interfaces/program';
 import {StateService} from '../../services/state.service';
-import {Moment} from "moment";
+import {Moment} from 'moment';
 
 @Component({
   selector: 'app-timetable',
@@ -31,13 +31,13 @@ export class TimetableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stationService.get().subscribe(res => {
+    this.stationService.get('radiko').subscribe(res => {
       // 種別、地域ごとに分類する
-      let stations = res.data as Station[];
+      const stations = res.data as Station[];
       this.radiko = {};
       this.radikoRegions = [];
 
-      let nhk = {};
+      const nhk = {};
       for (const station of stations) {
         if (station.type === 'radiko') {
           if (!(station.regionName in this.radiko)) {
@@ -95,8 +95,8 @@ export class TimetableComponent implements OnInit {
           p.reservable = moment(p.end) >= moment();
         });
 
-        let min = moment(res.data.range[0]);
-        let max = moment(res.data.range[1]);
+        const min = moment(res.data.range[0]);
+        const max = moment(res.data.range[1]);
         this.days = [];
         while (min < max) {
           this.days.push(moment(min));

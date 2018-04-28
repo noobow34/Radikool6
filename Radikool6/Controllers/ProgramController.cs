@@ -88,27 +88,34 @@ namespace Radikool6.Controllers
         /// <returns></returns>
         private List<Entities.Program> RefreshPrograms(string stationId)
         {
-            var sModel = new StationModel(_db);
-            var station = sModel.GetById(stationId);
-            var programs = new List<Entities.Program>();
-            if (station == null) return programs;
-
-            switch (station.Type)
+            using (SqliteConnection)
             {
-                case Define.Radiko.TypeName:
+                var sModel = new StationModel(SqliteConnection);
+                var station = sModel.GetById(stationId);
+                var programs = new List<Entities.Program>();
+                if (station == null) return programs;
+
+                switch (station.Type)
+                {
+                    case Define.Radiko.TypeName:
                     
-                    programs = Radiko.GetPrograms(station).Result;
-                    break;
-                case Define.Nhk.TypeName:
-                    programs = Nhk.GetPrograms(station, DateTime.Now, DateTime.Now.AddDays(1)).Result;
-                    break;
+                        programs = Radiko.GetPrograms(station).Result;
+                        break;
+                    case Define.Nhk.TypeName:
+                        programs = Nhk.GetPrograms(station, DateTime.Now, DateTime.Now.AddDays(1)).Result;
+                        break;
+                }
+
+
+                var pModel = new ProgramModel(_db);
+                pModel.Refresh(programs);
+                
+                return programs;
             }
+            
+         
 
-
-            var pModel = new ProgramModel(_db);
-            pModel.Refresh(programs);
-
-            return programs;
+            
         }
 
         

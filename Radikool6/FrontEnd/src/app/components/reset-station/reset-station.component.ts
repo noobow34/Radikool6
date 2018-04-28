@@ -11,10 +11,10 @@ export class ResetStationComponent implements OnInit {
   public loading = false;
   public stations: Station[] = [];
 
-  constructor(private stationService:StationService) { }
+  constructor(private stationService: StationService) { }
 
   ngOnInit() {
-    this.stationService.get().subscribe(res => {
+    this.stationService.get('radiko').subscribe(res => {
       if (res.result){
         this.stations = res.data;
       }
@@ -23,7 +23,7 @@ export class ResetStationComponent implements OnInit {
 
   public reset = (type: string) => {
     this.stationService.refresh(type).subscribe(res => {
-      if (res.result){
+      if (res.result) {
         this.stations = res.data;
       }
     });

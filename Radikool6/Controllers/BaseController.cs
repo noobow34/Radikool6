@@ -4,13 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
+using Microsoft.Data.Sqlite;
+using Radikool6.Classes;
 
 namespace Radikool6.Controllers
 {
     public class BaseController : Controller
     {
         public ApiResponse Result { get; set; } = new ApiResponse();
-        
+
+        public SqliteConnection SqliteConnection
+        {
+            get
+            {
+                if (_sqliteConnection != null) return _sqliteConnection;
+                _sqliteConnection = new SqliteConnection($"Data Source={Define.File.DbFile}");
+                _sqliteConnection.Open();
+
+                return _sqliteConnection;
+            }
+        }
+
+        private SqliteConnection _sqliteConnection;
         
         public class ApiResponse
         {

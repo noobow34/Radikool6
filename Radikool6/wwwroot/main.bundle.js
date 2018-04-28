@@ -930,7 +930,7 @@ var ResetStationComponent = /** @class */ (function () {
     }
     ResetStationComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.stationService.get().subscribe(function (res) {
+        this.stationService.get('radiko').subscribe(function (res) {
             if (res.result) {
                 _this.stations = res.data;
             }
@@ -1075,7 +1075,7 @@ var TimetableComponent = /** @class */ (function () {
     }
     TimetableComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.stationService.get().subscribe(function (res) {
+        this.stationService.get('radiko').subscribe(function (res) {
             // 種別、地域ごとに分類する
             var stations = res.data;
             _this.radiko = {};
@@ -1533,8 +1533,8 @@ var StationService = /** @class */ (function (_super) {
          * 放送局取得
          * @returns {Observable<Object>}
          */
-        _this.get = function () {
-            return _this.http.get('./api/station/');
+        _this.get = function (type) {
+            return _this.http.get("./api/station/" + type);
         };
         return _this;
     }
