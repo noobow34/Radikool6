@@ -48,8 +48,11 @@ namespace Radikool6.Controllers
             {
                 using (SqliteConnection)
                 {
-                    var model = new ReserveModel(SqliteConnection);
-                    Result.Result = model.Update(reserve);
+                    var cModel = new ConfigModel(SqliteConnection);
+                    var config = cModel.Get();
+                    
+                    var rModel = new ReserveModel(SqliteConnection);
+                    Result.Result = rModel.Update(reserve, config);
                 }
             });
         }

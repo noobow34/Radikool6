@@ -8,5 +8,8 @@
   <mat-form-field>
     <input matInput placeholder="保存ファイル名" name="fileName" [(ngModel)]="config.fileName" />
   </mat-form-field>
+  <mat-form-field>
+    <input matInput type="number" placeholder="タイムフリー予約時の開始マージン(分)" name="timeFreeMargin" [(ngModel)]="config.timeFreeMargin" />
+  </mat-form-field>
   <button type="submit" mat-raised-button color="primary">保存</button>
 </form>

@@ -48,8 +48,10 @@ namespace Radikool6.BackgroundTask
             using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
             {
                 con.Open();
+                var cModel = new ConfigModel(con);
+                var config = cModel.Get();
                 var model = new ReserveModel(con);
-                model.RefreshTasks();
+                model.RefreshTasks(config);
             }
         }
 
@@ -66,31 +68,35 @@ namespace Radikool6.BackgroundTask
                 using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
                 {
                     con.Open();
-                    var rModel = new ReserveModel(con);
-                    var tasks = rModel.GetTasks(true);
-                    if (!tasks.Any()) return;
                     var cModel = new ConfigModel(con);
                     var config = cModel.Get();
-                    tasks.ForEach(t =>
+
+                    var rModel = new ReserveModel(con);
+                    var tasks = rModel.GetTasks(true);
+                    if (tasks.Any())
                     {
-                        // 予約実行
-                        if (_recorders.All(r => r.Id != t.Id))
+
+                        tasks.ForEach(t =>
                         {
-                            //    var recorder = Recorder.GetRecorder(config, t);
-                            var recorder = new RadikoRecorder(config, t);
-                            _recorders.Add(recorder);
-                            recorder.Start().Wait();
-                            var logger = NLog.LogManager.GetCurrentClassLogger();
-                            logger.Info("録音開始");
-                        }
-                    });
+                            // 予約実行
+                            if (_recorders.All(r => r.Id != t.Id))
+                            {
+                                //    var recorder = Recorder.GetRecorder(config, t);
+                                var recorder = new RadikoRecorder(config, t);
+                                _recorders.Add(recorder);
+                                recorder.Start().Wait();
+                                var logger = NLog.LogManager.GetCurrentClassLogger();
+                                logger.Info("録音開始");
+                            }
+                        });
+                    }
 
                 }
 
                 _lock = false;
             }
         }
-        
-        
+
+
     }
 }

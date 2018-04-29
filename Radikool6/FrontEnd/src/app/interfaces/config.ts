@@ -4,6 +4,7 @@ export interface Config {
   radikoPassword?: string;
 
   fileName?: string;
+  timeFreeMargin?: number;
 }
 
 export interface EncodeSetting{

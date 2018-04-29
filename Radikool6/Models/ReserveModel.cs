@@ -6,6 +6,7 @@ using Dapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
 using Newtonsoft.Json;
 using Radikool6.Entities;
 
@@ -24,10 +25,12 @@ namespace Radikool6.Models
         public List<Reserve> Get()
         {
             var res = SqliteConnection.Query<Reserve>("SELECT * FROM Reserves").ToList();
-            if (!res.Any()) return res;
-            var stations = SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Id IN @StationIds",
-                new {StationIds = res.Select(r => r.StationId).Distinct().ToList()}).ToList();
 
+            if (!res.Any()) return res;
+
+            var stationIds = res.Select(r => r.StationId).Distinct().ToList();
+            var stations = SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Id IN @StationIds",
+                new {StationIds = stationIds}).ToList();
 
             res.ForEach(r => { r.StationName = stations.FirstOrDefault(s => s.Id == r.StationId)?.Name; });
 
@@ -39,7 +42,7 @@ namespace Radikool6.Models
         /// </summary>
         /// <param name="reserve"></param>
         /// <returns></returns>
-        public bool Update(Reserve reserve)
+        public bool Update(Reserve reserve, CommonConfig config)
         {
             if (string.IsNullOrWhiteSpace(reserve.Id))
             {
@@ -59,7 +62,7 @@ namespace Radikool6.Models
                                    )";
 
             SqliteConnection.Execute(query, new {Id = reserve.Id, Content = JsonConvert.SerializeObject(reserve)});
-            RefreshTasks(reserve);
+            RefreshTasks(config, reserve);
             return true;
         }
 
@@ -77,8 +80,8 @@ namespace Radikool6.Models
         /// <summary>
         /// タスク更新
         /// </summary>
-        public void RefreshTasks(Reserve reserve = null)
-        {
+        public void RefreshTasks(CommonConfig config, Reserve reserve = null)
+        {           
             var reserves = new List<Reserve>();
             if (reserve == null)
             {
@@ -91,7 +94,20 @@ namespace Radikool6.Models
             var tasks = new List<ReserveTask>();
             foreach (var r in reserves)
             {
-                if (r.Repeat.Count == 0)
+                if (r.IsTimeFree)
+                {
+                    // タイムフリー
+                    var task = new ReserveTask()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Start = r.End.AddMinutes(config.TimeFreeMargin),
+                        End = r.End.AddMinutes(config.TimeFreeMargin + 10),
+                        ReserveId = r.Id
+                    };
+                    tasks.Add(task);
+                    
+                }
+                else if (r.Repeat.Count == 0)
                 {
                     // 単発
                     var task = new ReserveTask()
@@ -108,7 +124,8 @@ namespace Radikool6.Models
 
             using (var trn = SqliteConnection.BeginTransaction())
             {
-                SqliteConnection.Execute("DELETE FROM ReserveTasks WHERE ReserveId IN @ReserveIds",
+                var where = reserve != null ? "WHERE ReserveId IN @ReserveIds" : "";
+                SqliteConnection.Execute($"DELETE FROM ReserveTasks {where}",
                     new {ReserveIds = reserves.Select(r => r.Id).ToList()}, trn);
                 const string query = @"INSERT INTO 
                                            ReserveTasks

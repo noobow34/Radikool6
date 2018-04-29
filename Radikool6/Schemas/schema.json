@@ -55,5 +55,14 @@
       "ReserveId": "text"
     },
     "primaryKey": ["Id"]
+  },
+  "Libraries": {
+    "columns": {
+      "Id": "text",
+      "FileName": "text",
+      "Path": "text",
+      "ProgramJson": "text"
+    },
+    "primaryKey": ["Id"]
   }
 }

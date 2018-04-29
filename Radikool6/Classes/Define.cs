@@ -138,7 +138,7 @@ namespace Radikool6.Classes
             public const string PlayList =
                 "http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8";
 
-            public const string FfmpegArgs = "-headers \"X-Radiko-AuthToken: [TOKEN]\" -i \"http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8\" -t [TIME] -acodec copy test1.aac";
+            public const string FfmpegArgs = "-headers \"X-Radiko-AuthToken: [TOKEN]\" -i \"http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8\" -t [TIME] -acodec copy [FILE]";
 
             
             

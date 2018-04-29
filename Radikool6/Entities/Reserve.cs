@@ -7,15 +7,11 @@ using Newtonsoft.Json;
 
 namespace Radikool6.Entities
 {
-    [Table("reserves")]
     public class Reserve
     {
-        [Key]
-        [Column("id")]
         public string Id { get; set; }
 
         [JsonIgnore]
-        [Column("content")]
         public string Content
         {
             get => JsonConvert.SerializeObject(this);
@@ -62,6 +58,9 @@ namespace Radikool6.Entities
 
         [NotMapped]
         public bool Enabled { get; set; } = true;
+        
+        [NotMapped]
+        public bool IsTimeFree { get; set; } = true;
         
         [JsonIgnore]
         public ICollection<ReserveTask> ReserveTasks { get; set; }

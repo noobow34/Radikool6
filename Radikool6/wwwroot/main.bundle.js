@@ -174,7 +174,7 @@ exports.AppModule = AppModule;
 /***/ "../../../../../src/app/components/config/config.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n  </mat-form-field>\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput type=\"number\" placeholder=\"タイムフリー予約時の開始マージン(分)\" name=\"timeFreeMargin\" [(ngModel)]=\"config.timeFreeMargin\" />\n  </mat-form-field>\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
 
 /***/ }),
 
@@ -510,7 +510,7 @@ exports.RadioPlayerComponent = RadioPlayerComponent;
 /***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <input matInput placeholder=\"予約名\" name=\"name\" [(ngModel)]=\"reserve.name\" />\n    </mat-form-field>\n    <mat-form-field>\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"startPicker\" placeholder=\"開始日時\" name=\"start\" [(ngModel)]=\"startDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"startPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #startPicker></mat-datepicker>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"startHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"startMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"endPicker\" placeholder=\"終了日時\" name=\"end\" [(ngModel)]=\"endDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"endPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #endPicker></mat-datepicker>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"endHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"endMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"button\" mat-raised-button (click)=\"delete()\" *ngIf=\"reserve.id\">削除</button>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <input matInput placeholder=\"予約名\" name=\"name\" [(ngModel)]=\"reserve.name\" />\n    </mat-form-field>\n    <mat-form-field>\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"startPicker\" placeholder=\"開始日時\" name=\"start\" [(ngModel)]=\"startDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"startPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #startPicker></mat-datepicker>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"startHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"startMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"endPicker\" placeholder=\"終了日時\" name=\"end\" [(ngModel)]=\"endDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"endPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #endPicker></mat-datepicker>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"endHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"endMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-checkbox name=\"isTimeFree\" [(ngModel)]=\"reserve.isTimeFree\">タイムフリーで録音</mat-checkbox>\n\n    </div>\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"button\" mat-raised-button (click)=\"delete()\" *ngIf=\"reserve.id\">削除</button>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
 
 /***/ }),
 
@@ -685,6 +685,7 @@ var reserve_service_1 = __webpack_require__("../../../../../src/app/services/res
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
+var Rx_1 = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
 var ReserveListComponent = /** @class */ (function () {
     function ReserveListComponent(reserveService, taskService, stateService) {
         var _this = this;
@@ -693,6 +694,7 @@ var ReserveListComponent = /** @class */ (function () {
         this.stateService = stateService;
         this.reserves = [];
         this.tasks = [];
+        this.subs = [];
         // mat-table
         this.dataSource = new material_1.MatTableDataSource();
         this.displayedColumns = ['name', 'stationName', 'start', 'end'];
@@ -704,14 +706,14 @@ var ReserveListComponent = /** @class */ (function () {
                     _this.dataSource.sort = _this.sort;
                 }
             });
-            console.log(_this.taskService.get());
-            setInterval(function () {
+            _this.timer = Rx_1.Observable.timer(0, 1000);
+            _this.subs.push(_this.timer.subscribe(function (x) {
                 _this.taskService.get().subscribe(function (res) {
                     if (res.result) {
                         _this.tasks = res.data;
                     }
                 });
-            }, 1000);
+            }));
         };
         /**
          * 予約編集
@@ -727,6 +729,9 @@ var ReserveListComponent = /** @class */ (function () {
     }
     ReserveListComponent.prototype.ngOnInit = function () {
         this.init();
+    };
+    ReserveListComponent.prototype.ngOnDestroy = function () {
+        this.subs.forEach(function (s) { return s.unsubscribe(); });
     };
     __decorate([
         core_1.ViewChild(material_1.MatSort),

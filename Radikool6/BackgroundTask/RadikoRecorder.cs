@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 using Radikool6.Classes;
 using Radikool6.Entities;
+using Radikool6.Models;
 using Radikool6.Radio;
 
 namespace Radikool6.BackgroundTask
@@ -60,7 +64,15 @@ namespace Radikool6.BackgroundTask
             
             _ffmpeg.OutputDataReceived += process_OutputDataReceived;
             _ffmpeg.ErrorDataReceived += process_OutputDataReceived;
-            _ffmpeg.Exited += process_Exited;
+        //    _ffmpeg.Exited += process_Exited;
+            
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Info($"ffmpeg起動:{arg}");
+
+            _ffmpeg.Exited += (sender, args) =>
+            {
+                logger.Info($"タイムフリー録音終了");
+            };
         }
 
 
@@ -69,20 +81,44 @@ namespace Radikool6.BackgroundTask
         {
             try
             {
-                StartTime = DateTime.Now;
-                var t = Task.End - Task.Start;
-                _token = await Radio.Radiko.GetAuthToken();
-                var arg = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)
-                    .Replace("[TIME]", (Task.End - DateTime.Now).ToString(@"hh\:mm\:ss"))
-                    .Replace("[CH]", Task.Station.Code);
-                CreateProcess(arg);
+                if (Task.Reserve.IsTimeFree)
+                {
+                    // 番組情報取得
+                    using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))      
+                    {
+                        var pModel = new ProgramModel(con);
+                        var program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.Reserve.Start, To = Task.Reserve.End}).FirstOrDefault();
+                        program.Station = Task.Station;
+                        TimeFree(program);
+                    }
 
-                _ffmpeg.Start();
-                _ffmpeg.BeginOutputReadLine();
-                _ffmpeg.BeginErrorReadLine();
-                
-                var logger = NLog.LogManager.GetCurrentClassLogger();
-                logger.Info($"ffmpeg起動:{arg}");
+                }
+                else
+                {
+                    Directory.CreateDirectory("records");
+                    
+                    StartTime = DateTime.Now;
+                    var t = Task.End - Task.Start;
+                    _token = await Radio.Radiko.GetAuthToken();
+                    var arg = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)
+                        .Replace("[TIME]", (Task.End - DateTime.Now).ToString(@"hh\:mm\:ss"))
+                        .Replace("[CH]", Task.Station.Code)
+                        .Replace("[FILE]", Path.Combine("records", $"{Guid.NewGuid().ToString()}.aac"));
+                    CreateProcess(arg);
+
+                    _ffmpeg.Start();
+                    _ffmpeg.BeginOutputReadLine();
+                    _ffmpeg.BeginErrorReadLine();
+
+                    var logger = NLog.LogManager.GetCurrentClassLogger();
+                    logger.Info($"ffmpeg起動:{arg}");
+
+                    _ffmpeg.Exited += (sender, args) =>
+                    {
+                        logger.Info($"録音終了");
+                        
+                    };
+                }
 
             }
             catch (Exception ex)

@@ -8,4 +8,5 @@ export interface Reserve {
   formatId?: string;
   repeat?: string[];
   enabled?: boolean;
+  isTimeFree?: boolean;
 }
