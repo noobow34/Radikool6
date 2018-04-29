@@ -126,7 +126,9 @@ export class TimetableComponent implements OnInit {
    * @param {Program} program
    */
   public getTimeFree = (program: Program) => {
+    this.programService.getTimeFree(program.id).subscribe(res => {
 
+    });
   }
 
 

@@ -63,7 +63,12 @@ namespace Radikool6.Controllers
             });
         }
         
-        [HttpGet]
+        /// <summary>
+        /// タイムフリーダウンロード
+        /// </summary>
+        /// <param name="programId"></param>
+        /// <returns></returns>
+        [HttpPost]
         [Route("api/program/tf/{programId}")]
         public async Task<ApiResponse> Download(string programId)
         {

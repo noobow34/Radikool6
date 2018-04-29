@@ -959,7 +959,7 @@ exports.ResetStationComponent = ResetStationComponent;
 /***/ "../../../../../src/app/components/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field>\n      <mat-select [(value)]=\"date\" (change)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n          <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n          <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimefree(p)\">ダウンロード</button>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field>\n      <mat-select [(value)]=\"date\" (change)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n          <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n          <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimeFree(p)\">ダウンロード</button>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -1076,6 +1076,8 @@ var TimetableComponent = /** @class */ (function () {
          * @param {Program} program
          */
         this.getTimeFree = function (program) {
+            _this.programService.getTimeFree(program.id).subscribe(function (res) {
+            });
         };
     }
     TimetableComponent.prototype.ngOnInit = function () {
@@ -1356,6 +1358,14 @@ var ProgramService = /** @class */ (function (_super) {
          */
         _this.refresh = function (stationId) {
             return _this.http.post("./api/program/" + stationId, {});
+        };
+        /**
+         * タイムフリーダウンロード
+         * @param {string} programId
+         * @returns {Observable<Object>}
+         */
+        _this.getTimeFree = function (programId) {
+            return _this.http.post("./api/program/tf/" + programId, {});
         };
         return _this;
     }

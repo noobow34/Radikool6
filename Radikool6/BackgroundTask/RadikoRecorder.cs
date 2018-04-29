@@ -24,10 +24,10 @@ namespace Radikool6.BackgroundTask
 
         public async Task TimeFree(Entities.Program program)
         {
-            
+            Directory.CreateDirectory("records");
             StartTime = DateTime.Now;
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
-            var arg = $"-i {m3U8} -acodec copy \"{program.Title}.aac\"";
+            var arg = $"-i {m3U8} -acodec copy \"{Path.Combine("records", Guid.NewGuid().ToString()) }.aac\"";
             CreateProcess(arg);
 
         //    await System.Threading.Tasks.Task.Factory.StartNew(() =>

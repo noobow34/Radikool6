@@ -5,9 +5,11 @@ import {Program, ProgramSearchCondition} from '../interfaces/program';
 import {ApiResult} from '../interfaces/api-result';
 
 @Injectable()
-export class ProgramService extends BaseService{
+export class ProgramService extends BaseService {
 
-  constructor(http: HttpClient) { super(http); }
+  constructor(http: HttpClient) {
+    super(http);
+  }
 
   /**
    * 番組検索
@@ -15,7 +17,7 @@ export class ProgramService extends BaseService{
    * @returns {Observable<Object>}
    */
   public search = (cond: ProgramSearchCondition) => {
-    return this.http.post<ApiResult<{ programs: Program[], range: Date[]}>>('./api/program/', cond);
+    return this.http.post<ApiResult<{ programs: Program[], range: Date[] }>>('./api/program/', cond);
   }
 
   /**
@@ -25,6 +27,15 @@ export class ProgramService extends BaseService{
    */
   public refresh = (stationId: string) => {
     return this.http.post<ApiResult>(`./api/program/${stationId}`, {});
+  }
+
+  /**
+   * タイムフリーダウンロード
+   * @param {string} programId
+   * @returns {Observable<Object>}
+   */
+  public getTimeFree = (programId: string) => {
+    return this.http.post<ApiResult>(`./api/program/tf/${programId}`, {});
   }
 
 }
