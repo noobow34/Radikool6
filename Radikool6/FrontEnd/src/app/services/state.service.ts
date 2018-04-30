@@ -3,16 +3,17 @@ import {BaseService} from './base.service';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs/Subject';
 import {MatDialog} from '@angular/material';
-import {ReserveEditComponent} from "../components/reserve-edit/reserve-edit.component";
+import {ReserveEditComponent} from '../components/reserve-edit/reserve-edit.component';
+import {Library} from '../interfaces/library';
 
 @Injectable()
-export class StateService extends BaseService{
+export class StateService extends BaseService {
 
   public selectedContent: Subject<string> = new Subject<string>();
+  public playLibrary: Subject<Library> = new Subject<Library>();
 
-  constructor(
-    http: HttpClient,
-    public dialog: MatDialog) {
+  constructor(http: HttpClient,
+              public dialog: MatDialog) {
     super(http);
   }
 

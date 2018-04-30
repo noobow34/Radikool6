@@ -17,7 +17,6 @@ import { ContentComponent } from './components/content/content.component';
 import {StateService} from './services/state.service';
 import { TimetableComponent } from './components/timetable/timetable.component';
 import { LibraryComponent } from './components/library/library.component';
-import { RadioPlayerComponent } from './components/radio-player/radio-player.component';
 import {StationService} from './services/station.service';
 import {ProgramService} from './services/program.service';
 import { ReserveEditComponent } from './components/reserve-edit/reserve-edit.component';
@@ -32,6 +31,7 @@ import { ResetProgramComponent } from './components/reset-program/reset-program.
 import { ResetStationComponent } from './components/reset-station/reset-station.component';
 import {TaskService} from './services/task.service';
 import {LibraryService} from './services/library.service';
+import { PlayerComponent } from './components/player/player.component';
 
 
 @NgModule({
@@ -41,14 +41,14 @@ import {LibraryService} from './services/library.service';
     ContentComponent,
     TimetableComponent,
     LibraryComponent,
-    RadioPlayerComponent,
     ReserveEditComponent,
     ReserveListComponent,
     TimePipe,
     ConfigComponent,
     ManageComponent,
     ResetProgramComponent,
-    ResetStationComponent
+    ResetStationComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,

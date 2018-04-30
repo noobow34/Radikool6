@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {LibraryService} from '../../services/library.service';
 import {Library} from '../../interfaces/library';
 import {MatSort, MatTableDataSource} from '@angular/material';
+import {StateService} from '../../services/state.service';
 
 @Component({
   selector: 'app-library',
@@ -15,10 +16,11 @@ export class LibraryComponent implements OnInit {
 
   // mat-table
   public dataSource = new MatTableDataSource();
-  public displayedColumns = ['fileName'];
+  public displayedColumns = ['fileName', 'title'];
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private libraryService: LibraryService) {
+  constructor(private stateServie: StateService,
+              private libraryService: LibraryService) {
   }
 
   ngOnInit() {
@@ -32,7 +34,8 @@ export class LibraryComponent implements OnInit {
   }
 
   public play = (library: Library) => {
-    window.open(`./library/play/${library.id}`);
+    this.stateServie.playLibrary.next(library);
+    //window.open(`./library/play/${library.id}`);
   }
 
 }

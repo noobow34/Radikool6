@@ -96,7 +96,6 @@ var content_component_1 = __webpack_require__("../../../../../src/app/components
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var timetable_component_1 = __webpack_require__("../../../../../src/app/components/timetable/timetable.component.ts");
 var library_component_1 = __webpack_require__("../../../../../src/app/components/library/library.component.ts");
-var radio_player_component_1 = __webpack_require__("../../../../../src/app/components/radio-player/radio-player.component.ts");
 var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
 var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
 var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
@@ -111,6 +110,7 @@ var reset_program_component_1 = __webpack_require__("../../../../../src/app/comp
 var reset_station_component_1 = __webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.ts");
 var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
 var library_service_1 = __webpack_require__("../../../../../src/app/services/library.service.ts");
+var player_component_1 = __webpack_require__("../../../../../src/app/components/player/player.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -122,14 +122,14 @@ var AppModule = /** @class */ (function () {
                 content_component_1.ContentComponent,
                 timetable_component_1.TimetableComponent,
                 library_component_1.LibraryComponent,
-                radio_player_component_1.RadioPlayerComponent,
                 reserve_edit_component_1.ReserveEditComponent,
                 reserve_list_component_1.ReserveListComponent,
                 time_pipe_1.TimePipe,
                 config_component_1.ConfigComponent,
                 manage_component_1.ManageComponent,
                 reset_program_component_1.ResetProgramComponent,
-                reset_station_component_1.ResetStationComponent
+                reset_station_component_1.ResetStationComponent,
+                player_component_1.PlayerComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -258,7 +258,7 @@ exports.ConfigComponent = ConfigComponent;
 /***/ "../../../../../src/app/components/content/content.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-manage *ngIf=\"selectedContent === 'manage'\"></app-manage>\n<app-radio-player></app-radio-player>\n"
+module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-manage *ngIf=\"selectedContent === 'manage'\"></app-manage>\n<app-player></app-player>\n"
 
 /***/ }),
 
@@ -328,7 +328,7 @@ exports.ContentComponent = ContentComponent;
 /***/ "../../../../../src/app/components/library/library.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"fileName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>ファイル名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"play(library)\"> {{library.fileName}} </mat-cell>\n  </ng-container>\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
+module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"title\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>番組名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"play(library)\"> {{library.program.title}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"fileName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>ファイル名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"play(library)\"> {{library.fileName}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -368,15 +368,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var library_service_1 = __webpack_require__("../../../../../src/app/services/library.service.ts");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var LibraryComponent = /** @class */ (function () {
-    function LibraryComponent(libraryService) {
+    function LibraryComponent(stateServie, libraryService) {
+        var _this = this;
+        this.stateServie = stateServie;
         this.libraryService = libraryService;
         this.libraries = [];
         // mat-table
         this.dataSource = new material_1.MatTableDataSource();
-        this.displayedColumns = ['fileName'];
+        this.displayedColumns = ['fileName', 'title'];
         this.play = function (library) {
-            window.open("./library/play/" + library.id);
+            _this.stateServie.playLibrary.next(library);
+            //window.open(`./library/play/${library.id}`);
         };
     }
     LibraryComponent.prototype.ngOnInit = function () {
@@ -399,7 +403,8 @@ var LibraryComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/library/library.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/library/library.component.scss")]
         }),
-        __metadata("design:paramtypes", [library_service_1.LibraryService])
+        __metadata("design:paramtypes", [state_service_1.StateService,
+            library_service_1.LibraryService])
     ], LibraryComponent);
     return LibraryComponent;
 }());
@@ -470,14 +475,14 @@ exports.ManageComponent = ManageComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/radio-player/radio-player.component.html":
+/***/ "../../../../../src/app/components/player/player.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  radio-player works!\n</p>\n"
+module.exports = "<div>\n  player<audio #audio controls></audio>\n</div>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/radio-player/radio-player.component.scss":
+/***/ "../../../../../src/app/components/player/player.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -495,7 +500,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/radio-player/radio-player.component.ts":
+/***/ "../../../../../src/app/components/player/player.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -511,22 +516,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var RadioPlayerComponent = /** @class */ (function () {
-    function RadioPlayerComponent() {
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
+var PlayerComponent = /** @class */ (function () {
+    function PlayerComponent(stateService) {
+        this.stateService = stateService;
+        this.subs = [];
     }
-    RadioPlayerComponent.prototype.ngOnInit = function () {
+    PlayerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.audio = this.audioElement.nativeElement;
+        this.subs.push(this.stateService.playLibrary.subscribe(function (value) {
+            _this.library = value;
+            console.log(_this.library);
+            console.log(_this.audio);
+            _this.audio.src = "./library/play/" + _this.library.id;
+            //   this.audio.play();
+        }));
     };
-    RadioPlayerComponent = __decorate([
+    PlayerComponent.prototype.ngOnDestroy = function () {
+        this.subs.forEach(function (s) { return s.unsubscribe(); });
+    };
+    __decorate([
+        core_1.ViewChild('audio'),
+        __metadata("design:type", Object)
+    ], PlayerComponent.prototype, "audioElement", void 0);
+    PlayerComponent = __decorate([
         core_1.Component({
-            selector: 'app-radio-player',
-            template: __webpack_require__("../../../../../src/app/components/radio-player/radio-player.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/radio-player/radio-player.component.scss")]
+            selector: 'app-player',
+            template: __webpack_require__("../../../../../src/app/components/player/player.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/player/player.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
-    ], RadioPlayerComponent);
-    return RadioPlayerComponent;
+        __metadata("design:paramtypes", [state_service_1.StateService])
+    ], PlayerComponent);
+    return PlayerComponent;
 }());
-exports.RadioPlayerComponent = RadioPlayerComponent;
+exports.PlayerComponent = PlayerComponent;
 
 
 /***/ }),
@@ -1556,6 +1580,7 @@ var StateService = /** @class */ (function (_super) {
         var _this = _super.call(this, http) || this;
         _this.dialog = dialog;
         _this.selectedContent = new Subject_1.Subject();
+        _this.playLibrary = new Subject_1.Subject();
         _this.editReserve = function (data, callback) {
             var dialogRef = _this.dialog.open(reserve_edit_component_1.ReserveEditComponent, {
                 //width: '250px',
