@@ -31,6 +31,16 @@ namespace Radikool6.Entities
 
         private string _programJson;
 
-        public Program Program { get; set; }
+        public Program Program
+        {
+            get => _program;
+            set
+            {
+                _program = value;
+                _programJson = JsonConvert.SerializeObject(value);
+            }
+        }
+
+        private Program _program;
     }
 }

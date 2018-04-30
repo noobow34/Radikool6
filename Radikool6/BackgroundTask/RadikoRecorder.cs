@@ -16,6 +16,8 @@ namespace Radikool6.BackgroundTask
     {
         private string _token;
         private Process _ffmpeg;
+        private string _filename;
+        private Entities.Program _program = new Entities.Program();
 
         public RadikoRecorder(CommonConfig config, ReserveTask task = null) : base(config, task)
         {
@@ -24,10 +26,12 @@ namespace Radikool6.BackgroundTask
 
         public async Task TimeFree(Entities.Program program)
         {
+            _program = program;
             Directory.CreateDirectory("records");
+            _filename = Path.Combine("records", $"{Guid.NewGuid().ToString()}.aac");
             StartTime = DateTime.Now;
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
-            var arg = $"-i {m3U8} -acodec copy \"{Path.Combine("records", Guid.NewGuid().ToString()) }.aac\"";
+            var arg = $"-i {m3U8} -acodec copy \"{_filename}\"";
             CreateProcess(arg);
 
         //    await System.Threading.Tasks.Task.Factory.StartNew(() =>
@@ -81,29 +85,33 @@ namespace Radikool6.BackgroundTask
         {
             try
             {
+                using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
+                {
+                    var pModel = new ProgramModel(con);
+                    _program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.Reserve.Start, To = Task.Reserve.End}).FirstOrDefault();
+                }
+
                 if (Task.Reserve.IsTimeFree)
                 {
                     // 番組情報取得
                     using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))      
                     {
-                        var pModel = new ProgramModel(con);
-                        var program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.Reserve.Start, To = Task.Reserve.End}).FirstOrDefault();
-                        program.Station = Task.Station;
-                        TimeFree(program);
+                        _program.Station = Task.Station;
+                        TimeFree(_program);
                     }
 
                 }
                 else
-                {
+                {                   
                     Directory.CreateDirectory("records");
-                    
+                    _filename = Path.Combine("records", $"{Guid.NewGuid().ToString()}.aac");
                     StartTime = DateTime.Now;
                     var t = Task.End - Task.Start;
                     _token = await Radio.Radiko.GetAuthToken();
                     var arg = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)
                         .Replace("[TIME]", (Task.End - DateTime.Now).ToString(@"hh\:mm\:ss"))
                         .Replace("[CH]", Task.Station.Code)
-                        .Replace("[FILE]", Path.Combine("records", $"{Guid.NewGuid().ToString()}.aac"));
+                        .Replace("[FILE]", _filename);
                     CreateProcess(arg);
 
                     _ffmpeg.Start();
@@ -127,10 +135,16 @@ namespace Radikool6.BackgroundTask
             }
          }
 
-        
+
         void process_Exited(object sender, System.EventArgs e)
         {
-            
+            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
+            {
+                con.Open();
+                var lModel = new LibraryModel(con);
+                lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = _filename, Path = _filename, Program = _program });
+
+            }
         }
 
         void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
