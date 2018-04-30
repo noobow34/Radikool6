@@ -691,7 +691,7 @@ exports.ReserveEditComponent = ReserveEditComponent;
 /***/ "../../../../../src/app/components/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"name\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.name}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n<ul>\n  <li *ngFor=\"let task of tasks\">{{task.status}}</li>\n</ul>\n"
+module.exports = "<mat-table [dataSource]=\"reserveDataSource\" matSort #reserveSort=\"matSort\">\n  <ng-container matColumnDef=\"name\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.name}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"reserveDisplayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: reserveDisplayedColumns;\"></mat-row>\n</mat-table>\n\n\n<mat-table [dataSource]=\"taskDataSource\" matSort #taskSort=\"matSort\">\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\"> {{task.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\"> {{task.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"status\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>ステータス</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\"> {{task.status}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"taskDisplayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: taskDisplayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -733,7 +733,6 @@ var reserve_service_1 = __webpack_require__("../../../../../src/app/services/res
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
-var Rx_1 = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
 var ReserveListComponent = /** @class */ (function () {
     function ReserveListComponent(reserveService, taskService, stateService) {
         var _this = this;
@@ -744,24 +743,38 @@ var ReserveListComponent = /** @class */ (function () {
         this.tasks = [];
         this.subs = [];
         // mat-table
-        this.dataSource = new material_1.MatTableDataSource();
-        this.displayedColumns = ['name', 'stationName', 'start', 'end'];
+        this.reserveDataSource = new material_1.MatTableDataSource();
+        this.reserveDisplayedColumns = ['name', 'stationName', 'start', 'end'];
+        // mat-table
+        this.taskDataSource = new material_1.MatTableDataSource();
+        this.taskDisplayedColumns = ['start', 'end', 'status'];
         this.init = function () {
             _this.reserveService.get().subscribe(function (res) {
                 if (res.result) {
                     _this.reserves = res.data;
-                    _this.dataSource = new material_1.MatTableDataSource(_this.reserves);
-                    _this.dataSource.sort = _this.sort;
+                    _this.reserveDataSource = new material_1.MatTableDataSource(_this.reserves);
+                    _this.reserveDataSource.sort = _this.reserveSort;
+                    console.log(_this.reserveSort);
                 }
             });
-            _this.timer = Rx_1.Observable.timer(0, 1000);
-            _this.subs.push(_this.timer.subscribe(function (x) {
-                _this.taskService.get().subscribe(function (res) {
-                    if (res.result) {
-                        _this.tasks = res.data;
-                    }
-                });
-            }));
+            /*this.timer = Observable.timer(0, 1000);
+            this.subs.push(this.timer.subscribe(x => {
+              this.taskService.get().subscribe(res => {
+                if (res.result) {
+                  this.tasks = res.data;
+        
+                  this.taskDataSource = new MatTableDataSource(this.tasks);
+                  this.taskDataSource.sort = this.taskSort;
+                }
+              });
+            }));*/
+            _this.tasks = [
+                { start: new Date('2018-04-30 00:00:00'), end: new Date('2018-04-30 01:00:00'), status: 'status' },
+                { start: new Date('2018-04-30 01:00:00'), end: new Date('2018-04-30 02:00:00'), status: 'status2' }
+            ];
+            _this.taskDataSource = new material_1.MatTableDataSource(_this.tasks);
+            _this.taskDataSource.sort = _this.taskSort;
+            console.log(_this.taskDataSource);
         };
         /**
          * 予約編集
@@ -782,9 +795,13 @@ var ReserveListComponent = /** @class */ (function () {
         this.subs.forEach(function (s) { return s.unsubscribe(); });
     };
     __decorate([
-        core_1.ViewChild(material_1.MatSort),
+        core_1.ViewChild('reserveSort'),
         __metadata("design:type", material_1.MatSort)
-    ], ReserveListComponent.prototype, "sort", void 0);
+    ], ReserveListComponent.prototype, "reserveSort", void 0);
+    __decorate([
+        core_1.ViewChild('taskSort'),
+        __metadata("design:type", material_1.MatSort)
+    ], ReserveListComponent.prototype, "taskSort", void 0);
     ReserveListComponent = __decorate([
         core_1.Component({
             selector: 'app-reserve-list',

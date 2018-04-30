@@ -1,4 +1,4 @@
-<mat-table [dataSource]="dataSource" matSort>
+<mat-table [dataSource]="reserveDataSource" matSort #reserveSort="matSort">
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>
     <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.name}} </mat-cell>
@@ -19,9 +19,28 @@
     <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-header-row *matHeaderRowDef="reserveDisplayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: reserveDisplayedColumns;"></mat-row>
 </mat-table>
-<ul>
-  <li *ngFor="let task of tasks">{{task.status}}</li>
-</ul>
+
+
+<mat-table [dataSource]="taskDataSource" matSort #taskSort="matSort">
+
+  <ng-container matColumnDef="start">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>
+    <mat-cell *matCellDef="let task"> {{task.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="end">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>
+    <mat-cell *matCellDef="let task"> {{task.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>ステータス</mat-header-cell>
+    <mat-cell *matCellDef="let task"> {{task.status}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="taskDisplayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: taskDisplayedColumns;"></mat-row>
+</mat-table>
