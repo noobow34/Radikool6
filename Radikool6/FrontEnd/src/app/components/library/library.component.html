@@ -1,3 +1,8 @@
-<p>
-  library works!
-</p>
+<mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="fileName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>ファイル名</mat-header-cell>
+    <mat-cell *matCellDef="let library" (click)="play(library)"> {{library.fileName}} </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

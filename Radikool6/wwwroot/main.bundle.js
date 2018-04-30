@@ -110,6 +110,7 @@ var manage_component_1 = __webpack_require__("../../../../../src/app/components/
 var reset_program_component_1 = __webpack_require__("../../../../../src/app/components/reset-program/reset-program.component.ts");
 var reset_station_component_1 = __webpack_require__("../../../../../src/app/components/reset-station/reset-station.component.ts");
 var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
+var library_service_1 = __webpack_require__("../../../../../src/app/services/library.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -156,7 +157,8 @@ var AppModule = /** @class */ (function () {
                 program_service_1.ProgramService,
                 reserve_service_1.ReserveService,
                 config_service_1.ConfigService,
-                task_service_1.TaskService
+                task_service_1.TaskService,
+                library_service_1.LibraryService
             ],
             entryComponents: [
                 reserve_edit_component_1.ReserveEditComponent
@@ -326,7 +328,7 @@ exports.ContentComponent = ContentComponent;
 /***/ "../../../../../src/app/components/library/library.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  library works!\n</p>\n"
+module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"fileName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>ファイル名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"play(library)\"> {{library.fileName}} </mat-cell>\n  </ng-container>\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -364,18 +366,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var library_service_1 = __webpack_require__("../../../../../src/app/services/library.service.ts");
+var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var LibraryComponent = /** @class */ (function () {
-    function LibraryComponent() {
+    function LibraryComponent(libraryService) {
+        this.libraryService = libraryService;
+        this.libraries = [];
+        // mat-table
+        this.dataSource = new material_1.MatTableDataSource();
+        this.displayedColumns = ['fileName'];
+        this.play = function (library) {
+            window.open("./library/play/" + library.id);
+        };
     }
     LibraryComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.libraryService.get().subscribe(function (res) {
+            if (res.result) {
+                _this.libraries = res.data;
+                _this.dataSource = new material_1.MatTableDataSource(_this.libraries);
+                _this.dataSource.sort = _this.sort;
+            }
+        });
     };
+    __decorate([
+        core_1.ViewChild(material_1.MatSort),
+        __metadata("design:type", material_1.MatSort)
+    ], LibraryComponent.prototype, "sort", void 0);
     LibraryComponent = __decorate([
         core_1.Component({
             selector: 'app-library',
             template: __webpack_require__("../../../../../src/app/components/library/library.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/library/library.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [library_service_1.LibraryService])
     ], LibraryComponent);
     return LibraryComponent;
 }());
@@ -1307,6 +1331,58 @@ var ConfigService = /** @class */ (function (_super) {
     return ConfigService;
 }(base_service_1.BaseService));
 exports.ConfigService = ConfigService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/library.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var base_service_1 = __webpack_require__("../../../../../src/app/services/base.service.ts");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var LibraryService = /** @class */ (function (_super) {
+    __extends(LibraryService, _super);
+    function LibraryService(http) {
+        var _this = _super.call(this, http) || this;
+        /**
+         * ライブラリ取得
+         * @returns {Observable<Object>}
+         */
+        _this.get = function () {
+            return _this.http.get('./api/library');
+        };
+        return _this;
+    }
+    LibraryService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], LibraryService);
+    return LibraryService;
+}(base_service_1.BaseService));
+exports.LibraryService = LibraryService;
 
 
 /***/ }),
