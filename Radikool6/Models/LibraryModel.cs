@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 using Radikool6.Entities;
+using SQLitePCL;
 
 namespace Radikool6.Models
 {
@@ -61,6 +63,26 @@ namespace Radikool6.Models
 
             SqliteConnection.Execute(query, library);
             return true;
+        }
+
+        /// <summary>
+        /// 不要データ削除
+        /// </summary>
+        /// <returns></returns>
+        public bool Maintenance()
+        {
+            var dir = new DirectoryInfo("records");
+            var files = dir.EnumerateFiles("*.m4a").Select(f => f.FullName).ToList();
+            foreach (var library in Get())
+            {
+                if (!files.Contains(library.Path))
+                {
+                    SqliteConnection.Execute("DELETE FROM Libraries WHERE Id = @Id", new {Id = library.Id});
+                }
+            }
+
+            return true;
+
         }
     }
 }

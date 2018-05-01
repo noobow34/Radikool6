@@ -29,11 +29,11 @@ namespace Radikool6.BackgroundTask
             Status = RecorderStatus.Working;
             _program = program;
             Directory.CreateDirectory("records");
-            _filename = Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a");
+            _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
             StartTime = DateTime.Now;
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
             var arg = $"-i {m3U8} -metadata title=\"{Config.TagTitle}\" -metadata artist=\"{Config.TagArtist}\" -metadata album=\"{Config.TagAlbum}\" -metadata genre=\"{Config.TagGenre}\" -metadata comment=\"{Config.TagComment}\" -bsf:a aac_adtstoasc \"{_filename}\"";
-            arg = Replace(arg, Task.Station, _program);
+            arg = Replace(arg, Task?.Station ?? _program.Station, _program);
             CreateProcess(arg);
 
         //    await System.Threading.Tasks.Task.Factory.StartNew(() =>
@@ -169,7 +169,7 @@ namespace Radikool6.BackgroundTask
                 {              
                     
                     Directory.CreateDirectory("records");
-                    _filename = Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a");
+                    _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
                     StartTime = DateTime.Now;
                     var t = Task.End - Task.Start;
                     _token = await Radio.Radiko.GetAuthToken();

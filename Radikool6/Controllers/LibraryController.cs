@@ -26,6 +26,7 @@ namespace Radikool6.Controllers
             using (SqliteConnection)
             {
                 var lModel = new LibraryModel(SqliteConnection);
+                lModel.Maintenance();
                 var library = lModel.Get(id);
 
                 if (library != null && System.IO.File.Exists(library.FileName))
@@ -51,9 +52,10 @@ namespace Radikool6.Controllers
             {
                 using (SqliteConnection)
                 {
-                    var model = new LibraryModel(SqliteConnection);
+                    var lModel = new LibraryModel(SqliteConnection);
+                    lModel.Maintenance();
                     Result.Result = true;
-                    Result.Data = model.Get();
+                    Result.Data = lModel.Get();
                 }
             });
         }
