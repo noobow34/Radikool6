@@ -32,6 +32,7 @@ import { ResetStationComponent } from './components/reset-station/reset-station.
 import {TaskService} from './services/task.service';
 import {LibraryService} from './services/library.service';
 import { PlayerComponent } from './components/player/player.component';
+import { MacroComponent } from './components/macro/macro.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { PlayerComponent } from './components/player/player.component';
     ManageComponent,
     ResetProgramComponent,
     ResetStationComponent,
-    PlayerComponent
+    PlayerComponent,
+    MacroComponent
   ],
   imports: [
     BrowserModule,
@@ -78,10 +80,11 @@ import { PlayerComponent } from './components/player/player.component';
     ConfigService,
     TaskService,
     LibraryService
-    ],
-  entryComponents:[
-    ReserveEditComponent
-    ],
+  ],
+  entryComponents: [
+    ReserveEditComponent,
+    MacroComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

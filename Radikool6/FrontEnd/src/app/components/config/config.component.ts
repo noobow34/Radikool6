@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConfigService} from '../../services/config.service';
 import {Config, EncodeSetting} from '../../interfaces/config';
+import {StateService} from '../../services/state.service';
 
 @Component({
   selector: 'app-config',
@@ -12,7 +13,9 @@ export class ConfigComponent implements OnInit {
   public config: Config = {};
   public encodeSettings: EncodeSetting[] = [];
 
-  constructor(private configService: ConfigService) { }
+  constructor(
+    private stateService: StateService,
+    private configService: ConfigService) { }
 
   ngOnInit() {
     this.configService.getEncodeSettings().subscribe(res => {
@@ -27,6 +30,18 @@ export class ConfigComponent implements OnInit {
       }
     });
 
+  }
+
+  /**
+   * 置換
+   * @param {string} property
+   */
+  public macro = (property: string) => {
+    this.stateService.macro(this.config[property], res => {
+      if (res) {
+        this.config[property] = res;
+      }
+    });
   }
 
   public save = () => {

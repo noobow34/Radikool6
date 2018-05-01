@@ -111,6 +111,7 @@ var reset_station_component_1 = __webpack_require__("../../../../../src/app/comp
 var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
 var library_service_1 = __webpack_require__("../../../../../src/app/services/library.service.ts");
 var player_component_1 = __webpack_require__("../../../../../src/app/components/player/player.component.ts");
+var macro_component_1 = __webpack_require__("../../../../../src/app/components/macro/macro.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -129,7 +130,8 @@ var AppModule = /** @class */ (function () {
                 manage_component_1.ManageComponent,
                 reset_program_component_1.ResetProgramComponent,
                 reset_station_component_1.ResetStationComponent,
-                player_component_1.PlayerComponent
+                player_component_1.PlayerComponent,
+                macro_component_1.MacroComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -161,7 +163,8 @@ var AppModule = /** @class */ (function () {
                 library_service_1.LibraryService
             ],
             entryComponents: [
-                reserve_edit_component_1.ReserveEditComponent
+                reserve_edit_component_1.ReserveEditComponent,
+                macro_component_1.MacroComponent
             ],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -176,7 +179,7 @@ exports.AppModule = AppModule;
 /***/ "../../../../../src/app/components/config/config.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput type=\"number\" placeholder=\"タイムフリー予約時の開始マージン(分)\" name=\"timeFreeMargin\" [(ngModel)]=\"config.timeFreeMargin\" />\n  </mat-form-field>\n\n\n  <mat-form-field>\n    <input matInput placeholder=\"タイトル\" name=\"tagTitle\" [(ngModel)]=\"config.tagTitle\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"アーティスト\" name=\"tagArtist\" [(ngModel)]=\"config.tagArtist\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"アルバム\" name=\"tagAlbum\" [(ngModel)]=\"config.tagAlbum\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"ジャンル\" name=\"tagGenre\" [(ngModel)]=\"config.tagGenre\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"コメント\" name=\"tagComment\" [(ngModel)]=\"config.tagComment\" />\n  </mat-form-field>\n\n\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput type=\"number\" placeholder=\"タイムフリー予約時の開始マージン(分)\" name=\"timeFreeMargin\" [(ngModel)]=\"config.timeFreeMargin\" />\n  </mat-form-field>\n\n\n  <mat-form-field>\n    <input matInput placeholder=\"タイトル\" name=\"tagTitle\" [(ngModel)]=\"config.tagTitle\" />\n  </mat-form-field>\n  <button (click)=\"macro('tagTitle')\">置換</button>\n\n  <mat-form-field>\n    <input matInput placeholder=\"アーティスト\" name=\"tagArtist\" [(ngModel)]=\"config.tagArtist\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"アルバム\" name=\"tagAlbum\" [(ngModel)]=\"config.tagAlbum\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"ジャンル\" name=\"tagGenre\" [(ngModel)]=\"config.tagGenre\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"コメント\" name=\"tagComment\" [(ngModel)]=\"config.tagComment\" />\n  </mat-form-field>\n\n\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
 
 /***/ }),
 
@@ -215,12 +218,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var config_service_1 = __webpack_require__("../../../../../src/app/services/config.service.ts");
+var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var ConfigComponent = /** @class */ (function () {
-    function ConfigComponent(configService) {
+    function ConfigComponent(stateService, configService) {
         var _this = this;
+        this.stateService = stateService;
         this.configService = configService;
         this.config = {};
         this.encodeSettings = [];
+        /**
+         * 置換
+         * @param {string} property
+         */
+        this.macro = function (property) {
+            _this.stateService.macro(_this.config[property], function (res) {
+                if (res) {
+                    _this.config[property] = res;
+                }
+            });
+        };
         this.save = function () {
             _this.configService.update(_this.config).subscribe(function (res) {
                 console.log(res);
@@ -246,7 +262,8 @@ var ConfigComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/config/config.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/config/config.component.scss")]
         }),
-        __metadata("design:paramtypes", [config_service_1.ConfigService])
+        __metadata("design:paramtypes", [state_service_1.StateService,
+            config_service_1.ConfigService])
     ], ConfigComponent);
     return ConfigComponent;
 }());
@@ -409,6 +426,90 @@ var LibraryComponent = /** @class */ (function () {
     return LibraryComponent;
 }());
 exports.LibraryComponent = LibraryComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/macro/macro.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form (submit)=\"update()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <input matInput placeholder=\"\" name=\"text\" [(ngModel)]=\"text\" (blur)=\"onBlur($event)\" />\n    </mat-form-field>\n\n    <h2>放送局情報</h2>\n    <button mat-button type=\"button\" (click)=\"add('[CH_NAME]')\">放送局名</button>\n    <button mat-button type=\"button\" (click)=\"add('[CH]')\">放送局コード</button>\n\n    <h2>番組情報</h2>\n    <button mat-button type=\"button\" (click)=\"add('[TITLE]')\">番組名</button>\n    <button mat-button type=\"button\" (click)=\"add('[CAST]')\">出演者</button>\n    <button mat-button type=\"button\" (click)=\"add('[INFO]')\">番組詳細</button>\n\n    <h2>開始日時</h2>\n    <button mat-button type=\"button\" (click)=\"add('[SYEAR]')\">年</button>\n    <button mat-button type=\"button\" (click)=\"add('[SMONTH]')\">月</button>\n    <button mat-button type=\"button\" (click)=\"add('[SDAY]')\">日</button>\n    <button mat-button type=\"button\" (click)=\"add('[SHOUR]')\">時</button>\n    <button mat-button type=\"button\" (click)=\"add('[SMIN]')\">分</button>\n\n    <h2>終了日時</h2>\n    <button mat-button type=\"button\" (click)=\"add('[EYEAR]')\">年</button>\n    <button mat-button type=\"button\" (click)=\"add('[EMONTH]')\">月</button>\n    <button mat-button type=\"button\" (click)=\"add('[EDAY]')\">日</button>\n    <button mat-button type=\"button\" (click)=\"add('[EHOUR]')\">時</button>\n    <button mat-button type=\"button\" (click)=\"add('[EMIN]')\">分</button>\n\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/macro/macro.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/macro/macro.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var MacroComponent = /** @class */ (function () {
+    function MacroComponent(dialogRef, data) {
+        var _this = this;
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.text = '';
+        this.position = 0;
+        this.length = 0;
+        this.onBlur = function (e) {
+            _this.position = e.srcElement.selectionStart;
+            _this.length = e.srcElement.selectionEnd - _this.position;
+        };
+        this.add = function (tag) {
+            _this.text = _this.text.substr(0, _this.position) + tag + _this.text.substr(_this.position + _this.length);
+            console.log(_this.text);
+        };
+        this.update = function () {
+            _this.dialogRef.close(_this.text);
+        };
+        this.text = data;
+    }
+    MacroComponent.prototype.ngOnInit = function () {
+    };
+    MacroComponent = __decorate([
+        core_1.Component({
+            selector: 'app-macro',
+            template: __webpack_require__("../../../../../src/app/components/macro/macro.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/macro/macro.component.scss")]
+        }),
+        __param(1, core_1.Inject(material_1.MAT_DIALOG_DATA)),
+        __metadata("design:paramtypes", [material_1.MatDialogRef, String])
+    ], MacroComponent);
+    return MacroComponent;
+}());
+exports.MacroComponent = MacroComponent;
 
 
 /***/ }),
@@ -1595,6 +1696,7 @@ var http_1 = __webpack_require__("../../../common/esm5/http.js");
 var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
+var macro_component_1 = __webpack_require__("../../../../../src/app/components/macro/macro.component.ts");
 var StateService = /** @class */ (function (_super) {
     __extends(StateService, _super);
     function StateService(http, dialog) {
@@ -1602,8 +1704,28 @@ var StateService = /** @class */ (function (_super) {
         _this.dialog = dialog;
         _this.selectedContent = new Subject_1.Subject();
         _this.playLibrary = new Subject_1.Subject();
+        /**
+         * 予約編集
+         * @param data
+         * @param callback
+         */
         _this.editReserve = function (data, callback) {
             var dialogRef = _this.dialog.open(reserve_edit_component_1.ReserveEditComponent, {
+                //width: '250px',
+                disableClose: true,
+                data: data
+            });
+            dialogRef.afterClosed().subscribe(function (res) {
+                callback(res);
+            });
+        };
+        /**
+         * 置換
+         * @param data
+         * @param callback
+         */
+        _this.macro = function (data, callback) {
+            var dialogRef = _this.dialog.open(macro_component_1.MacroComponent, {
                 //width: '250px',
                 disableClose: true,
                 data: data
