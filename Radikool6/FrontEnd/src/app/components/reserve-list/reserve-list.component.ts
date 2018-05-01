@@ -55,7 +55,7 @@ export class ReserveListComponent implements OnInit, OnDestroy {
       }
     });
 
-    /*this.timer = Observable.timer(0, 1000);
+    this.timer = Observable.timer(0, 1000);
     this.subs.push(this.timer.subscribe(x => {
       this.taskService.get().subscribe(res => {
         if (res.result) {
@@ -65,13 +65,13 @@ export class ReserveListComponent implements OnInit, OnDestroy {
           this.taskDataSource.sort = this.taskSort;
         }
       });
-    }));*/
-    this.tasks = [
+    }));
+    /*this.tasks = [
       {start: new Date('2018-04-30 00:00:00'), end: new Date('2018-04-30 01:00:00'), status: 'status'},
       {start: new Date('2018-04-30 01:00:00'), end: new Date('2018-04-30 02:00:00'), status: 'status2'}];
     this.taskDataSource = new MatTableDataSource(this.tasks);
     this.taskDataSource.sort = this.taskSort;
-    console.log(this.taskDataSource);
+    console.log(this.taskDataSource);*/
   }
 
   /**
@@ -83,6 +83,12 @@ export class ReserveListComponent implements OnInit, OnDestroy {
       if (res) {
         this.init();
       }
+    });
+  }
+
+  public stopRestartReserveTask = (task: ReserveTask) => {
+    this.taskService.stopRestart(task).subscribe(res => {
+console.log(res);
     });
   }
 

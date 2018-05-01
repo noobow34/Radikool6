@@ -11,6 +11,19 @@ namespace Radikool6.BackgroundTask
         protected ReserveTask Task { get; set; }
         protected CommonConfig Config { get; set; }
         protected DateTime StartTime { get; set; }
+
+        public RecorderStatus Status { get; set; } = RecorderStatus.None;
+        
+        public enum RecorderStatus
+        {
+            None,
+            Working,
+            Stopping,
+            Stopped,
+            Error,
+            End
+        }
+        
         
         public static Recorder GetRecorder(CommonConfig config, ReserveTask task)
         {

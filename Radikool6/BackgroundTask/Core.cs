@@ -41,6 +41,16 @@ namespace Radikool6.BackgroundTask
         }
 
         /// <summary>
+        /// 停止／再開
+        /// </summary>
+        /// <param name="taskId"></param>
+        public void StopRestart(string taskId)
+        {
+            _recorders.FirstOrDefault(r => r.Id == taskId)?.StopRestart();
+        }
+        
+
+        /// <summary>
         /// 起動時の処理
         /// </summary>
         private static void Init()

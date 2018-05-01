@@ -17,12 +17,27 @@ namespace Radikool6.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/task/")]
-        public async Task<ApiResponse> Index()
+        public async Task<ApiResponse> Get()
         {
             return await Execute(() =>
             {
                 Result.Result = true;
                 Result.Data = Program.Core.GetStatus();
+            });
+        }
+        
+        /// <summary>
+        /// 録音タスク停止／再開
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/task/{taskId}")]
+        public async Task<ApiResponse> Post(string taskId)
+        {
+            return await Execute(() =>
+            {
+                Program.Core.StopRestart(taskId);
+                Result.Result = true;
             });
         }
     }

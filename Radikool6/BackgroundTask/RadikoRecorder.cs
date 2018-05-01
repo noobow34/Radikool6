@@ -26,6 +26,7 @@ namespace Radikool6.BackgroundTask
 
         public async Task TimeFree(Entities.Program program)
         {
+            Status = RecorderStatus.Working;
             _program = program;
             Directory.CreateDirectory("records");
             _filename = Path.Combine("records", $"{Guid.NewGuid().ToString()}.aac");
@@ -46,9 +47,65 @@ namespace Radikool6.BackgroundTask
 
         public ReserveTask GetStatus()
         {
-            return new ReserveTask(){ Start = StartTime, End = Task.End, Status = (DateTime.Now - StartTime).ToString(@"hh\:mm\:ss")};
+            var statusText = (DateTime.Now - StartTime).ToString(@"hh\:mm\:ss");
+            
+            // ffmpegの状態確認
+            if (_ffmpeg.HasExited)
+            {
+                if (Status == RecorderStatus.Stopping)
+                {
+                    Status = RecorderStatus.Stopped;
+                }
+                else
+                {
+                    Status = DateTime.Now < Task.End ? RecorderStatus.Error : RecorderStatus.End;
+                }
+            }
+
+            switch (Status)
+            {
+                case RecorderStatus.Stopped:
+                    statusText = "停止中";
+                    break;
+
+                case RecorderStatus.Stopping:
+                    statusText = "停止処理中";
+                    break;
+                
+                case RecorderStatus.Error:
+                    statusText = "エラー";
+                    break;
+                
+                case RecorderStatus.End:
+                    statusText = "完了";
+                    break;
+            }
+
+            return new ReserveTask(){ Id = Id, Start = StartTime, End = Task.End, Status = statusText};
         }
 
+        /// <summary>
+        /// 停止／再開
+        /// </summary>
+        public void StopRestart()
+        {
+            if (Task.Reserve.IsTimeFree) return;
+            if (Status == RecorderStatus.Stopped)
+            {
+                // 再開
+                Start();
+            }
+            else if(Status == RecorderStatus.Working)
+            {
+                // 停止
+                Stop();
+            }
+        }
+
+        /// <summary>
+        /// ffmpegのプロセス作成
+        /// </summary>
+        /// <param name="arg"></param>
         private void CreateProcess(string arg)
         {
             _ffmpeg = new Process
@@ -81,10 +138,16 @@ namespace Radikool6.BackgroundTask
 
 
 
+        /// <summary>
+        /// 録音開始
+        /// </summary>
+        /// <returns></returns>
         public async Task Start()
         {
             try
             {
+                Status = RecorderStatus.Working;
+                
                 using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
                 {
                     var pModel = new ProgramModel(con);
@@ -134,6 +197,15 @@ namespace Radikool6.BackgroundTask
                 var a = ex.Message;
             }
          }
+
+        /// <summary>
+        /// 停止
+        /// </summary>
+        private void Stop()
+        {
+            Status = RecorderStatus.Stopping;
+            _ffmpeg.Kill();            
+        }
 
 
         void process_Exited(object sender, System.EventArgs e)
