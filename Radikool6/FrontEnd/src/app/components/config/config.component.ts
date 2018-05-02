@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ConfigService} from '../../services/config.service';
-import {Config, EncodeSetting} from '../../interfaces/config';
+import {Config } from '../../interfaces/config';
 import {StateService} from '../../services/state.service';
 
 @Component({
@@ -11,21 +11,14 @@ import {StateService} from '../../services/state.service';
 export class ConfigComponent implements OnInit {
 
   public config: Config = {};
-  public encodeSettings: EncodeSetting[] = [];
 
-  constructor(
-    private stateService: StateService,
-    private configService: ConfigService) { }
+  constructor(private stateService: StateService,
+              private configService: ConfigService) {
+  }
 
   ngOnInit() {
-    this.configService.getEncodeSettings().subscribe(res => {
-      if (res.result){
-        this.encodeSettings = res.data;
-      }
-    });
-
     this.configService.get().subscribe(res => {
-      if (res.result){
+      if (res.result) {
         this.config = res.data;
       }
     });

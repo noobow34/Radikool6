@@ -225,7 +225,6 @@ var ConfigComponent = /** @class */ (function () {
         this.stateService = stateService;
         this.configService = configService;
         this.config = {};
-        this.encodeSettings = [];
         /**
          * 置換
          * @param {string} property
@@ -245,11 +244,6 @@ var ConfigComponent = /** @class */ (function () {
     }
     ConfigComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.configService.getEncodeSettings().subscribe(function (res) {
-            if (res.result) {
-                _this.encodeSettings = res.data;
-            }
-        });
         this.configService.get().subscribe(function (res) {
             if (res.result) {
                 _this.config = res.data;
@@ -1466,9 +1460,6 @@ var ConfigService = /** @class */ (function (_super) {
         };
         _this.update = function (config) {
             return _this.http.post('./api/config', config);
-        };
-        _this.getEncodeSettings = function () {
-            return _this.http.get('./api/encode_settings/');
         };
         return _this;
     }

@@ -1,4 +1,6 @@
-﻿using Radikool6.Entities;
+﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Mvc;
+using Radikool6.Entities;
 
 
 namespace Radikool6.Controllers
@@ -11,6 +13,5 @@ namespace Radikool6.Controllers
             
         }
 
-        
     }
 }

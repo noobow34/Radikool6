@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import {BaseService} from './base.service';
 import {HttpClient} from '@angular/common/http';
 import {ApiResult} from '../interfaces/api-result';
-import {Config, EncodeSetting} from '../interfaces/config';
+import {Config } from '../interfaces/config';
 
 @Injectable()
 export class ConfigService extends BaseService {
 
-  constructor(http:HttpClient) { super(http); }
+  constructor(http: HttpClient) {
+    super(http);
+  }
 
 
   public get = () => {
@@ -18,8 +20,5 @@ export class ConfigService extends BaseService {
     return this.http.post<ApiResult>('./api/config', config);
   }
 
-  public getEncodeSettings = () => {
-    return this.http.get<ApiResult<EncodeSetting[]>>('./api/encode_settings/');
-  }
 
 }

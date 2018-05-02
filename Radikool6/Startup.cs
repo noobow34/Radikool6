@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Radikool6.Classes;
-using Radikool6.Entities;
 
 namespace Radikool6
 {
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,6 +25,7 @@ namespace Radikool6
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseMiddleware<BasicAuthenticationMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
