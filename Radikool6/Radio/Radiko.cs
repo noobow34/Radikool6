@@ -135,7 +135,7 @@ namespace Radikool6.Radio
                 return doc.Descendants("prog")
                     .Select(prog => new Entities.Program()
                     {
-                        Id = station.Code + prog.Attribute("ft")?.Value,
+                        Id = station.Code + prog.Attribute("ft")?.Value + prog.Attribute("to")?.Value,
                         Start = Utility.Text.StringToDate(prog.Attribute("ft")?.Value),
                         End = Utility.Text.StringToDate(prog.Attribute("to")?.Value),
                         Title = prog.Element("title")?.Value.Trim(),

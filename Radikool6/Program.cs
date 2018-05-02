@@ -22,11 +22,6 @@ namespace Radikool6
         
         public static void Main(string[] args)
         {
-           
-            var logger = NLog.LogManager.GetCurrentClassLogger(); 
-            logger.Info("test");
-            
-            
             Init();
             
             Core = new Core();

@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using Microsoft.Data.Sqlite;
 using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
+using Radikool6.Radio;
 
 namespace Radikool6.BackgroundTask
 {
     public class Core
     {
         private readonly Timer _timer;
-        private bool _lock = false;
+        private bool _recorderLock = false;
+        private bool _timetableLock = false;
+        
        // private readonly List<Recorder> _recorders = new List<Recorder>();
         private readonly List<RadikoRecorder> _recorders = new List<RadikoRecorder>();
-
+        private DateTime _refreshTimetableDate = DateTime.MinValue;
         
         public Core()
         {
@@ -23,7 +27,6 @@ namespace Radikool6.BackgroundTask
 
             _timer = new Timer(1000);
             _timer.Elapsed += this.TimerElapsed;
-
         }
 
         public void Run()
@@ -62,6 +65,7 @@ namespace Radikool6.BackgroundTask
                 var config = cModel.Get();
                 var model = new ReserveModel(con);
                 model.RefreshTasks(config);
+
             }
         }
 
@@ -72,9 +76,9 @@ namespace Radikool6.BackgroundTask
         /// <param name="e"></param>
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
-            if (!_lock)
+            if (!_recorderLock)
             {
-                _lock = true;
+                _recorderLock = true;
                 using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
                 {
                     con.Open();
@@ -103,10 +107,51 @@ namespace Radikool6.BackgroundTask
 
                 }
 
-                _lock = false;
+                _recorderLock = false;
+            }
+
+            if (!_timetableLock && (DateTime.Now - _refreshTimetableDate).TotalDays > 6)
+            {
+                _timetableLock = true;
+                RefreshTimeTable();
+            }
+            
+            
+        }
+        
+
+        /// <summary>
+        /// 全番組表再取得
+        /// </summary>
+        private void RefreshTimeTable()
+        {
+            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
+            {
+                var sw = new Stopwatch();
+                sw.Start();
+                con.Open();
+                var sModel = new StationModel(con);
+                var pModel = new ProgramModel(con);
+                foreach (var station in sModel.Get(Define.Radiko.TypeName))
+                {
+                    try
+                    {
+                        var programs = Radiko.GetPrograms(station).Result;
+                        pModel.Refresh(programs);
+                    }
+                    catch (Exception e)
+                    {
+                        Global.Logger.Error($"{e.Message}¥r¥n{e.StackTrace}");
+                    }
+                }
+                
+                _refreshTimetableDate = DateTime.Now;
+                _timetableLock= false;
+                sw.Stop();
+                Global.Logger.Info($"番組表全更新:{sw.Elapsed}");
             }
         }
-
-
     }
+    
+    
 }

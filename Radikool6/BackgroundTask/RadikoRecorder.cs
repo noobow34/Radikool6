@@ -132,12 +132,11 @@ namespace Radikool6.BackgroundTask
             _ffmpeg.ErrorDataReceived += process_OutputDataReceived;
         //    _ffmpeg.Exited += process_Exited;
             
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info($"ffmpeg起動:{arg}");
+            Global.Logger.Info($"ffmpeg起動:{arg}");
 
             _ffmpeg.Exited += (sender, args) =>
             {
-                logger.Info($"タイムフリー録音終了");
+                Global.Logger.Info($"タイムフリー録音終了");
             };
         }
 
@@ -190,12 +189,11 @@ namespace Radikool6.BackgroundTask
                     _ffmpeg.BeginOutputReadLine();
                     _ffmpeg.BeginErrorReadLine();
 
-                    var logger = NLog.LogManager.GetCurrentClassLogger();
-                    logger.Info($"ffmpeg起動:{arg}");
+                    Global.Logger.Info($"ffmpeg起動:{arg}");
 
                     _ffmpeg.Exited += (sender, args) =>
                     {
-                        logger.Info($"録音終了");
+                        Global.Logger.Info($"録音終了");
                         
                     };
                 }

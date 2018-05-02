@@ -120,6 +120,9 @@ namespace Radikool6.Models
         /// <param name="programs"></param>
         public void Refresh(List<Entities.Program> programs)
         {
+            // 重複削除
+            programs = programs.GroupBy(p => p.Id).Select(g => g.First()).ToList();
+            
             using (var trn = SqliteConnection.BeginTransaction())
             {
                 var stationIds = programs.Select(p => p.StationId).Distinct();
