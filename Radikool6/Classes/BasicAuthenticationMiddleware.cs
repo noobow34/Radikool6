@@ -8,9 +8,8 @@ namespace Radikool6.Classes
 {
     public class BasicAuthenticationMiddleware
     {
-        const string USER_NAME = "test";
-
-        const string PASSWORD = "test";
+        private readonly string _id = Environment.GetEnvironmentVariable("radikool_id");
+        private readonly string _password = Environment.GetEnvironmentVariable("radikool_password");
 
         readonly RequestDelegate _next;
 
@@ -33,7 +32,7 @@ namespace Radikool6.Classes
                 var userName = credentials.Substring(0, separatorIndex);
                 var password = credentials.Substring(separatorIndex + 1);
 
-                if (userName == USER_NAME && password == PASSWORD)
+                if (userName == _id && password == _password)
                 {
                     // コンテキストにユーザー情報をセットする
                     var claims = new[]

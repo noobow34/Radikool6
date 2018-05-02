@@ -37,7 +37,7 @@ namespace Radikool6
 
         /// <summary>
         /// 初期化
-        /// </summary>
+        /// </summary>port
         private static void Init()
         {
             if (File.Exists(Define.File.KeyFile))
