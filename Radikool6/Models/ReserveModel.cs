@@ -41,8 +41,9 @@ namespace Radikool6.Models
         /// 予約更新
         /// </summary>
         /// <param name="reserve"></param>
+        /// <param name="config"></param>
         /// <returns></returns>
-        public bool Update(Reserve reserve, CommonConfig config)
+        public bool Update(Reserve reserve, Config config)
         {
             if (string.IsNullOrWhiteSpace(reserve.Id))
             {
@@ -80,7 +81,7 @@ namespace Radikool6.Models
         /// <summary>
         /// タスク更新
         /// </summary>
-        public void RefreshTasks(CommonConfig config, Reserve reserve = null)
+        public void RefreshTasks(Config config, Reserve reserve = null)
         {           
             var reserves = new List<Reserve>();
             if (reserve == null)

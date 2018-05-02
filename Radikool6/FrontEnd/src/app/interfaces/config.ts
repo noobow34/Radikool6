@@ -12,8 +12,7 @@ export interface Config {
   tagGenre?: string;
   tagComment?: string;
 
-}
-
-export interface EncodeSetting{
-
+  samplingRate?: string;
+  bitRate?: string;
+  volume?: string;
 }

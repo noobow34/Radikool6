@@ -19,7 +19,7 @@ namespace Radikool6.BackgroundTask
         private string _filename;
         private Entities.Program _program = new Entities.Program();
 
-        public RadikoRecorder(CommonConfig config, ReserveTask task = null) : base(config, task)
+        public RadikoRecorder(Config config, ReserveTask task = null) : base(config, task)
         {
         //    Start();
         }
@@ -32,7 +32,8 @@ namespace Radikool6.BackgroundTask
             _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
             StartTime = DateTime.Now;
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
-            var arg = $"-i {m3U8} -metadata title=\"{Config.TagTitle}\" -metadata artist=\"{Config.TagArtist}\" -metadata album=\"{Config.TagAlbum}\" -metadata genre=\"{Config.TagGenre}\" -metadata comment=\"{Config.TagComment}\" -bsf:a aac_adtstoasc \"{_filename}\"";
+            
+            var arg = Define.Radiko.TimeFreeFfmpegArgs.Replace("[M3U8]", m3U8).Replace("[FILE]", _filename);
             arg = Replace(arg, Task?.Station ?? _program.Station, _program);
             CreateProcess(arg);
 
@@ -173,7 +174,7 @@ namespace Radikool6.BackgroundTask
                     StartTime = DateTime.Now;
                     var t = Task.End - Task.Start;
                     _token = await Radio.Radiko.GetAuthToken();
-                    var arg = Define.Radiko.FfmpegArgs.Replace("[TOKEN]", _token)
+                    var arg = Define.Radiko.RealTimeFfmpegArgs.Replace("[TOKEN]", _token)
                         .Replace("[TIME]", (Task.End - DateTime.Now).ToString(@"hh\:mm\:ss"))
                         .Replace("[FILE]", _filename);
                     arg = Replace(arg, Task.Station, _program);

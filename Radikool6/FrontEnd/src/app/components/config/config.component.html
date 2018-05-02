@@ -32,5 +32,17 @@
   </mat-form-field>
 
 
+  <mat-form-field>
+    <input matInput placeholder="サンプリングレート" name="samplingRate" [(ngModel)]="config.samplingRate" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="ビットレート" name="bitRate" [(ngModel)]="config.bitRate" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="ボリューム" name="volume" [(ngModel)]="config.volume" />
+  </mat-form-field>
+
+
+
   <button type="submit" mat-raised-button color="primary">保存</button>
 </form>

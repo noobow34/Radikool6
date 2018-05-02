@@ -138,9 +138,10 @@ namespace Radikool6.Classes
             public const string PlayList =
                 "http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8";
 
-            public const string FfmpegArgs = "-headers \"X-Radiko-AuthToken: [TOKEN]\" -i \"http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8\" -t [TIME] -metadata title=\"[TAG_TITLE]\" -metadata artist=\"[TAG_ARTIST]\" -metadata album=\"[TAG_ALBUM]\" -metadata genre=\"[TAG_GENRE]\" -metadata comment=\"[TAG_COMMENT]\" -bsf:a aac_adtstoasc [FILE]";
+            public const string RealTimeFfmpegArgs = "-headers \"X-Radiko-AuthToken: [TOKEN]\" -i \"http://f-radiko.smartstream.ne.jp/[CH]/_definst_/simul-stream.stream/playlist.m3u8\" -t [TIME] -metadata title=\"[TAG_TITLE]\" -metadata artist=\"[TAG_ARTIST]\" -metadata album=\"[TAG_ALBUM]\" -metadata genre=\"[TAG_GENRE]\" -metadata comment=\"[TAG_COMMENT]\" -bsf:a aac_adtstoasc -ar [SAMPLINGRATE] -ab [BITRATE] -vol [VOLUME]  \"[FILE]\"";
 
-            
+            public static readonly string TimeFreeFfmpegArgs = $"-i \"[M3U8]\" -metadata title=\"[TAG_TITLE]\" -metadata artist=\"[TAG_ARTIST]\" -metadata album=\"[TAG_ALBUM]\" -metadata genre=\"[TAG_GENRE]\" -metadata comment=\"[TAG_COMMENT]\" -bsf:a aac_adtstoasc -ar [SAMPLINGRATE] -ab [BITRATE] -vol [VOLUME]  \"[FILE]\"";
+
             
             //                var args = $"-headers 'X-Radiko-AuthToken: {t.Result}' -i '{url}' -t 00:00:30 -acodec copy test.aac";
 

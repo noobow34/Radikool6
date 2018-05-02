@@ -12,7 +12,11 @@ namespace Radikool6.Controllers
         {
         }
 
-        
+
+        /// <summary>
+        /// 設定取得
+        /// </summary>
+        /// <returns></returns>
         [Route("api/config/")]
         public async Task<ApiResponse> Get()
         {
@@ -21,16 +25,21 @@ namespace Radikool6.Controllers
                 using (SqliteConnection)
                 {
                     var cModel = new ConfigModel(SqliteConnection);
-                    var res = cModel.Get() ?? new CommonConfig();
+                    var res = cModel.Get() ?? new Config();
                     Result.Data = res;
                     Result.Result = true;
                 }
             });
         }
         
+        /// <summary>
+        /// 設定保存
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/config/")]
-        public async Task<ApiResponse> Post([FromBody]CommonConfig config)
+        public async Task<ApiResponse> Post([FromBody]Config config)
         {
             return await Execute(() =>
             {
@@ -42,20 +51,6 @@ namespace Radikool6.Controllers
             });
         }
         
-        
-        [Route("api/encode_settings/")]
-        public async Task<ApiResponse> GetEncodeSettings()
-        {
-            return await Execute(() =>
-            {
-                using (SqliteConnection)
-                {
-                    var cModel = new ConfigModel(SqliteConnection);
-                    var res = cModel.GetEncodeSettings();
-                    Result.Data = res;
-                    Result.Result = true;
-                }
-            });
-        }
+
     }
 }

@@ -19,17 +19,17 @@ namespace Radikool6.Models
         }
 
         /// <summary>
-        /// 一般設定取得
+        /// 設定取得
         /// </summary>
         /// <returns></returns>
-        public CommonConfig Get()
+        public Config Get()
         {
-            var config = SqliteConnection
-                .Query<Config>("SELECT * FROM Configs WHERE Id = @id", new {id = Define.Config.Common})
+            var json = SqliteConnection
+                .Query<string>("SELECT Content FROM Configs WHERE Id = @id", new {id = Define.Config.Common})
                 .FirstOrDefault();
-            if (config == null) return null;
+            if (string.IsNullOrWhiteSpace(json)) return null;
 
-            var res = JsonConvert.DeserializeObject<CommonConfig>(config.Content);
+            var res = JsonConvert.DeserializeObject<Config>(json);
 
             res.RadikoEmail = Utility.Text.Decrypt(res.RadikoEmail, Global.EncKey);
             res.RadikoPassword = Utility.Text.Decrypt(res.RadikoPassword, Global.EncKey);
@@ -40,12 +40,12 @@ namespace Radikool6.Models
         /// <summary>
         /// 一般設定更新
         /// </summary>
-        /// <param name="commonConfig"></param>
+        /// <param name="config"></param>
         /// <returns></returns>
-        public bool Update(CommonConfig commonConfig)
+        public bool Update(Config config)
         {
-            commonConfig.RadikoEmail = Utility.Text.Encrypt(commonConfig.RadikoEmail, Global.EncKey);
-            commonConfig.RadikoPassword = Utility.Text.Encrypt(commonConfig.RadikoPassword, Global.EncKey);
+            config.RadikoEmail = Utility.Text.Encrypt(config.RadikoEmail, Global.EncKey);
+            config.RadikoPassword = Utility.Text.Encrypt(config.RadikoPassword, Global.EncKey);
 
             const string query = @"REPLACE INTO 
                                        Configs
@@ -59,50 +59,9 @@ namespace Radikool6.Models
                                        @Content
                                    )";
             SqliteConnection.Execute(query,
-                new {Id = Define.Config.Common, Content = JsonConvert.SerializeObject(commonConfig)});
+                new {Id = Define.Config.Common, Content = JsonConvert.SerializeObject(config)});
             return true;
         }
 
-
-        /// <summary>
-        /// エンコード設定取得
-        /// </summary>
-        /// <returns></returns>
-        public List<EncodeSetting> GetEncodeSettings()
-        {
-            var config = SqliteConnection
-                .Query<Config>("SELECT * FROM Configs WHERE Id = @id", new {id = Define.Config.EncodeSetting})
-                .FirstOrDefault();
-            List<EncodeSetting> res = null;
-            try
-            {
-                if (config != null)
-                {
-                    res = JsonConvert.DeserializeObject<List<EncodeSetting>>(config.Content);
-                }
-            }
-            catch (Exception e)
-            {
-                res = null;
-            }
-
-            if (res != null) return res;
-            res = (new Define.EncodeSettings()).Default;
-            const string query = @"INSERT INTO 
-                                       Configs
-                                   (
-                                       Id,
-                                       Content
-                                   )
-                                   VALUES
-                                   (
-                                       @Id,
-                                       @Content
-                                   )";
-            SqliteConnection.Execute(query,
-                new {Id = Define.Config.EncodeSetting, Content = JsonConvert.SerializeObject(res)});
-
-            return res;
-        }
     }
 }

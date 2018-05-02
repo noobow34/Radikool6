@@ -10,7 +10,7 @@ namespace Radikool6.BackgroundTask
     {
         public string Id { get; set; }
         protected ReserveTask Task { get; set; }
-        protected CommonConfig Config { get; set; }
+        protected Config Config { get; set; }
         protected DateTime StartTime { get; set; }
 
         public RecorderStatus Status { get; set; } = RecorderStatus.None;
@@ -26,7 +26,7 @@ namespace Radikool6.BackgroundTask
         }
         
         
-        public static Recorder GetRecorder(CommonConfig config, ReserveTask task)
+        public static Recorder GetRecorder(Config config, ReserveTask task)
         {
             Recorder res = null;
             switch (task.Station.Type)
@@ -40,7 +40,7 @@ namespace Radikool6.BackgroundTask
             return res;
         }
 
-        protected Recorder(CommonConfig config, ReserveTask task = null)
+        protected Recorder(Config config, ReserveTask task = null)
         {
             Config = config;
             Task = task;
@@ -53,9 +53,21 @@ namespace Radikool6.BackgroundTask
         /// <param name="src"></param>
         /// <param name="program"></param>
         /// <returns></returns>
-        protected static string Replace(string src, Station station, Entities.Program program)
+        protected string Replace(string src, Station station, Entities.Program program)
         {
             var res = src;
+
+
+            res = res.Replace("[TAG_TITLE]", Config.TagTitle);
+            res = res.Replace("[TAG_ARTIST]", Config.TagArtist);
+            res = res.Replace("[TAG_COMMENT]", Config.TagComment);
+            res = res.Replace("[TAG_GENRE]", Config.TagGenre);
+            res = res.Replace("[TAG_ALBUM]", Config.TagAlbum);
+            
+            res = res.Replace("[BITRATE]", Config.BitRate);
+            res = res.Replace("[SAMPLINGRATE]", Config.SamplingRate);
+            res = res.Replace("[VOLUME]", Config.Volume);
+            
             res = res.Replace("[CH_NAME]", station.Name);
             res = res.Replace("[CH]", station.Code);
 
