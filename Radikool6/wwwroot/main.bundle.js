@@ -743,7 +743,8 @@ var ReserveEditComponent = /** @class */ (function () {
                 name: this.data.program.title,
                 stationId: data.program.stationId,
                 start: data.program.start,
-                end: data.program.end
+                end: data.program.end,
+                isTimeFree: true
             };
         }
         else {
