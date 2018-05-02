@@ -14,6 +14,7 @@ namespace Radikool6.Entities
         public string Title { get; set; }
         public string Cast { get; set; }
         public string Description { get; set; }
+        public string TsNg { get; set; }
 
         [JsonIgnore]
         public Station Station { get; set; }

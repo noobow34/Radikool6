@@ -181,7 +181,7 @@ namespace Radikool6.BackgroundTask
                     var t = Task.End - Task.Start;
                     _token = await Radio.Radiko.GetAuthToken();
                     var arg = Define.Radiko.RealTimeFfmpegArgs.Replace("[TOKEN]", _token)
-                        .Replace("[TIME]", (Task.End - DateTime.Now).ToString(@"hh\:mm\:ss"))
+                        .Replace("[TIME]", (Task.End.AddSeconds(Define.Radiko.EndSec) - DateTime.Now).ToString(@"hh\:mm\:ss"))
                         .Replace("[FILE]", _filename);
                     arg = Replace(arg, Task.Station, _program);
                     CreateProcess(arg);

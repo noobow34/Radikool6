@@ -141,7 +141,8 @@ namespace Radikool6.Radio
                         Title = prog.Element("title")?.Value.Trim(),
                         Cast = prog.Element("pfm")?.Value.Trim(),
                         Description = prog.Element("info")?.Value.Trim(),
-                        StationId = station.Id
+                        StationId = station.Id,
+                        TsNg = prog.Element("ts_in_ng")?.Value.Trim()
                     })
                     .ToList();
 

@@ -135,7 +135,8 @@ namespace Radikool6.Models
                                            End,
                                            Title,
                                            Cast,
-                                           Description
+                                           Description,
+                                           TsNg
                                        )
                                        VALUES
                                        (
@@ -145,7 +146,8 @@ namespace Radikool6.Models
                                            @End,
                                            @Title,
                                            @Cast,
-                                           @Description
+                                           @Description,
+                                           @TsNg
                                        )";
 
                 programs.ForEach(p => { SqliteConnection.Execute(query, p, trn); });

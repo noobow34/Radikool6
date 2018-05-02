@@ -36,7 +36,8 @@
       "End": "text",
       "Title": "text",
       "Cast": "text",
-      "Description": "text"
+      "Description": "text",
+      "TsNg": "text"
     },
     "primaryKey": ["Id"]
   },

@@ -24,6 +24,8 @@ namespace Radikool6.Classes
 
         public class Radiko
         {
+            public const int EndSec = 30;
+            
             /// <summary>
             /// Radiko
             /// </summary>

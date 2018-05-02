@@ -55,8 +55,9 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox name="isTimeFree" [(ngModel)]="reserve.isTimeFree">タイムフリーで録音</mat-checkbox>
-
+      <mat-checkbox name="isTimeFree" [(ngModel)]="reserve.isTimeFree" *ngIf="tsNg === '0' || tsNg === '1'">タイムフリーで録音</mat-checkbox>
+      <p *ngIf="tsNg ==='1'">タイムフリー一部未対応</p>
+      <p *ngIf="tsNg ==='2'">タイムフリー未対応</p>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>

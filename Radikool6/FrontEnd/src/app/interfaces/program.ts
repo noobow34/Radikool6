@@ -7,6 +7,7 @@ export interface Program {
   stationId: string;
   title: string;
   reservable?: boolean;
+  tsNg?: string;
 }
 
 export interface ProgramSearchCondition {

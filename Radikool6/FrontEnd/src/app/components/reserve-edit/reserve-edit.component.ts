@@ -17,6 +17,7 @@ export class ReserveEditComponent implements OnInit {
   public stations: Station[] = [];
   public hours: number[] = [];
   public minutes: number[] = [];
+  public tsNg = '1';
 
   public startDate;
   public startHour;
@@ -31,16 +32,16 @@ export class ReserveEditComponent implements OnInit {
               private reserveService: ReserveService,
               private stationService: StationService) {
 
-    console.log(data.program);
-
     if (data.program) {
       this.reserve = {
         name: this.data.program.title,
         stationId: data.program.stationId,
         start: data.program.start,
         end: data.program.end,
-        isTimeFree: true
+        isTimeFree: this.data.program.tsNg === '1'
       };
+
+      this.tsNg = this.data.program.tsNg;
 
     } else {
       this.reserve = Object.assign({}, data.reserve);
