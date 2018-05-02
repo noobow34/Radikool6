@@ -26,6 +26,8 @@ namespace Radikool6.Radio
         /// <returns></returns>
         public static async Task<bool> Login(string email, string pass)
         {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass)) return false;
+            
             var result = false;
             using (var handler = new HttpClientHandler() {UseCookies = true})
             {

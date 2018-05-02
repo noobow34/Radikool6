@@ -27,6 +27,9 @@ namespace Radikool6.BackgroundTask
         public async Task TimeFree(Entities.Program program)
         {
             Status = RecorderStatus.Working;
+            await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
+            
+            
             _program = program;
             Directory.CreateDirectory("records");
             _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
@@ -149,6 +152,9 @@ namespace Radikool6.BackgroundTask
             try
             {
                 Status = RecorderStatus.Working;
+
+                
+                
                 
                 using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
                 {
@@ -168,7 +174,7 @@ namespace Radikool6.BackgroundTask
                 }
                 else
                 {              
-                    
+                    await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
                     Directory.CreateDirectory("records");
                     _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
                     StartTime = DateTime.Now;
