@@ -34,8 +34,8 @@ export class LibraryComponent implements OnInit {
   }
 
   public play = (library: Library) => {
-    this.stateServie.playLibrary.next(library);
-   // window.open(`./library/play/${library.id}`);
+   // this.stateServie.playLibrary.next(library);
+   window.open(`./records/${library.path}`);
   }
 
 }

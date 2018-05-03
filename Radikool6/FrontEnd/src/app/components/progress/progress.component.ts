@@ -20,7 +20,7 @@ export class ProgressComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.timer = Observable.timer(0, 1000);
+    this.timer = Observable.timer(0, 10000);
     this.sub = this.timer.subscribe(x => {
       this.programService.getTimeFreeProgress().subscribe(res => {
         if (res.result) {

@@ -31,7 +31,7 @@ namespace Radikool6.Controllers
 
                 if (library != null && System.IO.File.Exists(library.FileName))
                 {
-                    return File(System.IO.File.OpenRead(library.FileName), "audio/aac");
+                    return File(System.IO.File.OpenRead(library.FileName), "audio/mp4");
                 }
                 else
                 {

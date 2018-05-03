@@ -42,8 +42,8 @@ namespace Radikool6.BackgroundTask
 
 
             _program = program;
-            Directory.CreateDirectory("records");
-            _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
+            Directory.CreateDirectory(Path.Combine("wwwroot", "records"));
+            _filename = Path.GetFullPath(Path.Combine("wwwroot", "records", $"{Guid.NewGuid().ToString()}.m4a"));
             StartTime = DateTime.Now;
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
 
@@ -87,8 +87,8 @@ namespace Radikool6.BackgroundTask
                 else
                 {              
                     await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
-                    Directory.CreateDirectory("records");
-                    _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
+                    Directory.CreateDirectory(Path.Combine("wwwroot","records"));
+                    _filename = Path.GetFullPath(Path.Combine("wwwroot", "records", $"{Guid.NewGuid().ToString()}.m4a"));
                     StartTime = DateTime.Now;
                     _token = await Radio.Radiko.GetAuthToken();
                     var arg = Define.Radiko.RealTimeFfmpegArgs.Replace("[TOKEN]", _token)

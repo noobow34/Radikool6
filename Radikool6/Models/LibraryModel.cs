@@ -24,7 +24,12 @@ namespace Radikool6.Models
         /// <returns></returns>
         public IEnumerable<Library> Get()
         {
-            return SqliteConnection.Query<Library>("SELECT * FROM Libraries");
+            var libraries = SqliteConnection.Query<Library>("SELECT * FROM Libraries").ToList();
+            libraries.ForEach(l =>
+            {
+                l.Path = Path.GetFileName(l.Path);
+            });
+            return libraries;
         }
         
         /// <summary>
@@ -71,9 +76,10 @@ namespace Radikool6.Models
         /// <returns></returns>
         public bool Maintenance()
         {
-            var dir = new DirectoryInfo("records");
+            var dir = new DirectoryInfo(Path.Combine("wwwroot", "records"));
             var files = dir.EnumerateFiles("*.m4a").Select(f => f.FullName).ToList();
-            foreach (var library in Get())
+            var libraries = SqliteConnection.Query<Library>("SELECT * FROM Libraries");
+            foreach (var library in libraries)
             {
                 if (!files.Contains(library.Path))
                 {

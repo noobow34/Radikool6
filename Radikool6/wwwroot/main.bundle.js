@@ -20,7 +20,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main\">\n  <app-toolbar></app-toolbar>\n  <app-player></app-player>\n  <app-content></app-content>\n</div>\n\n"
+module.exports = "<div class=\"main\">\n  <app-toolbar></app-toolbar>\n <!-- <app-player></app-player> -->\n  <app-content></app-content>\n</div>\n\n"
 
 /***/ }),
 
@@ -387,7 +387,6 @@ var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var LibraryComponent = /** @class */ (function () {
     function LibraryComponent(stateServie, libraryService) {
-        var _this = this;
         this.stateServie = stateServie;
         this.libraryService = libraryService;
         this.libraries = [];
@@ -395,8 +394,8 @@ var LibraryComponent = /** @class */ (function () {
         this.dataSource = new material_1.MatTableDataSource();
         this.displayedColumns = ['fileName', 'title'];
         this.play = function (library) {
-            _this.stateServie.playLibrary.next(library);
-            // window.open(`./library/play/${library.id}`);
+            // this.stateServie.playLibrary.next(library);
+            window.open("./records/" + library.path);
         };
     }
     LibraryComponent.prototype.ngOnInit = function () {
@@ -736,7 +735,7 @@ var ProgressComponent = /** @class */ (function () {
     }
     ProgressComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.timer = Rx_1.Observable.timer(0, 1000);
+        this.timer = Rx_1.Observable.timer(0, 10000);
         this.sub = this.timer.subscribe(function (x) {
             _this.programService.getTimeFreeProgress().subscribe(function (res) {
                 if (res.result) {
