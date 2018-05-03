@@ -11,9 +11,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   public library: Library;
   private subs = [];
+  public show = false;
 
-  @ViewChild('audio')
-  private audioElement;
+  public position = 0;
+  public volume = 0.5;
+  public duration = 0;
 
   private audio;
 
@@ -21,21 +23,55 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-    this.audio = this.audioElement.nativeElement;
-
     this.subs.push(this.stateService.playLibrary.subscribe(value => {
       this.library = value;
-      console.log(this.library);
-      console.log(this.audio);
+      this.audio = new Audio(`./library/play/${this.library.id}`);
+      this.show = true;
 
-      this.audio.src = `./library/play/${this.library.id}`;
-   //   this.audio.play();
+      this.audio.addEventListener('loadedmetadata', e => {
+        this.duration = this.audio.duration;
+        this.audio.volume = this.volume;
+      });
+
+      this.audio.addEventListener('canplay', e => {
+        this.audio.play();
+      });
+
+
+      this.audio.addEventListener('timeupdate', e => {
+        this.position = this.audio.currentTime;
+      });
+
     }));
   }
 
   ngOnDestroy() {
     this.subs.forEach(s => s.unsubscribe());
+  }
+
+  public play = () => {
+    this.audio.play();
+  }
+
+  public pause = () => {
+    this.audio.pause();
+  }
+
+  /**
+   * シークバー
+   * @param e
+   */
+  public changePosition = (e) => {
+    this.audio.currentTime = e.value;
+  }
+
+  /**
+   * 音量変更
+   * @param e
+   */
+  public changeVolume = (e) => {
+    this.volume = e.value;
+    this.audio.volume = e.value;
   }
 
 }

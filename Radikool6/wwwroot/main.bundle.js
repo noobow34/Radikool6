@@ -20,7 +20,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main\">\n  <app-toolbar></app-toolbar>\n  <app-content></app-content>\n</div>\n\n"
+module.exports = "<div class=\"main\">\n  <app-toolbar></app-toolbar>\n  <app-player></app-player>\n  <app-content></app-content>\n</div>\n\n"
 
 /***/ }),
 
@@ -154,7 +154,8 @@ var AppModule = /** @class */ (function () {
                 material_1.MatSortModule,
                 material_1.MatDatepickerModule,
                 material_1.MatNativeDateModule,
-                material_1.MatProgressBarModule
+                material_1.MatProgressBarModule,
+                material_1.MatSliderModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -273,7 +274,7 @@ exports.ConfigComponent = ConfigComponent;
 /***/ "../../../../../src/app/components/content/content.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-manage *ngIf=\"selectedContent === 'manage'\"></app-manage>\n<app-player></app-player>\n"
+module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-manage *ngIf=\"selectedContent === 'manage'\"></app-manage>\n"
 
 /***/ }),
 
@@ -395,7 +396,7 @@ var LibraryComponent = /** @class */ (function () {
         this.displayedColumns = ['fileName', 'title'];
         this.play = function (library) {
             _this.stateServie.playLibrary.next(library);
-            //window.open(`./library/play/${library.id}`);
+            // window.open(`./library/play/${library.id}`);
         };
     }
     LibraryComponent.prototype.ngOnInit = function () {
@@ -577,7 +578,7 @@ exports.ManageComponent = ManageComponent;
 /***/ "../../../../../src/app/components/player/player.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n  player<audio #audio controls></audio>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <mat-card>\n    <mat-card-content>{{position}}/{{duration}}\n      <button mat-raised-button (click)=\"play()\">再生</button>\n      <button mat-raised-button (click)=\"pause()\">停止</button>\n      <mat-slider [min]=\"0\" [max]=\"duration\" [value]=\"position\" (change)=\"changePosition($event)\"></mat-slider>\n      <mat-slider [min]=\"0\" [max]=\"1\" [value]=\"volume\" (change)=\"changeVolume($event)\" [step]=\"0.05\"></mat-slider>\n    </mat-card-content>\n  </mat-card>\n</div>\n"
 
 /***/ }),
 
@@ -589,7 +590,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".container {\n  width: 100%;\n  padding: 1rem .5rem;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box; }\n\n.hide {\n  display: none; }\n\naudio {\n  width: 100%; }\n", ""]);
 
 // exports
 
@@ -618,27 +619,56 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var PlayerComponent = /** @class */ (function () {
     function PlayerComponent(stateService) {
+        var _this = this;
         this.stateService = stateService;
         this.subs = [];
+        this.show = false;
+        this.position = 0;
+        this.volume = 0.5;
+        this.duration = 0;
+        this.play = function () {
+            _this.audio.play();
+        };
+        this.pause = function () {
+            _this.audio.pause();
+        };
+        /**
+         * シークバー
+         * @param e
+         */
+        this.changePosition = function (e) {
+            _this.audio.currentTime = e.value;
+        };
+        /**
+         * 音量変更
+         * @param e
+         */
+        this.changeVolume = function (e) {
+            _this.volume = e.value;
+            _this.audio.volume = e.value;
+        };
     }
     PlayerComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.audio = this.audioElement.nativeElement;
         this.subs.push(this.stateService.playLibrary.subscribe(function (value) {
             _this.library = value;
-            console.log(_this.library);
-            console.log(_this.audio);
-            _this.audio.src = "./library/play/" + _this.library.id;
-            //   this.audio.play();
+            _this.audio = new Audio("./library/play/" + _this.library.id);
+            _this.show = true;
+            _this.audio.addEventListener('loadedmetadata', function (e) {
+                _this.duration = _this.audio.duration;
+                _this.audio.volume = _this.volume;
+            });
+            _this.audio.addEventListener('canplay', function (e) {
+                _this.audio.play();
+            });
+            _this.audio.addEventListener('timeupdate', function (e) {
+                _this.position = _this.audio.currentTime;
+            });
         }));
     };
     PlayerComponent.prototype.ngOnDestroy = function () {
         this.subs.forEach(function (s) { return s.unsubscribe(); });
     };
-    __decorate([
-        core_1.ViewChild('audio'),
-        __metadata("design:type", Object)
-    ], PlayerComponent.prototype, "audioElement", void 0);
     PlayerComponent = __decorate([
         core_1.Component({
             selector: 'app-player',

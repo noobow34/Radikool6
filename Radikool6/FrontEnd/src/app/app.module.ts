@@ -10,7 +10,7 @@ import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule, MatExpansionModule,
   MatInputModule, MatListModule, MatNativeDateModule, MatProgressBarModule,
   MatProgressSpinnerModule,
-  MatSelectModule, MatSortModule, MatTableModule,
+  MatSelectModule, MatSliderModule, MatSortModule, MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 import { ContentComponent } from './components/content/content.component';
@@ -73,7 +73,8 @@ import { ProgressComponent } from './components/progress/progress.component';
     MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSliderModule
   ],
   providers: [
     StateService,

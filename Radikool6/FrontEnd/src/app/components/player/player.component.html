@@ -1,3 +1,10 @@
-<div>
-  player<audio #audio controls></audio>
+<div class="container">
+  <mat-card>
+    <mat-card-content>{{position}}/{{duration}}
+      <button mat-raised-button (click)="play()">再生</button>
+      <button mat-raised-button (click)="pause()">停止</button>
+      <mat-slider [min]="0" [max]="duration" [value]="position" (change)="changePosition($event)"></mat-slider>
+      <mat-slider [min]="0" [max]="1" [value]="volume" (change)="changeVolume($event)" [step]="0.05"></mat-slider>
+    </mat-card-content>
+  </mat-card>
 </div>
