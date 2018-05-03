@@ -8,7 +8,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule, MatExpansionModule,
-  MatInputModule, MatListModule, MatNativeDateModule,
+  MatInputModule, MatListModule, MatNativeDateModule, MatProgressBarModule,
   MatProgressSpinnerModule,
   MatSelectModule, MatSortModule, MatTableModule,
   MatToolbarModule
@@ -33,6 +33,7 @@ import {TaskService} from './services/task.service';
 import {LibraryService} from './services/library.service';
 import { PlayerComponent } from './components/player/player.component';
 import { MacroComponent } from './components/macro/macro.component';
+import { ProgressComponent } from './components/progress/progress.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { MacroComponent } from './components/macro/macro.component';
     ResetProgramComponent,
     ResetStationComponent,
     PlayerComponent,
-    MacroComponent
+    MacroComponent,
+    ProgressComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,8 @@ import { MacroComponent } from './components/macro/macro.component';
     MatTableModule,
     MatSortModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressBarModule
   ],
   providers: [
     StateService,
@@ -83,7 +86,8 @@ import { MacroComponent } from './components/macro/macro.component';
   ],
   entryComponents: [
     ReserveEditComponent,
-    MacroComponent
+    MacroComponent,
+    ProgressComponent
   ],
   bootstrap: [AppComponent]
 })

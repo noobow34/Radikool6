@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {StationService} from '../../services/station.service';
 import {Station} from '../../interfaces/station';
 import {ProgramService} from '../../services/program.service';
@@ -6,6 +6,9 @@ import moment = require('moment');
 import {Program, ProgramSearchCondition} from '../../interfaces/program';
 import {StateService} from '../../services/state.service';
 import {Moment} from 'moment';
+import {MatTableDataSource} from "@angular/material";
+import {Observable} from "rxjs/Rx";
+import {ReserveEditComponent} from "../reserve-edit/reserve-edit.component";
 
 @Component({
   selector: 'app-timetable',
@@ -24,6 +27,7 @@ export class TimetableComponent implements OnInit {
 
   public loadingStation = false;
   public loadingProgram = false;
+
 
   constructor(private stationService: StationService,
               private programService: ProgramService,
@@ -48,9 +52,9 @@ export class TimetableComponent implements OnInit {
         }
       }
 
-      console.log(this.radikoRegions);
     });
   }
+
 
   public onClickRefresh = () => {
     this.stationService.refresh('radiko').subscribe(res => {
@@ -127,7 +131,11 @@ export class TimetableComponent implements OnInit {
    */
   public getTimeFree = (program: Program) => {
     this.programService.getTimeFree(program.id).subscribe(res => {
+      if (res.result) {
+        this.stateService.showTimefreeProgress(() => {
 
+        });
+      }
     });
   }
 

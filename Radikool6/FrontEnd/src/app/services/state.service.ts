@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material';
 import {ReserveEditComponent} from '../components/reserve-edit/reserve-edit.component';
 import {Library} from '../interfaces/library';
 import {MacroComponent} from "../components/macro/macro.component";
+import {ProgressComponent} from "../components/progress/progress.component";
 
 @Injectable()
 export class StateService extends BaseService {
@@ -45,6 +46,21 @@ export class StateService extends BaseService {
       //width: '250px',
       disableClose: true,
       data: data
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      callback(res);
+    });
+  }
+
+  /**
+   * タイムフリー進捗表示
+   * @param callback
+   */
+  public showTimefreeProgress = (callback) => {
+    const dialogRef = this.dialog.open(ProgressComponent, {
+      //width: '250px',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(res => {

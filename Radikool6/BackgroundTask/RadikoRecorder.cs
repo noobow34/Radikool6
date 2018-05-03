@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Radikool6.Classes;
@@ -18,37 +19,96 @@ namespace Radikool6.BackgroundTask
         private Process _ffmpeg;
         private string _filename;
         private Entities.Program _program = new Entities.Program();
+        private bool _isComplete = false;
+        private string _ffmpegOutput;
+        private int _duration;
+        public Action<int> ChangeProgress { get; set; } = (progress) => { };
 
         public RadikoRecorder(Config config, ReserveTask task = null) : base(config, task)
         {
-        //    Start();
         }
 
+        /// <summary>
+        /// タイムフリー
+        /// </summary>
+        /// <param name="program"></param>
+        /// <returns></returns>
         public async Task TimeFree(Entities.Program program)
         {
             Status = RecorderStatus.Working;
+            _duration = (int)(program.End - program.Start).TotalSeconds;
+            
             await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
-            
-            
+
+
             _program = program;
             Directory.CreateDirectory("records");
             _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
             StartTime = DateTime.Now;
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
-            
+
             var arg = Define.Radiko.TimeFreeFfmpegArgs.Replace("[M3U8]", m3U8).Replace("[FILE]", _filename);
             arg = Replace(arg, Task?.Station ?? _program.Station, _program);
             CreateProcess(arg);
 
-        //    await System.Threading.Tasks.Task.Factory.StartNew(() =>
-        //    {
-                _ffmpeg.Start();
 
-                _ffmpeg.BeginOutputReadLine();
-                _ffmpeg.BeginErrorReadLine();
-         //   });
+            _ffmpeg.Start();
+
+            _ffmpeg.BeginOutputReadLine();
+            _ffmpeg.BeginErrorReadLine();
 
         }
+
+        /// <summary>
+        /// 録音開始
+        /// </summary>
+        /// <returns></returns>
+        public async Task Start()
+        {
+            try
+            {
+                Status = RecorderStatus.Working;
+                using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
+                {
+                    var pModel = new ProgramModel(con);
+                    _program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.Reserve.Start, To = Task.Reserve.End}).FirstOrDefault();
+                }
+
+                if (Task.Reserve.IsTimeFree)
+                {
+                    // 番組情報取得
+                    using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))      
+                    {
+                        _program.Station = Task.Station;
+                        TimeFree(_program);
+                    }
+
+                }
+                else
+                {              
+                    await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
+                    Directory.CreateDirectory("records");
+                    _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
+                    StartTime = DateTime.Now;
+                    _token = await Radio.Radiko.GetAuthToken();
+                    var arg = Define.Radiko.RealTimeFfmpegArgs.Replace("[TOKEN]", _token)
+                        .Replace("[TIME]", (Task.End.AddSeconds(Define.Radiko.EndSec) - DateTime.Now).ToString(@"hh\:mm\:ss"))
+                        .Replace("[FILE]", _filename);
+                    arg = Replace(arg, Task.Station, _program);
+                    CreateProcess(arg);
+
+                    _ffmpeg.Start();
+                    _ffmpeg.BeginOutputReadLine();
+                    _ffmpeg.BeginErrorReadLine();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var a = ex.Message;
+            }
+         }
 
         public ReserveTask GetStatus()
         {
@@ -130,80 +190,14 @@ namespace Radikool6.BackgroundTask
             
             _ffmpeg.OutputDataReceived += process_OutputDataReceived;
             _ffmpeg.ErrorDataReceived += process_OutputDataReceived;
-        //    _ffmpeg.Exited += process_Exited;
+
             
             Global.Logger.Info($"ffmpeg起動:{arg}");
-
-            _ffmpeg.Exited += (sender, args) =>
-            {
-                Global.Logger.Info($"タイムフリー録音終了");
-            };
         }
 
 
 
-        /// <summary>
-        /// 録音開始
-        /// </summary>
-        /// <returns></returns>
-        public async Task Start()
-        {
-            try
-            {
-                Status = RecorderStatus.Working;
-
-                
-                
-                
-                using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
-                {
-                    var pModel = new ProgramModel(con);
-                    _program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.Reserve.Start, To = Task.Reserve.End}).FirstOrDefault();
-                }
-
-                if (Task.Reserve.IsTimeFree)
-                {
-                    // 番組情報取得
-                    using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))      
-                    {
-                        _program.Station = Task.Station;
-                        TimeFree(_program);
-                    }
-
-                }
-                else
-                {              
-                    await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
-                    Directory.CreateDirectory("records");
-                    _filename = Path.GetFullPath(Path.Combine("records", $"{Guid.NewGuid().ToString()}.m4a"));
-                    StartTime = DateTime.Now;
-                    var t = Task.End - Task.Start;
-                    _token = await Radio.Radiko.GetAuthToken();
-                    var arg = Define.Radiko.RealTimeFfmpegArgs.Replace("[TOKEN]", _token)
-                        .Replace("[TIME]", (Task.End.AddSeconds(Define.Radiko.EndSec) - DateTime.Now).ToString(@"hh\:mm\:ss"))
-                        .Replace("[FILE]", _filename);
-                    arg = Replace(arg, Task.Station, _program);
-                    CreateProcess(arg);
-
-                    _ffmpeg.Start();
-                    _ffmpeg.BeginOutputReadLine();
-                    _ffmpeg.BeginErrorReadLine();
-
-                    Global.Logger.Info($"ffmpeg起動:{arg}");
-
-                    _ffmpeg.Exited += (sender, args) =>
-                    {
-                        Global.Logger.Info($"録音終了");
-                        
-                    };
-                }
-
-            }
-            catch (Exception ex)
-            {
-                var a = ex.Message;
-            }
-         }
+        
 
         /// <summary>
         /// 停止
@@ -215,7 +209,7 @@ namespace Radikool6.BackgroundTask
         }
 
 
-        void process_Exited(object sender, System.EventArgs e)
+        private void process_Exited(object sender, System.EventArgs e)
         {
             using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
             {
@@ -226,18 +220,36 @@ namespace Radikool6.BackgroundTask
             }
         }
 
-        void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data == null)
             {
-                this.process_Exited(sender, e);
+                if (_isComplete) return;
+                _isComplete = true;
+                process_Exited(sender, e);
             }
             else
             {
-
-                var a = System.Text.Encoding.UTF8.GetBytes(e.Data);
+                _ffmpegOutput = e.Data;
             }
 
+            int progress = 0;
+            if (!string.IsNullOrWhiteSpace(e.Data))
+            {
+                var time = e.Data.Split(" ").FirstOrDefault(t => t.Contains("time=")) ?? "";
+                var m = Regex.Match(time, @"([0-9]+):([0-9]+):([0-9.]+)");
+                if (m.Success)
+                {
+                    var current = Convert.ToInt32(m.Groups[1].Value) * 3600 + Convert.ToInt32(m.Groups[2].Value) * 60 + Convert.ToDouble(m.Groups[3].Value);
+                    progress = ((int) (current / _duration * 100));
+                }
+            }
+
+            if (e.Data == null || progress > 0)
+            {
+                ChangeProgress(e.Data != null ? progress : -1);
+            }            
+            
         }
 
 

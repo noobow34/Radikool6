@@ -38,4 +38,12 @@ export class ProgramService extends BaseService {
     return this.http.post<ApiResult>(`./api/program/tf/${programId}`, {});
   }
 
+  /**
+   * タイムフリーダウンロード進捗確認
+   * @returns {Observable<Object>}
+   */
+  public getTimeFreeProgress = () => {
+    return this.http.get<ApiResult<number>>(`./api/program/tf/`);
+  }
+
 }

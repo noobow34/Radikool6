@@ -112,6 +112,7 @@ var task_service_1 = __webpack_require__("../../../../../src/app/services/task.s
 var library_service_1 = __webpack_require__("../../../../../src/app/services/library.service.ts");
 var player_component_1 = __webpack_require__("../../../../../src/app/components/player/player.component.ts");
 var macro_component_1 = __webpack_require__("../../../../../src/app/components/macro/macro.component.ts");
+var progress_component_1 = __webpack_require__("../../../../../src/app/components/progress/progress.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -131,7 +132,8 @@ var AppModule = /** @class */ (function () {
                 reset_program_component_1.ResetProgramComponent,
                 reset_station_component_1.ResetStationComponent,
                 player_component_1.PlayerComponent,
-                macro_component_1.MacroComponent
+                macro_component_1.MacroComponent,
+                progress_component_1.ProgressComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -151,7 +153,8 @@ var AppModule = /** @class */ (function () {
                 material_1.MatTableModule,
                 material_1.MatSortModule,
                 material_1.MatDatepickerModule,
-                material_1.MatNativeDateModule
+                material_1.MatNativeDateModule,
+                material_1.MatProgressBarModule
             ],
             providers: [
                 state_service_1.StateService,
@@ -164,7 +167,8 @@ var AppModule = /** @class */ (function () {
             ],
             entryComponents: [
                 reserve_edit_component_1.ReserveEditComponent,
-                macro_component_1.MacroComponent
+                macro_component_1.MacroComponent,
+                progress_component_1.ProgressComponent
             ],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -646,6 +650,90 @@ var PlayerComponent = /** @class */ (function () {
     return PlayerComponent;
 }());
 exports.PlayerComponent = PlayerComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/progress/progress.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<mat-dialog-content>\n  <p>ダウンロード中です</p>\n  <mat-progress-bar mode=\"determinate\" [value]=\"progress\"></mat-progress-bar>\n</mat-dialog-content>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/progress/progress.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/progress/progress.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
+var Rx_1 = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
+var ProgressComponent = /** @class */ (function () {
+    function ProgressComponent(dialogRef, programService) {
+        this.dialogRef = dialogRef;
+        this.programService = programService;
+        this.progress = 0;
+    }
+    ProgressComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.timer = Rx_1.Observable.timer(0, 1000);
+        this.sub = this.timer.subscribe(function (x) {
+            _this.programService.getTimeFreeProgress().subscribe(function (res) {
+                if (res.result) {
+                    _this.progress = res.data;
+                    if (res.data < 0) {
+                        _this.sub.unsubscribe();
+                        _this.dialogRef.close();
+                    }
+                }
+            });
+        });
+    };
+    ProgressComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
+    };
+    ProgressComponent = __decorate([
+        core_1.Component({
+            selector: 'app-progress',
+            template: __webpack_require__("../../../../../src/app/components/progress/progress.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/progress/progress.component.scss")]
+        }),
+        __metadata("design:paramtypes", [material_1.MatDialogRef,
+            program_service_1.ProgramService])
+    ], ProgressComponent);
+    return ProgressComponent;
+}());
+exports.ProgressComponent = ProgressComponent;
 
 
 /***/ }),
@@ -1243,6 +1331,10 @@ var TimetableComponent = /** @class */ (function () {
          */
         this.getTimeFree = function (program) {
             _this.programService.getTimeFree(program.id).subscribe(function (res) {
+                if (res.result) {
+                    _this.stateService.showTimefreeProgress(function () {
+                    });
+                }
             });
         };
     }
@@ -1264,7 +1356,6 @@ var TimetableComponent = /** @class */ (function () {
                     _this.radiko[station.regionName].push(station);
                 }
             }
-            console.log(_this.radikoRegions);
         });
     };
     TimetableComponent = __decorate([
@@ -1582,6 +1673,13 @@ var ProgramService = /** @class */ (function (_super) {
         _this.getTimeFree = function (programId) {
             return _this.http.post("./api/program/tf/" + programId, {});
         };
+        /**
+         * タイムフリーダウンロード進捗確認
+         * @returns {Observable<Object>}
+         */
+        _this.getTimeFreeProgress = function () {
+            return _this.http.get("./api/program/tf/");
+        };
         return _this;
     }
     ProgramService = __decorate([
@@ -1690,6 +1788,7 @@ var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
 var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
 var macro_component_1 = __webpack_require__("../../../../../src/app/components/macro/macro.component.ts");
+var progress_component_1 = __webpack_require__("../../../../../src/app/components/progress/progress.component.ts");
 var StateService = /** @class */ (function (_super) {
     __extends(StateService, _super);
     function StateService(http, dialog) {
@@ -1722,6 +1821,19 @@ var StateService = /** @class */ (function (_super) {
                 //width: '250px',
                 disableClose: true,
                 data: data
+            });
+            dialogRef.afterClosed().subscribe(function (res) {
+                callback(res);
+            });
+        };
+        /**
+         * タイムフリー進捗表示
+         * @param callback
+         */
+        _this.showTimefreeProgress = function (callback) {
+            var dialogRef = _this.dialog.open(progress_component_1.ProgressComponent, {
+                //width: '250px',
+                disableClose: true,
             });
             dialogRef.afterClosed().subscribe(function (res) {
                 callback(res);

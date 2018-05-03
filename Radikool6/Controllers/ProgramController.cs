@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
@@ -14,6 +15,8 @@ namespace Radikool6.Controllers
 {
     public class ProgramController : BaseController
     {
+        private static int _timefreeProgress;
+        
         public ProgramController()
         {
         }
@@ -70,10 +73,11 @@ namespace Radikool6.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/program/tf/{programId}")]
-        public async Task<ApiResponse> Download(string programId)
+        public async Task<ApiResponse> Timefree(string programId)
         {
             return await Execute(() =>
             {
+                _timefreeProgress = 0;
                 using (SqliteConnection)
                 {
                     var pModel = new ProgramModel(SqliteConnection);
@@ -84,12 +88,33 @@ namespace Radikool6.Controllers
                 
                     if (program != null)
                     {
-                        var rr = new RadikoRecorder(config);
+                        var rr = new RadikoRecorder(config)
+                        {
+                            ChangeProgress = (progress) =>
+                            {
+                                _timefreeProgress = progress;
+                            }
+                        };
                         rr.TimeFree(program);
                     }
                     Result.Result = true;
                 }
                 
+            });
+        }
+
+        /// <summary>
+        /// タイムフリーの進捗確認
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/program/tf/")]
+        public async Task<ApiResponse> GetTimefreeProgress()
+        {
+            return await Execute(() =>
+            {
+                Result.Data = _timefreeProgress;
+                Result.Result = true;
             });
         }
 
