@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
-  <button type="button" mat-button (click)="setContent('timetable')">番組表</button>
-  <button type="button" mat-button (click)="setContent('reserve')">予約</button>
-  <button type="button" mat-button (click)="setContent('library')">ライブラリ</button>
-  <button type="button" mat-button (click)="setContent('manage')">管理</button>
+  <button type="button" mat-button (click)="setContent('timetable')" [color]="selectedContent === 'timetable' ? 'accent' : ''">番組表</button>
+  <button type="button" mat-button (click)="setContent('reserve')" [color]="selectedContent === 'reserve' ? 'accent' : ''">予約</button>
+  <button type="button" mat-button (click)="setContent('library')" [color]="selectedContent === 'library' ? 'accent' : ''">ライブラリ</button>
+  <button type="button" mat-button (click)="setContent('manage')" [color]="selectedContent === 'manage' ? 'accent' : ''">管理</button>
 </mat-toolbar>

@@ -183,7 +183,7 @@ exports.AppModule = AppModule;
 /***/ "../../../../../src/app/components/config/config.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-form-field>\n    <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput type=\"number\" placeholder=\"タイムフリー予約時の開始マージン(分)\" name=\"timeFreeMargin\" [(ngModel)]=\"config.timeFreeMargin\" />\n  </mat-form-field>\n\n\n  <mat-form-field>\n    <input matInput placeholder=\"タイトル\" name=\"tagTitle\" [(ngModel)]=\"config.tagTitle\" />\n  </mat-form-field>\n  <button (click)=\"macro('tagTitle')\">置換</button>\n\n  <mat-form-field>\n    <input matInput placeholder=\"アーティスト\" name=\"tagArtist\" [(ngModel)]=\"config.tagArtist\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"アルバム\" name=\"tagAlbum\" [(ngModel)]=\"config.tagAlbum\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"ジャンル\" name=\"tagGenre\" [(ngModel)]=\"config.tagGenre\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"コメント\" name=\"tagComment\" [(ngModel)]=\"config.tagComment\" />\n  </mat-form-field>\n\n\n  <mat-form-field>\n    <input matInput placeholder=\"サンプリングレート\" name=\"samplingRate\" [(ngModel)]=\"config.samplingRate\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"ビットレート\" name=\"bitRate\" [(ngModel)]=\"config.bitRate\" />\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput placeholder=\"ボリューム\" name=\"volume\" [(ngModel)]=\"config.volume\" />\n  </mat-form-field>\n\n\n\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>radikoプレミアム設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>録音設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput type=\"number\" placeholder=\"タイムフリー予約時の開始マージン(分)\" name=\"timeFreeMargin\" [(ngModel)]=\"config.timeFreeMargin\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>メタ情報</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"タイトル\" name=\"tagTitle\" [(ngModel)]=\"config.tagTitle\" (click)=\"macro('tagTitle')\"  />\n      </mat-form-field>\n\n      <mat-form-field>\n        <input matInput placeholder=\"アーティスト\" name=\"tagArtist\" [(ngModel)]=\"config.tagArtist\" (click)=\"macro('tagArtist')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"アルバム\" name=\"tagAlbum\" [(ngModel)]=\"config.tagAlbum\" (click)=\"macro('tagAlbum')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ジャンル\" name=\"tagGenre\" [(ngModel)]=\"config.tagGenre\" (click)=\"macro('tagGenre')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"コメント\" name=\"tagComment\" [(ngModel)]=\"config.tagComment\" (click)=\"macro('tagComment')\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>エンコード設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"サンプリングレート\" name=\"samplingRate\" [(ngModel)]=\"config.samplingRate\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ビットレート\" name=\"bitRate\" [(ngModel)]=\"config.bitRate\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ボリューム\" name=\"volume\" [(ngModel)]=\"config.volume\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n\n\n\n\n\n\n\n\n\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
 
 /***/ }),
 
@@ -195,7 +195,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "mat-form-field {\n  width: 100%; }\n\nmat-card {\n  margin-bottom: 2rem; }\n", ""]);
 
 // exports
 
@@ -431,7 +431,7 @@ exports.LibraryComponent = LibraryComponent;
 /***/ "../../../../../src/app/components/macro/macro.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"update()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <input matInput placeholder=\"\" name=\"text\" [(ngModel)]=\"text\" (blur)=\"onBlur($event)\" />\n    </mat-form-field>\n\n    <h2>放送局情報</h2>\n    <button mat-button type=\"button\" (click)=\"add('[CH_NAME]')\">放送局名</button>\n    <button mat-button type=\"button\" (click)=\"add('[CH]')\">放送局コード</button>\n\n    <h2>番組情報</h2>\n    <button mat-button type=\"button\" (click)=\"add('[TITLE]')\">番組名</button>\n    <button mat-button type=\"button\" (click)=\"add('[CAST]')\">出演者</button>\n    <button mat-button type=\"button\" (click)=\"add('[INFO]')\">番組詳細</button>\n\n    <h2>開始日時</h2>\n    <button mat-button type=\"button\" (click)=\"add('[SYEAR]')\">年</button>\n    <button mat-button type=\"button\" (click)=\"add('[SMONTH]')\">月</button>\n    <button mat-button type=\"button\" (click)=\"add('[SDAY]')\">日</button>\n    <button mat-button type=\"button\" (click)=\"add('[SHOUR]')\">時</button>\n    <button mat-button type=\"button\" (click)=\"add('[SMIN]')\">分</button>\n\n    <h2>終了日時</h2>\n    <button mat-button type=\"button\" (click)=\"add('[EYEAR]')\">年</button>\n    <button mat-button type=\"button\" (click)=\"add('[EMONTH]')\">月</button>\n    <button mat-button type=\"button\" (click)=\"add('[EDAY]')\">日</button>\n    <button mat-button type=\"button\" (click)=\"add('[EHOUR]')\">時</button>\n    <button mat-button type=\"button\" (click)=\"add('[EMIN]')\">分</button>\n\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
+module.exports = "<form (submit)=\"update()\">\n  <div mat-dialog-content>\n    <mat-form-field class=\"fill\">\n      <input matInput placeholder=\"\" name=\"text\" [(ngModel)]=\"text\" (blur)=\"onBlur($event)\" />\n    </mat-form-field>\n\n    <mat-card>\n      <mat-card-header>\n        <mat-card-title>放送局情報</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <button mat-button type=\"button\" (click)=\"add('[CH_NAME]')\">放送局名</button>\n        <button mat-button type=\"button\" (click)=\"add('[CH]')\">放送局コード</button>\n      </mat-card-content>\n    </mat-card>\n\n    <mat-card>\n      <mat-card-header>\n        <mat-card-title>番組情報</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <button mat-button type=\"button\" (click)=\"add('[TITLE]')\">番組名</button>\n        <button mat-button type=\"button\" (click)=\"add('[CAST]')\">出演者</button>\n        <button mat-button type=\"button\" (click)=\"add('[INFO]')\">番組詳細</button>\n      </mat-card-content>\n    </mat-card>\n\n    <mat-card>\n      <mat-card-header>\n        <mat-card-title>開始日時</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <button mat-button type=\"button\" (click)=\"add('[SYEAR]')\">年</button>\n        <button mat-button type=\"button\" (click)=\"add('[SMONTH]')\">月</button>\n        <button mat-button type=\"button\" (click)=\"add('[SDAY]')\">日</button>\n        <button mat-button type=\"button\" (click)=\"add('[SHOUR]')\">時</button>\n        <button mat-button type=\"button\" (click)=\"add('[SMIN]')\">分</button>\n        <button mat-button type=\"button\" (click)=\"add('[SYOBI]')\">曜日</button>\n      </mat-card-content>\n    </mat-card>\n\n    <mat-card>\n      <mat-card-header>\n        <mat-card-title>終了日時</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <button mat-button type=\"button\" (click)=\"add('[EYEAR]')\">年</button>\n        <button mat-button type=\"button\" (click)=\"add('[EMONTH]')\">月</button>\n        <button mat-button type=\"button\" (click)=\"add('[EDAY]')\">日</button>\n        <button mat-button type=\"button\" (click)=\"add('[EHOUR]')\">時</button>\n        <button mat-button type=\"button\" (click)=\"add('[EMIN]')\">分</button>\n        <button mat-button type=\"button\" (click)=\"add('[EYOBI]')\">曜日</button>\n      </mat-card-content>\n    </mat-card>\n\n\n  </div>\n  <div mat-dialog-actions style=\"text-align: right\">\n    <div>\n      <button type=\"submit\" mat-button>保存</button>\n      <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n\n    </div>\n\n  </div>\n</form>\n\n"
 
 /***/ }),
 
@@ -443,7 +443,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".fill {\n  width: 100%; }\n\nmat-card {\n  margin-bottom: 2rem; }\n\n.mat-dialog-content {\n  height: 44rem; }\n\n.mat-dialog-actions div {\n  text-align: right;\n  width: 100%; }\n", ""]);
 
 // exports
 
@@ -515,7 +515,7 @@ exports.MacroComponent = MacroComponent;
 /***/ "../../../../../src/app/components/manage/manage.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-list>\n  <mat-list-item (click)=\"selectedItem = 'config'\">一般設定</mat-list-item>\n  <mat-list-item (click)=\"selectedItem = 'resetStation'\">放送局初期化</mat-list-item>\n  <mat-list-item (click)=\"selectedItem = 'resetProgram'\"> 番組表取得</mat-list-item>\n</mat-list>\n<app-config *ngIf=\"selectedItem === 'config'\"></app-config>\n<app-reset-program *ngIf=\"selectedItem === 'resetProgram'\"></app-reset-program>\n<app-reset-station *ngIf=\"selectedItem === 'resetStation'\"></app-reset-station>\n"
+module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <button mat-button (click)=\"selectedItem = 'config'\" [class.selected]=\"selectedItem === 'config'\">一般設定</button>\n    <button mat-button (click)=\"selectedItem = 'resetStation'\" [class.selected]=\"selectedItem === 'resetStation'\">放送局初期化</button>\n    <button mat-button (click)=\"selectedItem = 'resetProgram'\" [class.selected]=\"selectedItem === 'resetProgram'\">番組表取得</button>\n  </div>\n  <div class=\"content\">\n    <app-config *ngIf=\"selectedItem === 'config'\"></app-config>\n    <app-reset-program *ngIf=\"selectedItem === 'resetProgram'\"></app-reset-program>\n    <app-reset-station *ngIf=\"selectedItem === 'resetStation'\"></app-reset-station>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -527,7 +527,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.sidebar {\n  width: 25vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n.sidebar button {\n    width: 100%;\n    text-align: left;\n    color: #999; }\n\n.sidebar button.selected {\n      color: #3f51b5; }\n\n.content {\n  width: 75vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n@media screen and (max-width: 767px) {\n  .container {\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column; }\n  .sidebar, .content {\n    width: 100vw; } }\n", ""]);
 
 // exports
 
@@ -741,7 +741,7 @@ exports.ProgressComponent = ProgressComponent;
 /***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-dialog-content>\n    <mat-form-field>\n      <input matInput placeholder=\"予約名\" name=\"name\" [(ngModel)]=\"reserve.name\" />\n    </mat-form-field>\n    <mat-form-field>\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"startPicker\" placeholder=\"開始日時\" name=\"start\" [(ngModel)]=\"startDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"startPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #startPicker></mat-datepicker>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"startHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"startMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"endPicker\" placeholder=\"終了日時\" name=\"end\" [(ngModel)]=\"endDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"endPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #endPicker></mat-datepicker>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"endHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"endMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-checkbox name=\"isTimeFree\" [(ngModel)]=\"reserve.isTimeFree\" *ngIf=\"tsNg === '0' || tsNg === '1'\">タイムフリーで録音</mat-checkbox>\n      <p *ngIf=\"tsNg ==='1'\">タイムフリー一部未対応</p>\n      <p *ngIf=\"tsNg ==='2'\">タイムフリー未対応</p>\n    </div>\n  </mat-dialog-content>\n  <mat-dialog-actions>\n    <button type=\"button\" mat-raised-button (click)=\"delete()\" *ngIf=\"reserve.id\">削除</button>\n    <button type=\"submit\" mat-button>保存</button>\n    <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n  </mat-dialog-actions>\n</form>\n\n"
+module.exports = "<form (submit)=\"save()\">\n  <div mat-dialog-content>\n    <mat-form-field class=\"full\">\n      <input matInput placeholder=\"予約名\" name=\"name\" [(ngModel)]=\"reserve.name\" />\n    </mat-form-field>\n    <mat-form-field class=\"full\">\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"startPicker\" placeholder=\"開始日時\" name=\"start\" [(ngModel)]=\"startDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"startPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #startPicker></mat-datepicker>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"startHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"startMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"endPicker\" placeholder=\"終了日時\" name=\"end\" [(ngModel)]=\"endDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"endPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #endPicker></mat-datepicker>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"endHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"endMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-checkbox name=\"isTimeFree\" [(ngModel)]=\"reserve.isTimeFree\" *ngIf=\"tsNg === '0' || tsNg === '1'\">タイムフリーで録音</mat-checkbox>\n      <p *ngIf=\"tsNg ==='1'\">タイムフリー一部未対応</p>\n      <p *ngIf=\"tsNg ==='2'\">タイムフリー未対応</p>\n    </div>\n  </div>\n  <div mat-dialog-actions>\n    <div>\n      <button type=\"button\" mat-raised-button color=\"warn\" (click)=\"delete()\" *ngIf=\"reserve.id\">削除</button>\n    </div>\n    <div>\n      <button type=\"submit\" mat-button>保存</button>\n      <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n    </div>\n\n  </div>\n</form>\n\n"
 
 /***/ }),
 
@@ -753,7 +753,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".full {\n  width: 100%; }\n\n.mat-dialog-content {\n  height: 20rem; }\n\n.mat-dialog-actions > div {\n  width: 50%;\n  display: inline-block; }\n\n.mat-dialog-actions > div:last-child {\n    text-align: right; }\n", ""]);
 
 // exports
 
@@ -797,16 +797,18 @@ var ReserveEditComponent = /** @class */ (function () {
         this.stations = [];
         this.hours = [];
         this.minutes = [];
-        this.tsNg = '1';
+        this.tsNg = '0';
         /**
          * 削除
          */
         this.delete = function () {
-            _this.reserveService.delete(_this.reserve.id).subscribe(function (res) {
-                if (res.result) {
-                    _this.dialogRef.close(true);
-                }
-            });
+            if (confirm("\u524A\u9664\u3057\u307E\u3059\u304B\uFF1F")) {
+                _this.reserveService.delete(_this.reserve.id).subscribe(function (res) {
+                    if (res.result) {
+                        _this.dialogRef.close(true);
+                    }
+                });
+            }
         };
         /**
          * 保存
@@ -920,7 +922,7 @@ var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
 var Rx_1 = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
 var ReserveListComponent = /** @class */ (function () {
-    function ReserveListComponent(reserveService, taskService, stateService) {
+    function ReserveListComponent(reserveService, taskService, dateAdapter, stateService) {
         var _this = this;
         this.reserveService = reserveService;
         this.taskService = taskService;
@@ -943,22 +945,18 @@ var ReserveListComponent = /** @class */ (function () {
                     console.log(_this.reserveSort);
                 }
             });
-            _this.timer = Rx_1.Observable.timer(0, 1000);
-            _this.subs.push(_this.timer.subscribe(function (x) {
-                _this.taskService.get().subscribe(function (res) {
-                    if (res.result) {
-                        _this.tasks = res.data;
-                        _this.taskDataSource = new material_1.MatTableDataSource(_this.tasks);
-                        _this.taskDataSource.sort = _this.taskSort;
-                    }
-                });
-            }));
-            /*this.tasks = [
-              {start: new Date('2018-04-30 00:00:00'), end: new Date('2018-04-30 01:00:00'), status: 'status'},
-              {start: new Date('2018-04-30 01:00:00'), end: new Date('2018-04-30 02:00:00'), status: 'status2'}];
-            this.taskDataSource = new MatTableDataSource(this.tasks);
-            this.taskDataSource.sort = this.taskSort;
-            console.log(this.taskDataSource);*/
+            if (!_this.timer) {
+                _this.timer = Rx_1.Observable.timer(0, 10 * 1000);
+                _this.subs.push(_this.timer.subscribe(function (x) {
+                    _this.taskService.get().subscribe(function (res) {
+                        if (res.result) {
+                            _this.tasks = res.data;
+                            _this.taskDataSource = new material_1.MatTableDataSource(_this.tasks);
+                            _this.taskDataSource.sort = _this.taskSort;
+                        }
+                    });
+                }));
+            }
         };
         /**
          * 予約編集
@@ -973,9 +971,9 @@ var ReserveListComponent = /** @class */ (function () {
         };
         this.stopRestartReserveTask = function (task) {
             _this.taskService.stopRestart(task).subscribe(function (res) {
-                console.log(res);
             });
         };
+        dateAdapter.setLocale('ja');
     }
     ReserveListComponent.prototype.ngOnInit = function () {
         this.init();
@@ -999,6 +997,7 @@ var ReserveListComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [reserve_service_1.ReserveService,
             task_service_1.TaskService,
+            material_1.DateAdapter,
             state_service_1.StateService])
     ], ReserveListComponent);
     return ReserveListComponent;
@@ -1023,7 +1022,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "mat-card {\n  margin-bottom: 2rem; }\n\n.mat-checkbox {\n  width: 12rem;\n  display: inline-block; }\n", ""]);
 
 // exports
 
@@ -1213,7 +1212,7 @@ exports.ResetStationComponent = ResetStationComponent;
 /***/ "../../../../../src/app/components/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <mat-list>\n          <mat-list-item *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\">{{s.name}}</mat-list-item>\n        </mat-list>\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field>\n      <mat-select [(value)]=\"date\" (change)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n          <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n          <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimeFree(p)\" *ngIf=\"p.tsNg === '0' || p.tsNg === '1'\">ダウンロード</button>\n          <p *ngIf=\"p.tsNg === '1'\">一部タイムフリー未対応</p>\n          <p *ngIf=\"p.tsNg === '2'\">タイムフリー未対応</p>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <button mat-button *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\" class=\"station-button\" [class.selected]=\"stationId === s.id\">{{s.name}}</button>\n\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field>\n      <mat-select [(value)]=\"date\" (change)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n          <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n          <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimeFree(p)\" *ngIf=\"p.tsNg === '0' || p.tsNg === '1'\">ダウンロード</button>\n          <p *ngIf=\"p.tsNg === '1'\">一部タイムフリー未対応</p>\n          <p *ngIf=\"p.tsNg === '2'\">タイムフリー未対応</p>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -1225,7 +1224,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.sidebar {\n  width: 25vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n.timetable {\n  width: 75vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n@media screen and (max-width: 767px) {\n  .container {\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column; }\n  .sidebar, .timetable {\n    width: 100vw; } }\n", ""]);
+exports.push([module.i, ".container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.sidebar {\n  width: 25vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n.timetable {\n  width: 75vw;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding: .5rem; }\n\n.station-button {\n  width: 100%;\n  text-align: left;\n  color: #999; }\n\n.station-button.selected {\n    color: #3f51b5; }\n\n@media screen and (max-width: 767px) {\n  .container {\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column; }\n  .sidebar, .timetable {\n    width: 100vw; } }\n", ""]);
 
 // exports
 
@@ -1378,7 +1377,7 @@ exports.TimetableComponent = TimetableComponent;
 /***/ "../../../../../src/app/components/toolbar/toolbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\">\n  <button type=\"button\" mat-button (click)=\"setContent('timetable')\">番組表</button>\n  <button type=\"button\" mat-button (click)=\"setContent('reserve')\">予約</button>\n  <button type=\"button\" mat-button (click)=\"setContent('library')\">ライブラリ</button>\n  <button type=\"button\" mat-button (click)=\"setContent('manage')\">管理</button>\n</mat-toolbar>\n"
+module.exports = "<mat-toolbar color=\"primary\">\n  <button type=\"button\" mat-button (click)=\"setContent('timetable')\" [color]=\"selectedContent === 'timetable' ? 'accent' : ''\">番組表</button>\n  <button type=\"button\" mat-button (click)=\"setContent('reserve')\" [color]=\"selectedContent === 'reserve' ? 'accent' : ''\">予約</button>\n  <button type=\"button\" mat-button (click)=\"setContent('library')\" [color]=\"selectedContent === 'library' ? 'accent' : ''\">ライブラリ</button>\n  <button type=\"button\" mat-button (click)=\"setContent('manage')\" [color]=\"selectedContent === 'manage' ? 'accent' : ''\">管理</button>\n</mat-toolbar>\n"
 
 /***/ }),
 
@@ -1421,11 +1420,19 @@ var ToolbarComponent = /** @class */ (function () {
     function ToolbarComponent(stateService) {
         var _this = this;
         this.stateService = stateService;
+        this.subs = [];
         this.setContent = function (content) {
             _this.stateService.selectedContent.next(content);
         };
     }
     ToolbarComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subs.push(this.stateService.selectedContent.subscribe(function (value) {
+            _this.selectedContent = value;
+        }));
+    };
+    ToolbarComponent.prototype.ngOnDestroy = function () {
+        this.subs.forEach(function (s) { return s.unsubscribe(); });
     };
     ToolbarComponent = __decorate([
         core_1.Component({

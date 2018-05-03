@@ -5,9 +5,8 @@
         <mat-expansion-panel-header>
           <mat-panel-title>{{r}}</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-list>
-          <mat-list-item *ngFor="let s of radiko[r]" (click)="setStation(s)">{{s.name}}</mat-list-item>
-        </mat-list>
+        <button mat-button *ngFor="let s of radiko[r]" (click)="setStation(s)" class="station-button" [class.selected]="stationId === s.id">{{s.name}}</button>
+
       </mat-expansion-panel>
     </mat-accordion>
   </div>

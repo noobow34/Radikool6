@@ -17,7 +17,7 @@ export class ReserveEditComponent implements OnInit {
   public stations: Station[] = [];
   public hours: number[] = [];
   public minutes: number[] = [];
-  public tsNg = '1';
+  public tsNg = '0';
 
   public startDate;
   public startHour;
@@ -80,11 +80,13 @@ export class ReserveEditComponent implements OnInit {
    * 削除
    */
   public delete = () => {
-    this.reserveService.delete(this.reserve.id).subscribe(res => {
-      if (res.result) {
-        this.dialogRef.close(true);
-      }
-    });
+    if(confirm(`削除しますか？`)) {
+      this.reserveService.delete(this.reserve.id).subscribe(res => {
+        if (res.result) {
+          this.dialogRef.close(true);
+        }
+      });
+    }
   }
 
   /**

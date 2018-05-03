@@ -1,9 +1,9 @@
 <form (submit)="save()">
-  <mat-dialog-content>
-    <mat-form-field>
+  <div mat-dialog-content>
+    <mat-form-field class="full">
       <input matInput placeholder="予約名" name="name" [(ngModel)]="reserve.name" />
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="full">
       <mat-select placeholder="放送局" [(value)]="reserve.stationId">
         <mat-option *ngFor="let station of stations" [value]="station.id">
           {{station.name}}
@@ -54,16 +54,22 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-
+    </div>
+    <div>
       <mat-checkbox name="isTimeFree" [(ngModel)]="reserve.isTimeFree" *ngIf="tsNg === '0' || tsNg === '1'">タイムフリーで録音</mat-checkbox>
       <p *ngIf="tsNg ==='1'">タイムフリー一部未対応</p>
       <p *ngIf="tsNg ==='2'">タイムフリー未対応</p>
     </div>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button type="button" mat-raised-button (click)="delete()" *ngIf="reserve.id">削除</button>
-    <button type="submit" mat-button>保存</button>
-    <button type="button" mat-button mat-dialog-close>キャンセル</button>
-  </mat-dialog-actions>
+  </div>
+  <div mat-dialog-actions>
+    <div>
+      <button type="button" mat-raised-button color="warn" (click)="delete()" *ngIf="reserve.id">削除</button>
+    </div>
+    <div>
+      <button type="submit" mat-button>保存</button>
+      <button type="button" mat-button mat-dialog-close>キャンセル</button>
+    </div>
+
+  </div>
 </form>
 

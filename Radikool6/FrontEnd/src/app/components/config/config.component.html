@@ -1,46 +1,79 @@
 <form (submit)="save()">
-  <mat-form-field>
-    <input matInput placeholder="メールアドレス" name="radikoEmail" [(ngModel)]="config.radikoEmail" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="パスワード" type="password" name="radikoPassword" [(ngModel)]="config.radikoPassword" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="保存ファイル名" name="fileName" [(ngModel)]="config.fileName" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput type="number" placeholder="タイムフリー予約時の開始マージン(分)" name="timeFreeMargin" [(ngModel)]="config.timeFreeMargin" />
-  </mat-form-field>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>radikoプレミアム設定</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="メールアドレス" name="radikoEmail" [(ngModel)]="config.radikoEmail" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="パスワード" type="password" name="radikoPassword" [(ngModel)]="config.radikoPassword" />
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>録音設定</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput type="number" placeholder="タイムフリー予約時の開始マージン(分)" name="timeFreeMargin" [(ngModel)]="config.timeFreeMargin" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="保存ファイル名" name="fileName" [(ngModel)]="config.fileName" />
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>メタ情報</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="タイトル" name="tagTitle" [(ngModel)]="config.tagTitle" (click)="macro('tagTitle')"  />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="アーティスト" name="tagArtist" [(ngModel)]="config.tagArtist" (click)="macro('tagArtist')" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="アルバム" name="tagAlbum" [(ngModel)]="config.tagAlbum" (click)="macro('tagAlbum')" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="ジャンル" name="tagGenre" [(ngModel)]="config.tagGenre" (click)="macro('tagGenre')" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="コメント" name="tagComment" [(ngModel)]="config.tagComment" (click)="macro('tagComment')" />
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>エンコード設定</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="サンプリングレート" name="samplingRate" [(ngModel)]="config.samplingRate" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="ビットレート" name="bitRate" [(ngModel)]="config.bitRate" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="ボリューム" name="volume" [(ngModel)]="config.volume" />
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 
 
-  <mat-form-field>
-    <input matInput placeholder="タイトル" name="tagTitle" [(ngModel)]="config.tagTitle" />
-  </mat-form-field>
-  <button (click)="macro('tagTitle')">置換</button>
-
-  <mat-form-field>
-    <input matInput placeholder="アーティスト" name="tagArtist" [(ngModel)]="config.tagArtist" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="アルバム" name="tagAlbum" [(ngModel)]="config.tagAlbum" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="ジャンル" name="tagGenre" [(ngModel)]="config.tagGenre" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="コメント" name="tagComment" [(ngModel)]="config.tagComment" />
-  </mat-form-field>
 
 
-  <mat-form-field>
-    <input matInput placeholder="サンプリングレート" name="samplingRate" [(ngModel)]="config.samplingRate" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="ビットレート" name="bitRate" [(ngModel)]="config.bitRate" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="ボリューム" name="volume" [(ngModel)]="config.volume" />
-  </mat-form-field>
+
+
+
 
 
 

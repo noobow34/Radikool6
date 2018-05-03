@@ -1,36 +1,67 @@
 <form (submit)="update()">
-  <mat-dialog-content>
-    <mat-form-field>
+  <div mat-dialog-content>
+    <mat-form-field class="fill">
       <input matInput placeholder="" name="text" [(ngModel)]="text" (blur)="onBlur($event)" />
     </mat-form-field>
 
-    <h2>放送局情報</h2>
-    <button mat-button type="button" (click)="add('[CH_NAME]')">放送局名</button>
-    <button mat-button type="button" (click)="add('[CH]')">放送局コード</button>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>放送局情報</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-button type="button" (click)="add('[CH_NAME]')">放送局名</button>
+        <button mat-button type="button" (click)="add('[CH]')">放送局コード</button>
+      </mat-card-content>
+    </mat-card>
 
-    <h2>番組情報</h2>
-    <button mat-button type="button" (click)="add('[TITLE]')">番組名</button>
-    <button mat-button type="button" (click)="add('[CAST]')">出演者</button>
-    <button mat-button type="button" (click)="add('[INFO]')">番組詳細</button>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>番組情報</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-button type="button" (click)="add('[TITLE]')">番組名</button>
+        <button mat-button type="button" (click)="add('[CAST]')">出演者</button>
+        <button mat-button type="button" (click)="add('[INFO]')">番組詳細</button>
+      </mat-card-content>
+    </mat-card>
 
-    <h2>開始日時</h2>
-    <button mat-button type="button" (click)="add('[SYEAR]')">年</button>
-    <button mat-button type="button" (click)="add('[SMONTH]')">月</button>
-    <button mat-button type="button" (click)="add('[SDAY]')">日</button>
-    <button mat-button type="button" (click)="add('[SHOUR]')">時</button>
-    <button mat-button type="button" (click)="add('[SMIN]')">分</button>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>開始日時</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-button type="button" (click)="add('[SYEAR]')">年</button>
+        <button mat-button type="button" (click)="add('[SMONTH]')">月</button>
+        <button mat-button type="button" (click)="add('[SDAY]')">日</button>
+        <button mat-button type="button" (click)="add('[SHOUR]')">時</button>
+        <button mat-button type="button" (click)="add('[SMIN]')">分</button>
+        <button mat-button type="button" (click)="add('[SYOBI]')">曜日</button>
+      </mat-card-content>
+    </mat-card>
 
-    <h2>終了日時</h2>
-    <button mat-button type="button" (click)="add('[EYEAR]')">年</button>
-    <button mat-button type="button" (click)="add('[EMONTH]')">月</button>
-    <button mat-button type="button" (click)="add('[EDAY]')">日</button>
-    <button mat-button type="button" (click)="add('[EHOUR]')">時</button>
-    <button mat-button type="button" (click)="add('[EMIN]')">分</button>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>終了日時</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-button type="button" (click)="add('[EYEAR]')">年</button>
+        <button mat-button type="button" (click)="add('[EMONTH]')">月</button>
+        <button mat-button type="button" (click)="add('[EDAY]')">日</button>
+        <button mat-button type="button" (click)="add('[EHOUR]')">時</button>
+        <button mat-button type="button" (click)="add('[EMIN]')">分</button>
+        <button mat-button type="button" (click)="add('[EYOBI]')">曜日</button>
+      </mat-card-content>
+    </mat-card>
 
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button type="submit" mat-button>保存</button>
-    <button type="button" mat-button mat-dialog-close>キャンセル</button>
-  </mat-dialog-actions>
+
+  </div>
+  <div mat-dialog-actions style="text-align: right">
+    <div>
+      <button type="submit" mat-button>保存</button>
+      <button type="button" mat-button mat-dialog-close>キャンセル</button>
+
+    </div>
+
+  </div>
 </form>
 

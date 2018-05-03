@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {StateService} from '../../services/state.service';
 
 @Component({
@@ -6,14 +6,25 @@ import {StateService} from '../../services/state.service';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
 
-  constructor(private stateService: StateService) { }
+  public selectedContent;
+  private subs = [];
 
-  ngOnInit() {
+  constructor(private stateService: StateService) {
   }
 
-  public setContent = (content:string) => {
+  ngOnInit() {
+    this.subs.push(this.stateService.selectedContent.subscribe(value => {
+      this.selectedContent = value;
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(s => s.unsubscribe());
+  }
+
+  public setContent = (content: string) => {
     this.stateService.selectedContent.next(content);
   }
 

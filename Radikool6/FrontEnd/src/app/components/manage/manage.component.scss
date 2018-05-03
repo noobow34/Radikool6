@@ -1,0 +1,39 @@
+.container{
+  display: flex;
+}
+
+.sidebar{
+  width: 25vw;
+  box-sizing: border-box;
+  padding: .5rem;
+
+  button{
+    width: 100%;
+    text-align: left;
+    color: #999;
+
+    &.selected{
+      color: #3f51b5;
+    }
+  }
+}
+
+.content{
+  width: 75vw;
+  box-sizing: border-box;
+  padding: .5rem;
+}
+
+
+
+@media screen and (max-width: 767px){
+  .container{
+    flex-direction: column;
+  }
+  .sidebar, .content {
+    width: 100vw;
+  }
+
+
+
+}

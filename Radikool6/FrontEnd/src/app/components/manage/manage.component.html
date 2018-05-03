@@ -1,8 +1,12 @@
-<mat-list>
-  <mat-list-item (click)="selectedItem = 'config'">一般設定</mat-list-item>
-  <mat-list-item (click)="selectedItem = 'resetStation'">放送局初期化</mat-list-item>
-  <mat-list-item (click)="selectedItem = 'resetProgram'"> 番組表取得</mat-list-item>
-</mat-list>
-<app-config *ngIf="selectedItem === 'config'"></app-config>
-<app-reset-program *ngIf="selectedItem === 'resetProgram'"></app-reset-program>
-<app-reset-station *ngIf="selectedItem === 'resetStation'"></app-reset-station>
+<div class="container">
+  <div class="sidebar">
+    <button mat-button (click)="selectedItem = 'config'" [class.selected]="selectedItem === 'config'">一般設定</button>
+    <button mat-button (click)="selectedItem = 'resetStation'" [class.selected]="selectedItem === 'resetStation'">放送局初期化</button>
+    <button mat-button (click)="selectedItem = 'resetProgram'" [class.selected]="selectedItem === 'resetProgram'">番組表取得</button>
+  </div>
+  <div class="content">
+    <app-config *ngIf="selectedItem === 'config'"></app-config>
+    <app-reset-program *ngIf="selectedItem === 'resetProgram'"></app-reset-program>
+    <app-reset-station *ngIf="selectedItem === 'resetStation'"></app-reset-station>
+  </div>
+</div>

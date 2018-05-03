@@ -2,7 +2,10 @@ import {Component, OnDestroy, OnInit, ViewChild, ViewChildren} from '@angular/co
 import {ReserveService} from '../../services/reserve.service';
 import {Reserve} from '../../interfaces/reserve';
 import {StateService} from '../../services/state.service';
-import {MatSort, MatTable, MatTableDataSource} from '@angular/material';
+import {
+  DateAdapter,  MatSort,  MatTableDataSource,
+  NativeDateAdapter
+} from '@angular/material';
 import {TaskService} from '../../services/task.service';
 import {ReserveTask} from '../../interfaces/reserveTask';
 import {Observable} from 'rxjs/Rx';
@@ -10,8 +13,7 @@ import {Observable} from 'rxjs/Rx';
 @Component({
   selector: 'app-reserve-list',
   templateUrl: './reserve-list.component.html',
-  styleUrls: ['./reserve-list.component.scss']
-})
+  styleUrls: ['./reserve-list.component.scss']})
 export class ReserveListComponent implements OnInit, OnDestroy {
 
   public reserves: Reserve[] = [];
@@ -32,7 +34,9 @@ export class ReserveListComponent implements OnInit, OnDestroy {
 
   constructor(private reserveService: ReserveService,
               private taskService: TaskService,
+              dateAdapter: DateAdapter<NativeDateAdapter>,
               public stateService: StateService) {
+    dateAdapter.setLocale('ja');
   }
 
   ngOnInit() {
@@ -55,23 +59,19 @@ export class ReserveListComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.timer = Observable.timer(0, 1000);
-    this.subs.push(this.timer.subscribe(x => {
-      this.taskService.get().subscribe(res => {
-        if (res.result) {
-          this.tasks = res.data;
+    if (!this.timer) {
+      this.timer = Observable.timer(0, 10 * 1000);
+      this.subs.push(this.timer.subscribe(x => {
+        this.taskService.get().subscribe(res => {
+          if (res.result) {
+            this.tasks = res.data;
 
-          this.taskDataSource = new MatTableDataSource(this.tasks);
-          this.taskDataSource.sort = this.taskSort;
-        }
-      });
-    }));
-    /*this.tasks = [
-      {start: new Date('2018-04-30 00:00:00'), end: new Date('2018-04-30 01:00:00'), status: 'status'},
-      {start: new Date('2018-04-30 01:00:00'), end: new Date('2018-04-30 02:00:00'), status: 'status2'}];
-    this.taskDataSource = new MatTableDataSource(this.tasks);
-    this.taskDataSource.sort = this.taskSort;
-    console.log(this.taskDataSource);*/
+            this.taskDataSource = new MatTableDataSource(this.tasks);
+            this.taskDataSource.sort = this.taskSort;
+          }
+        });
+      }));
+    }
   }
 
   /**
@@ -88,7 +88,6 @@ export class ReserveListComponent implements OnInit, OnDestroy {
 
   public stopRestartReserveTask = (task: ReserveTask) => {
     this.taskService.stopRestart(task).subscribe(res => {
-console.log(res);
     });
   }
 

@@ -1,0 +1,16 @@
+.full{
+  width: 100%;
+}
+
+.mat-dialog-content{
+  height: 20rem;
+}
+
+.mat-dialog-actions > div {
+  width: 50%;
+  display: inline-block;
+
+  &:last-child {
+    text-align: right;
+  }
+}

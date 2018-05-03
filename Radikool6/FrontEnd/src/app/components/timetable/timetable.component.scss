@@ -14,6 +14,15 @@
   padding: .5rem;
 }
 
+.station-button{
+  width: 100%;
+  text-align: left;
+  color: #999;
+
+  &.selected{
+    color: #3f51b5;
+  }
+}
 @media screen and (max-width: 767px){
   .container{
     flex-direction: column;
