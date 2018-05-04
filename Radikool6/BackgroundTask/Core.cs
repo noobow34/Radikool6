@@ -40,7 +40,7 @@ namespace Radikool6.BackgroundTask
         /// <returns></returns>
         public List<ReserveTask> GetStatus()
         {
-            return _recorders.Select(r => r.GetStatus()).ToList();
+            return _recorders.Where(r => r.Status != Recorder.RecorderStatus.End).Select(r => r.GetStatus()).ToList();
         }
 
         /// <summary>

@@ -32,16 +32,19 @@
       </tr>
       <tr>
         <th>作成日時</th>
-        <td>{{data.created | date: 'yyyy/MM/dd hh:mm:ss'}}</td>
+        <td>{{data.created | date: 'yyyy/MM/dd HH:mm:ss'}}</td>
       </tr>
     </tbody>
   </table>
 </div>
 <div mat-dialog-actions>
   <div>
+    <button type="button" color="warn" mat-raised-button (click)="delete()">削除</button>
+
+  </div>
+  <div>
     <button type="button" mat-button (click)="play()">再生</button>
     <button type="button" mat-button (click)="download()">ダウンロード</button>
-    <button type="button" mat-button (click)="delete()">削除</button>
   </div>
 
 </div>

@@ -187,7 +187,7 @@ exports.AppModule = AppModule;
 /***/ "../../../../../src/app/components/config/config.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>radikoプレミアム設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>録音設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput type=\"number\" placeholder=\"タイムフリー予約時の開始マージン(分)\" name=\"timeFreeMargin\" [(ngModel)]=\"config.timeFreeMargin\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>メタ情報</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"タイトル\" name=\"tagTitle\" [(ngModel)]=\"config.tagTitle\" (click)=\"macro('tagTitle')\"  />\n      </mat-form-field>\n\n      <mat-form-field>\n        <input matInput placeholder=\"アーティスト\" name=\"tagArtist\" [(ngModel)]=\"config.tagArtist\" (click)=\"macro('tagArtist')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"アルバム\" name=\"tagAlbum\" [(ngModel)]=\"config.tagAlbum\" (click)=\"macro('tagAlbum')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ジャンル\" name=\"tagGenre\" [(ngModel)]=\"config.tagGenre\" (click)=\"macro('tagGenre')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"コメント\" name=\"tagComment\" [(ngModel)]=\"config.tagComment\" (click)=\"macro('tagComment')\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>エンコード設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"サンプリングレート\" name=\"samplingRate\" [(ngModel)]=\"config.samplingRate\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ビットレート\" name=\"bitRate\" [(ngModel)]=\"config.bitRate\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ボリューム\" name=\"volume\" [(ngModel)]=\"config.volume\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n\n\n\n\n\n\n\n\n\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
+module.exports = "<form (submit)=\"save()\">\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>radikoプレミアム設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"メールアドレス\" name=\"radikoEmail\" [(ngModel)]=\"config.radikoEmail\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"パスワード\" type=\"password\" name=\"radikoPassword\" [(ngModel)]=\"config.radikoPassword\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>録音設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput type=\"number\" placeholder=\"タイムフリー予約時の開始マージン(分)\" name=\"timeFreeMargin\" [(ngModel)]=\"config.timeFreeMargin\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"保存ファイル名\" name=\"fileName\" [(ngModel)]=\"config.fileName\" (click)=\"macro('fileName')\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>メタ情報</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"タイトル\" name=\"tagTitle\" [(ngModel)]=\"config.tagTitle\" (click)=\"macro('tagTitle')\"  />\n      </mat-form-field>\n\n      <mat-form-field>\n        <input matInput placeholder=\"アーティスト\" name=\"tagArtist\" [(ngModel)]=\"config.tagArtist\" (click)=\"macro('tagArtist')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"アルバム\" name=\"tagAlbum\" [(ngModel)]=\"config.tagAlbum\" (click)=\"macro('tagAlbum')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ジャンル\" name=\"tagGenre\" [(ngModel)]=\"config.tagGenre\" (click)=\"macro('tagGenre')\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"コメント\" name=\"tagComment\" [(ngModel)]=\"config.tagComment\" (click)=\"macro('tagComment')\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n  <mat-card>\n    <mat-card-header>\n      <mat-card-title>エンコード設定</mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <mat-form-field>\n        <input matInput placeholder=\"サンプリングレート\" name=\"samplingRate\" [(ngModel)]=\"config.samplingRate\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ビットレート\" name=\"bitRate\" [(ngModel)]=\"config.bitRate\" />\n      </mat-form-field>\n      <mat-form-field>\n        <input matInput placeholder=\"ボリューム\" name=\"volume\" [(ngModel)]=\"config.volume\" />\n      </mat-form-field>\n    </mat-card-content>\n  </mat-card>\n\n\n\n\n\n\n\n\n\n\n  <button type=\"submit\" mat-raised-button color=\"primary\">保存</button>\n</form>\n"
 
 /***/ }),
 
@@ -319,7 +319,7 @@ var state_service_1 = __webpack_require__("../../../../../src/app/services/state
 var ContentComponent = /** @class */ (function () {
     function ContentComponent(stateService) {
         this.stateService = stateService;
-        this.selectedContent = '';
+        this.selectedContent = 'timetable';
         this.subs = [];
     }
     ContentComponent.prototype.ngOnInit = function () {
@@ -347,7 +347,7 @@ exports.ContentComponent = ContentComponent;
 /***/ "../../../../../src/app/components/library-detail/library-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div mat-dialog-content>\n  <table>\n    <tbody>\n      <tr>\n        <th>放送局</th>\n        <td>{{data.program.station.name}}</td>\n      </tr>\n      <tr>\n        <th>番組名</th>\n        <td>{{data.program.title}}</td>\n      </tr>\n      <tr>\n        <th>放送日</th>\n        <td>{{data.program.start | date: 'yyyy/MM/dd'}}</td>\n      </tr>\n      <tr>\n        <th>放送時間</th>\n        <td>{{data.program.start | time}} 〜 {{data.program.end | time}}</td>\n      </tr>\n      <tr>\n        <th>出演者</th>\n        <td>{{data.program.cast}}</td>\n      </tr>\n      <tr>\n        <th>説明</th>\n        <td [innerHTML]=\"description\">\n        </td>\n      </tr>\n      <tr>\n        <th>ファイルサイズ</th>\n        <td>{{data.size}}</td>\n      </tr>\n      <tr>\n        <th>作成日時</th>\n        <td>{{data.created | date: 'yyyy/MM/dd hh:mm:ss'}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n<div mat-dialog-actions>\n  <div>\n    <button type=\"button\" mat-button (click)=\"play()\">再生</button>\n    <button type=\"button\" mat-button (click)=\"download()\">ダウンロード</button>\n    <button type=\"button\" mat-button (click)=\"delete()\">削除</button>\n  </div>\n\n</div>\n"
+module.exports = "<div mat-dialog-content>\n  <table>\n    <tbody>\n      <tr>\n        <th>放送局</th>\n        <td>{{data.program.station.name}}</td>\n      </tr>\n      <tr>\n        <th>番組名</th>\n        <td>{{data.program.title}}</td>\n      </tr>\n      <tr>\n        <th>放送日</th>\n        <td>{{data.program.start | date: 'yyyy/MM/dd'}}</td>\n      </tr>\n      <tr>\n        <th>放送時間</th>\n        <td>{{data.program.start | time}} 〜 {{data.program.end | time}}</td>\n      </tr>\n      <tr>\n        <th>出演者</th>\n        <td>{{data.program.cast}}</td>\n      </tr>\n      <tr>\n        <th>説明</th>\n        <td [innerHTML]=\"description\">\n        </td>\n      </tr>\n      <tr>\n        <th>ファイルサイズ</th>\n        <td>{{data.size}}</td>\n      </tr>\n      <tr>\n        <th>作成日時</th>\n        <td>{{data.created | date: 'yyyy/MM/dd HH:mm:ss'}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n<div mat-dialog-actions>\n  <div>\n    <button type=\"button\" color=\"warn\" mat-raised-button (click)=\"delete()\">削除</button>\n\n  </div>\n  <div>\n    <button type=\"button\" mat-button (click)=\"play()\">再生</button>\n    <button type=\"button\" mat-button (click)=\"download()\">ダウンロード</button>\n  </div>\n\n</div>\n"
 
 /***/ }),
 
@@ -359,7 +359,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "table {\n  border-collapse: collapse;\n  margin-bottom: 3rem;\n  width: 30rem; }\n\nth, td {\n  padding: .5rem;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.12); }\n\nth {\n  text-align: right; }\n\n.mat-dialog-actions > div {\n  width: 50%;\n  display: inline-block; }\n\n.mat-dialog-actions > div:last-child {\n    text-align: right; }\n", ""]);
 
 // exports
 
@@ -408,6 +408,7 @@ var LibraryDetailComponent = /** @class */ (function () {
          * ダウンロード
          */
         this.download = function () {
+            location.href = "./library/download/" + _this.data.id;
         };
         /**
          * 削除
@@ -443,7 +444,7 @@ exports.LibraryDetailComponent = LibraryDetailComponent;
 /***/ "../../../../../src/app/components/library/library.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送日</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.start | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.stationName}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"title\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>番組名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.title}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"size\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>サイズ</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.size}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"created\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>作成日時</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.created | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
+module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送日</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.start | date: 'yyyy/MM/dd HH:mm'}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.stationName}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"title\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>番組名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.title}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"size\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>サイズ</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.size}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"created\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>作成日時</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.created | date: 'yyyy/MM/dd HH:mm:ss'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -940,7 +941,7 @@ var reserve_service_1 = __webpack_require__("../../../../../src/app/services/res
 var station_service_1 = __webpack_require__("../../../../../src/app/services/station.service.ts");
 var moment = __webpack_require__("../../../../moment/moment.js");
 var ReserveEditComponent = /** @class */ (function () {
-    function ReserveEditComponent(dialogRef, data, reserveService, stationService) {
+    function ReserveEditComponent(dialogRef, data, dateAdapter, reserveService, stationService) {
         var _this = this;
         this.dialogRef = dialogRef;
         this.data = data;
@@ -967,8 +968,8 @@ var ReserveEditComponent = /** @class */ (function () {
          * 保存
          */
         this.save = function () {
-            _this.reserve.start = moment(_this.startDate).hour(_this.startHour).minute(_this.startMinute).format('YYYY-MM-DD hh:mm:ss');
-            _this.reserve.end = moment(_this.endDate).hour(_this.endHour).minute(_this.endMinute).format('YYYY-MM-DD hh:mm:ss');
+            _this.reserve.start = moment(_this.startDate).hour(_this.startHour).minute(_this.startMinute).format('YYYY-MM-DD HH:mm:ss');
+            _this.reserve.end = moment(_this.endDate).hour(_this.endHour).minute(_this.endMinute).format('YYYY-MM-DD HH:mm:ss');
             _this.reserveService.update(_this.reserve).subscribe(function (res) {
                 if (res.result) {
                     _this.dialogRef.close(true);
@@ -981,7 +982,7 @@ var ReserveEditComponent = /** @class */ (function () {
                 stationId: data.program.stationId,
                 start: data.program.start,
                 end: data.program.end,
-                isTimeFree: this.data.program.tsNg === '1'
+                isTimeFree: this.data.program.tsNg !== '2'
             };
             this.tsNg = this.data.program.tsNg;
         }
@@ -996,6 +997,7 @@ var ReserveEditComponent = /** @class */ (function () {
         this.endDate = end.toDate();
         this.endHour = end.hour();
         this.endMinute = end.minute();
+        dateAdapter.setLocale('ja');
     }
     ReserveEditComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1018,7 +1020,8 @@ var ReserveEditComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.scss")]
         }),
         __param(1, core_1.Inject(material_1.MAT_DIALOG_DATA)),
-        __metadata("design:paramtypes", [material_1.MatDialogRef, Object, reserve_service_1.ReserveService,
+        __metadata("design:paramtypes", [material_1.MatDialogRef, Object, material_1.DateAdapter,
+            reserve_service_1.ReserveService,
             station_service_1.StationService])
     ], ReserveEditComponent);
     return ReserveEditComponent;
@@ -1031,7 +1034,7 @@ exports.ReserveEditComponent = ReserveEditComponent;
 /***/ "../../../../../src/app/components/reserve-list/reserve-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-table [dataSource]=\"reserveDataSource\" matSort #reserveSort=\"matSort\">\n  <ng-container matColumnDef=\"name\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.name}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"reserveDisplayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: reserveDisplayedColumns;\"></mat-row>\n</mat-table>\n\n\n<mat-table [dataSource]=\"taskDataSource\" matSort #taskSort=\"matSort\">\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\" (click)=\"stopRestartReserveTask(task)\"> {{task.start | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\"> {{task.end | date:'yyyy-MM-dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"status\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>ステータス</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\"> {{task.status}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"taskDisplayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: taskDisplayedColumns;\"></mat-row>\n</mat-table>\n"
+module.exports = "<mat-table [dataSource]=\"reserveDataSource\" matSort #reserveSort=\"matSort\">\n  <ng-container matColumnDef=\"name\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.name}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.stationName}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.start | date:'yyyy/MM/dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let reserve\" (click)=\"editReserve(reserve)\"> {{reserve.end | date:'yyyy/MM/dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"reserveDisplayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: reserveDisplayedColumns;\"></mat-row>\n</mat-table>\n\n\n<mat-table [dataSource]=\"taskDataSource\" matSort #taskSort=\"matSort\">\n\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\" (click)=\"stopRestartReserveTask(task)\"> {{task.start | date:'yyyy/MM/dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"end\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>終了</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\"> {{task.end | date:'yyyy/MM/dd HH:mm'}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"status\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>ステータス</mat-header-cell>\n    <mat-cell *matCellDef=\"let task\"> {{task.status}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"taskDisplayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: taskDisplayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -1365,7 +1368,7 @@ exports.ResetStationComponent = ResetStationComponent;
 /***/ "../../../../../src/app/components/timetable/timetable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <button mat-button *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\" class=\"station-button\" [class.selected]=\"stationId === s.id\">{{s.name}}</button>\n\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field>\n      <mat-select [(value)]=\"date\" (change)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div>\n          {{p.description}}\n        </div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n          <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n          <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimeFree(p)\" *ngIf=\"p.tsNg === '0' || p.tsNg === '1'\">ダウンロード</button>\n          <p *ngIf=\"p.tsNg === '1'\">一部タイムフリー未対応</p>\n          <p *ngIf=\"p.tsNg === '2'\">タイムフリー未対応</p>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <button mat-button *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\" class=\"station-button\" [class.selected]=\"stationId === s.id\">{{s.name}}</button>\n\n      </mat-expansion-panel>\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field *ngIf=\"stationId\">\n      <mat-select [(value)]=\"date\" (change)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div [innerHTML]=\"p.descriptionHTML\"></div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">単発予約</button>\n          <button mat-raised-button (click)=\"editReserve('weekly', p)\">毎週予約</button>\n          <button mat-raised-button (click)=\"editReserve('daily', p)\">毎日予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimeFree(p)\" *ngIf=\"p.tsNg === '0' || p.tsNg === '1'\">ダウンロード</button>\n          <p *ngIf=\"p.tsNg === '1'\">一部タイムフリー未対応</p>\n          <p *ngIf=\"p.tsNg === '2'\">タイムフリー未対応</p>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -1407,12 +1410,14 @@ var station_service_1 = __webpack_require__("../../../../../src/app/services/sta
 var program_service_1 = __webpack_require__("../../../../../src/app/services/program.service.ts");
 var moment = __webpack_require__("../../../../moment/moment.js");
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
+var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
 var TimetableComponent = /** @class */ (function () {
-    function TimetableComponent(stationService, programService, stateService) {
+    function TimetableComponent(stationService, programService, stateService, sanitizer) {
         var _this = this;
         this.stationService = stationService;
         this.programService = programService;
         this.stateService = stateService;
+        this.sanitizer = sanitizer;
         this.radiko = {};
         this.radikoRegions = [];
         this.date = moment().format('YYYY-MM-DD');
@@ -1456,6 +1461,7 @@ var TimetableComponent = /** @class */ (function () {
                     var now = moment();
                     _this.programs.forEach(function (p) {
                         p.reservable = moment(p.end) >= moment();
+                        p.descriptionHTML = _this.sanitizer.bypassSecurityTrustHtml(p.description);
                     });
                     var min = moment(res.data.range[0]);
                     var max = moment(res.data.range[1]);
@@ -1518,7 +1524,8 @@ var TimetableComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [station_service_1.StationService,
             program_service_1.ProgramService,
-            state_service_1.StateService])
+            state_service_1.StateService,
+            platform_browser_1.DomSanitizer])
     ], TimetableComponent);
     return TimetableComponent;
 }());

@@ -22,7 +22,7 @@
         <input matInput type="number" placeholder="タイムフリー予約時の開始マージン(分)" name="timeFreeMargin" [(ngModel)]="config.timeFreeMargin" />
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="保存ファイル名" name="fileName" [(ngModel)]="config.fileName" />
+        <input matInput placeholder="保存ファイル名" name="fileName" [(ngModel)]="config.fileName" (click)="macro('fileName')" />
       </mat-form-field>
     </mat-card-content>
   </mat-card>

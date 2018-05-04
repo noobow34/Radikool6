@@ -6,9 +6,7 @@ import moment = require('moment');
 import {Program, ProgramSearchCondition} from '../../interfaces/program';
 import {StateService} from '../../services/state.service';
 import {Moment} from 'moment';
-import {MatTableDataSource} from "@angular/material";
-import {Observable} from "rxjs/Rx";
-import {ReserveEditComponent} from "../reserve-edit/reserve-edit.component";
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-timetable',
@@ -31,7 +29,8 @@ export class TimetableComponent implements OnInit {
 
   constructor(private stationService: StationService,
               private programService: ProgramService,
-              private stateService: StateService) {
+              private stateService: StateService,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -97,6 +96,7 @@ export class TimetableComponent implements OnInit {
         const now = moment();
         this.programs.forEach(p => {
           p.reservable = moment(p.end) >= moment();
+          p.descriptionHTML = this.sanitizer.bypassSecurityTrustHtml(p.description);
         });
 
         const min = moment(res.data.range[0]);

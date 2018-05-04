@@ -20,8 +20,8 @@ namespace Radikool6.Controllers
         }
 
         [HttpGet]
-        [Route("library/play/{id}")]
-        public ActionResult Play(string id)
+        [Route("library/download/{id}")]
+        public ActionResult Download(string id)
         {
             using (SqliteConnection)
             {
@@ -29,9 +29,9 @@ namespace Radikool6.Controllers
                 lModel.Maintenance();
                 var library = lModel.Get(id);
 
-                if (library != null && System.IO.File.Exists(library.FileName))
+                if (library != null && System.IO.File.Exists(library.Path))
                 {
-                    return File(System.IO.File.OpenRead(library.FileName), "audio/mp4");
+                    return File(System.IO.File.OpenRead(library.Path), "audio/mp4", $"{library.FileName}.m4a");
                 }
                 else
                 {

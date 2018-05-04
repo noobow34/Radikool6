@@ -8,7 +8,7 @@ import {StateService} from '../../services/state.service';
 })
 export class ContentComponent implements OnInit, OnDestroy {
 
-  public selectedContent = '';
+  public selectedContent = 'timetable';
 
   private subs = [];
 

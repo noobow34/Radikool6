@@ -53,7 +53,7 @@ namespace Radikool6.BackgroundTask
         /// <param name="src"></param>
         /// <param name="program"></param>
         /// <returns></returns>
-        protected string Replace(string src, Station station, Entities.Program program)
+        protected string Replace(string src, Entities.Program program)
         {
             var res = src;
 
@@ -68,47 +68,35 @@ namespace Radikool6.BackgroundTask
             res = res.Replace("[SAMPLINGRATE]", Config.SamplingRate);
             res = res.Replace("[VOLUME]", Config.Volume);
             
-            res = res.Replace("[CH_NAME]", station.Name);
-            res = res.Replace("[CH]", station.Code);
+            res = res.Replace("[CH_NAME]", program.Station.Name);
+            res = res.Replace("[CH]", program.Station.Code);
 
             if (!string.IsNullOrWhiteSpace(program.Id))
             {
                 res = res.Replace("[TITLE]", program.Title);
                 res = res.Replace("[CAST]", program.Cast);
                 res = res.Replace("[INFO]", program.Description);
-                res = res.Replace("[SMONTH]", program.Start.Month.ToString("d2"));
-                res = res.Replace("[SDAY]", program.Start.Day.ToString("d2"));
-                res = res.Replace("[SHOUR]", program.Start.Hour.ToString("d2"));
-                res = res.Replace("[SMIN]", program.Start.Minute.ToString("d2"));
-                res = res.Replace("[SYOBI]", GetYobi(program.Start.DayOfWeek));
+                
 
                 // 28時表記
                 var date = program.Start.Hour < 5 ? program.Start.AddDays(-1) : program.Start;
-                res = res.Replace("[SYEAR28]", Convert.ToString(date.Year));
-                res = res.Replace("[SMONTH28]", date.Month.ToString("d2"));
-                res = res.Replace("[SDAY28]", date.Day.ToString("d2"));
-                res = res.Replace("[SHOUR28]",
+                res = res.Replace("[SYEAR]", Convert.ToString(date.Year));
+                res = res.Replace("[SMONTH]", date.Month.ToString("d2"));
+                res = res.Replace("[SDAY]", date.Day.ToString("d2"));
+                res = res.Replace("[SHOUR]",
                     date.Hour < 5 ? (date.Hour + 24).ToString("d2") : date.Hour.ToString("d2"));
-                res = res.Replace("[SMIN28]", date.Minute.ToString("d2"));
-                res = res.Replace("[SYOBI28]", GetYobi(date.DayOfWeek));
-
-
-                res = res.Replace("[EYEAR]", Convert.ToString(program.End.Year));
-                res = res.Replace("[EMONTH]", program.End.Month.ToString("d2"));
-                res = res.Replace("[EDAY]", program.End.Day.ToString("d2"));
-                res = res.Replace("[EHOUR]", program.End.Hour.ToString("d2"));
-                res = res.Replace("[EMIN]", program.End.Minute.ToString("d2"));
-                res = res.Replace("[EYOBI]", GetYobi(program.End.DayOfWeek));
+                res = res.Replace("[SMIN]", date.Minute.ToString("d2"));
+                res = res.Replace("[SYOBI]", GetYobi(date.DayOfWeek));
 
                 // 28時表記
                 date = program.End.Hour < 5 ? program.End.AddDays(-1) : program.End;
-                res = res.Replace("[EYEAR28]", Convert.ToString(date.Year));
-                res = res.Replace("[EMONTH28]", date.Month.ToString("d2"));
-                res = res.Replace("[EDAY28]", date.Day.ToString("d2"));
-                res = res.Replace("[EHOUR28]",
+                res = res.Replace("[EYEAR]", Convert.ToString(date.Year));
+                res = res.Replace("[EMONTH]", date.Month.ToString("d2"));
+                res = res.Replace("[EDAY]", date.Day.ToString("d2"));
+                res = res.Replace("[EHOUR]",
                     date.Hour < 5 ? (date.Hour + 24).ToString("d2") : date.Hour.ToString("d2"));
-                res = res.Replace("[EMIN28]", date.Minute.ToString("d2"));
-                res = res.Replace("[EYOBI28]", GetYobi(date.DayOfWeek));
+                res = res.Replace("[EMIN]", date.Minute.ToString("d2"));
+                res = res.Replace("[EYOBI]", GetYobi(date.DayOfWeek));
 
             }
 

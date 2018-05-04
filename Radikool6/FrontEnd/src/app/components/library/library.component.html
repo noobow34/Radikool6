@@ -1,7 +1,7 @@
 <mat-table [dataSource]="dataSource" matSort>
   <ng-container matColumnDef="start">
     <mat-header-cell *matHeaderCellDef mat-sort-header>放送日</mat-header-cell>
-    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.start | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>
+    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.start | date: 'yyyy/MM/dd HH:mm'}} </mat-cell>
   </ng-container>
   <ng-container matColumnDef="stationName">
     <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>
@@ -18,7 +18,7 @@
   </ng-container>
   <ng-container matColumnDef="created">
     <mat-header-cell *matHeaderCellDef mat-sort-header>作成日時</mat-header-cell>
-    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.created | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>
+    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.created | date: 'yyyy/MM/dd HH:mm:ss'}} </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

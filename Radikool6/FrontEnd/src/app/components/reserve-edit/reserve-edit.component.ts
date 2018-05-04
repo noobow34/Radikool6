@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef, NativeDateAdapter} from '@angular/material';
 import {Program} from '../../interfaces/program';
 import {Reserve} from '../../interfaces/reserve';
 import {ReserveService} from '../../services/reserve.service';
@@ -29,6 +29,7 @@ export class ReserveEditComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ReserveEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { program?: Program, reserve?: Reserve },
+              dateAdapter: DateAdapter<NativeDateAdapter>,
               private reserveService: ReserveService,
               private stationService: StationService) {
 
@@ -38,7 +39,7 @@ export class ReserveEditComponent implements OnInit {
         stationId: data.program.stationId,
         start: data.program.start,
         end: data.program.end,
-        isTimeFree: this.data.program.tsNg === '1'
+        isTimeFree: this.data.program.tsNg !== '2'
       };
 
       this.tsNg = this.data.program.tsNg;
@@ -57,6 +58,8 @@ export class ReserveEditComponent implements OnInit {
     this.endDate = end.toDate();
     this.endHour = end.hour();
     this.endMinute = end.minute();
+
+    dateAdapter.setLocale('ja');
 
   }
 
@@ -93,8 +96,8 @@ export class ReserveEditComponent implements OnInit {
    * 保存
    */
   public save = () => {
-    this.reserve.start = moment(this.startDate).hour(this.startHour).minute(this.startMinute).format('YYYY-MM-DD hh:mm:ss');
-    this.reserve.end = moment(this.endDate).hour(this.endHour).minute(this.endMinute).format('YYYY-MM-DD hh:mm:ss');
+    this.reserve.start = moment(this.startDate).hour(this.startHour).minute(this.startMinute).format('YYYY-MM-DD HH:mm:ss');
+    this.reserve.end = moment(this.endDate).hour(this.endHour).minute(this.endMinute).format('YYYY-MM-DD HH:mm:ss');
 
     this.reserveService.update(this.reserve).subscribe(res => {
       if (res.result) {

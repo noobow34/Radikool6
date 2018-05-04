@@ -48,7 +48,7 @@ namespace Radikool6.BackgroundTask
             var m3U8 = await Radiko.GetTimeFreeM3U8(program);
 
             var arg = Define.Radiko.TimeFreeFfmpegArgs.Replace("[M3U8]", m3U8).Replace("[FILE]", _filename);
-            arg = Replace(arg, Task?.Station ?? _program.Station, _program);
+            arg = Replace(arg, _program);
             CreateProcess(arg);
 
 
@@ -72,6 +72,7 @@ namespace Radikool6.BackgroundTask
                 {
                     var pModel = new ProgramModel(con);
                     _program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.Reserve.Start, To = Task.Reserve.End}).FirstOrDefault();
+                    _program.Station = Task.Station;
                 }
 
                 if (Task.Reserve.IsTimeFree)
@@ -79,10 +80,8 @@ namespace Radikool6.BackgroundTask
                     // 番組情報取得
                     using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))      
                     {
-                        _program.Station = Task.Station;
                         TimeFree(_program);
                     }
-
                 }
                 else
                 {              
@@ -94,7 +93,7 @@ namespace Radikool6.BackgroundTask
                     var arg = Define.Radiko.RealTimeFfmpegArgs.Replace("[TOKEN]", _token)
                         .Replace("[TIME]", (Task.End.AddSeconds(Define.Radiko.EndSec) - DateTime.Now).ToString(@"hh\:mm\:ss"))
                         .Replace("[FILE]", _filename);
-                    arg = Replace(arg, Task.Station, _program);
+                    arg = Replace(arg, _program);
                     CreateProcess(arg);
 
                     _ffmpeg.Start();
@@ -110,9 +109,13 @@ namespace Radikool6.BackgroundTask
             }
          }
 
+        /// <summary>
+        /// ステータス取得
+        /// </summary>
+        /// <returns></returns>
         public ReserveTask GetStatus()
         {
-            var statusText = (DateTime.Now - StartTime).ToString(@"hh\:mm\:ss");
+            var statusText = "";
             
             // ffmpegの状態確認
             if (_ffmpeg.HasExited)
@@ -143,6 +146,10 @@ namespace Radikool6.BackgroundTask
                 
                 case RecorderStatus.End:
                     statusText = "完了";
+                    break;
+                
+                case RecorderStatus.Working:
+                    statusText = "正常";
                     break;
             }
 
@@ -215,7 +222,7 @@ namespace Radikool6.BackgroundTask
             {
                 con.Open();
                 var lModel = new LibraryModel(con);
-                lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = _filename, Path = _filename, Program = _program });
+                lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = Replace(Config.FileName, _program), Path = _filename, Program = _program });
 
             }
         }

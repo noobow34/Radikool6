@@ -1,8 +1,10 @@
 import {Station} from './station';
+import {SafeHtml} from '@angular/platform-browser';
 
 export interface Program {
   cast: string;
   description: string;
+  descriptionHTML: SafeHtml;
   end: string;
   id: string;
   start: string;

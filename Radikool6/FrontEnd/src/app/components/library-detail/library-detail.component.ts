@@ -34,7 +34,7 @@ export class LibraryDetailComponent implements OnInit {
    * ダウンロード
    */
   public download = () => {
-
+    location.href = `./library/download/${this.data.id}`;
   }
 
   /**

@@ -11,7 +11,7 @@
     </mat-accordion>
   </div>
   <div class="timetable">
-    <mat-form-field>
+    <mat-form-field *ngIf="stationId">
       <mat-select [(value)]="date" (change)="setDate()">
         <mat-option [value]="day.format('YYYY-MM-DD')" *ngFor="let day of days">{{day | date: 'MM/dd'}}</mat-option>
       </mat-select>
@@ -24,9 +24,7 @@
             {{p.start| time}} {{p.title}}
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div>
-          {{p.description}}
-        </div>
+        <div [innerHTML]="p.descriptionHTML"></div>
         <div *ngIf="p.reservable">
           <button mat-raised-button (click)="editReserve('single', p)">単発予約</button>
           <button mat-raised-button (click)="editReserve('weekly', p)">毎週予約</button>
