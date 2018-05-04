@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
+using NLog;
 using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
@@ -35,27 +36,33 @@ namespace Radikool6.BackgroundTask
         /// <returns></returns>
         public async Task TimeFree(Entities.Program program)
         {
-            Status = RecorderStatus.Working;
-            _duration = (int)(program.End - program.Start).TotalSeconds;
-            
-            await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
+            try
+            {
+                Status = RecorderStatus.Working;
+                _duration = (int) (program.End - program.Start).TotalSeconds;
+                await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
 
 
-            _program = program;
-            Directory.CreateDirectory(Path.Combine("wwwroot", "records"));
-            _filename = Path.GetFullPath(Path.Combine("wwwroot", "records", $"{Guid.NewGuid().ToString()}.m4a"));
-            StartTime = DateTime.Now;
-            var m3U8 = await Radiko.GetTimeFreeM3U8(program);
+                _program = program;
+                Directory.CreateDirectory(Path.Combine("wwwroot", "records"));
+                _filename = Path.GetFullPath(Path.Combine("wwwroot", "records", $"{Guid.NewGuid().ToString()}.m4a"));
+                StartTime = DateTime.Now;
+                var m3U8 = await Radiko.GetTimeFreeM3U8(program);
 
-            var arg = Define.Radiko.TimeFreeFfmpegArgs.Replace("[M3U8]", m3U8).Replace("[FILE]", _filename);
-            arg = Replace(arg, _program);
-            CreateProcess(arg);
+                var arg = Define.Radiko.TimeFreeFfmpegArgs.Replace("[M3U8]", m3U8).Replace("[FILE]", _filename);
+                arg = Replace(arg, _program);
+                CreateProcess(arg);
 
 
-            _ffmpeg.Start();
+                _ffmpeg.Start();
 
-            _ffmpeg.BeginOutputReadLine();
-            _ffmpeg.BeginErrorReadLine();
+                _ffmpeg.BeginOutputReadLine();
+                _ffmpeg.BeginErrorReadLine();
+            }
+            catch (Exception ex)
+            {
+                Global.Logger.Error($"{ex.Message}¥n{ex.StackTrace}");
+            }
 
         }
 
