@@ -27,7 +27,7 @@ namespace Radikool6.Models
             var json = SqliteConnection
                 .Query<string>("SELECT Content FROM Configs WHERE Id = @id", new {id = Define.Config.Common})
                 .FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(json)) return null;
+            if (string.IsNullOrWhiteSpace(json)) return new Config();
 
             var res = JsonConvert.DeserializeObject<Config>(json);
 
