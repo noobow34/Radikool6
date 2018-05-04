@@ -117,6 +117,31 @@ namespace Radikool6.Classes
                     return "";
                 }
             }
+
+            /// <summary>
+            /// ファイルサイズを文字列に
+            /// </summary>
+            /// <param name="length"></param>
+            /// <returns></returns>
+            public static string ToSizeString(long length)
+            {
+                if (length < 1000)
+                {
+                    return $"{length}B";
+                }
+                else if (length < 1000 * 1000)
+                {
+                    return $"{length / 1000}KB";
+                }
+                else if (length < 1000 * 1000 * 1000)
+                {
+                    return $"{length / 1000 / 1000}MB";
+                }
+                else
+                {
+                    return $"{length / 1000 / 1000 / 1000}GB";
+                }
+            }
         }
     }
 }

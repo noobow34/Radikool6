@@ -34,6 +34,7 @@ import {LibraryService} from './services/library.service';
 import { PlayerComponent } from './components/player/player.component';
 import { MacroComponent } from './components/macro/macro.component';
 import { ProgressComponent } from './components/progress/progress.component';
+import { LibraryDetailComponent } from './components/library-detail/library-detail.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { ProgressComponent } from './components/progress/progress.component';
     ResetStationComponent,
     PlayerComponent,
     MacroComponent,
-    ProgressComponent
+    ProgressComponent,
+    LibraryDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,8 @@ import { ProgressComponent } from './components/progress/progress.component';
   entryComponents: [
     ReserveEditComponent,
     MacroComponent,
-    ProgressComponent
+    ProgressComponent,
+    LibraryDetailComponent
   ],
   bootstrap: [AppComponent]
 })

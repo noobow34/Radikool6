@@ -1,0 +1,47 @@
+<div mat-dialog-content>
+  <table>
+    <tbody>
+      <tr>
+        <th>放送局</th>
+        <td>{{data.program.station.name}}</td>
+      </tr>
+      <tr>
+        <th>番組名</th>
+        <td>{{data.program.title}}</td>
+      </tr>
+      <tr>
+        <th>放送日</th>
+        <td>{{data.program.start | date: 'yyyy/MM/dd'}}</td>
+      </tr>
+      <tr>
+        <th>放送時間</th>
+        <td>{{data.program.start | time}} 〜 {{data.program.end | time}}</td>
+      </tr>
+      <tr>
+        <th>出演者</th>
+        <td>{{data.program.cast}}</td>
+      </tr>
+      <tr>
+        <th>説明</th>
+        <td [innerHTML]="description">
+        </td>
+      </tr>
+      <tr>
+        <th>ファイルサイズ</th>
+        <td>{{data.size}}</td>
+      </tr>
+      <tr>
+        <th>作成日時</th>
+        <td>{{data.created | date: 'yyyy/MM/dd hh:mm:ss'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <div>
+    <button type="button" mat-button (click)="play()">再生</button>
+    <button type="button" mat-button (click)="download()">ダウンロード</button>
+    <button type="button" mat-button (click)="delete()">削除</button>
+  </div>
+
+</div>

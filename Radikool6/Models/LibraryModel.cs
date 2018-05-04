@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
+using Radikool6.Classes;
 using Radikool6.Entities;
 using SQLitePCL;
 
@@ -25,9 +28,18 @@ namespace Radikool6.Models
         public IEnumerable<Library> Get()
         {
             var libraries = SqliteConnection.Query<Library>("SELECT * FROM Libraries").ToList();
+            var statios = SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Id IN @Ids",
+                new {Ids = libraries.Select(l => l.Program.StationId).Distinct().ToList()});
+            
+            
             libraries.ForEach(l =>
             {
+                var fi = new FileInfo(l.Path);
+                l.Size = Utility.Text.ToSizeString(fi.Length);
+                l.Created = fi.CreationTime;
                 l.Path = Path.GetFileName(l.Path);
+                l.Program.Station = statios.FirstOrDefault(s => s.Id == l.Program.StationId);
+
             });
             return libraries;
         }
@@ -67,6 +79,32 @@ namespace Radikool6.Models
                                    )";
 
             SqliteConnection.Execute(query, library);
+            return true;
+        }
+
+        /// <summary>
+        /// ライブラリ削除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool Delete(string id)
+        {
+            
+            var library = Get(id);
+            // ファイル削除
+            try
+            {
+                if (File.Exists(library.Path))
+                {
+                    File.Delete(library.Path);
+                }
+            }
+            catch (Exception ex)
+            {
+                Global.Logger.Error($"{ex.Message}\n{ex.StackTrace}");
+            }
+
+            SqliteConnection.Execute("DELETE FROM Libraries WHERE Id = @Id", new {Id = library.Id});
             return true;
         }
 

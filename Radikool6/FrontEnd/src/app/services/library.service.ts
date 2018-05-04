@@ -18,4 +18,13 @@ export class LibraryService extends BaseService {
   public get = () => {
     return this.http.get<ApiResult<Library[]>>('./api/library');
   }
+
+  /**
+   * ライブラリ削除
+   * @param {string} id
+   * @returns {Observable<Object>}
+   */
+  public delete = (id: string) => {
+    return this.http.delete<ApiResult>(`./api/library/${id}`);
+  }
 }

@@ -16,7 +16,7 @@ export class LibraryComponent implements OnInit {
 
   // mat-table
   public dataSource = new MatTableDataSource();
-  public displayedColumns = ['fileName', 'title'];
+  public displayedColumns = ['start', 'stationName', 'title', 'size', 'created'];
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private stateServie: StateService,
@@ -24,18 +24,45 @@ export class LibraryComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.init();
+  }
+
+  /**
+   * 初期化
+   */
+  private init = () => {
     this.libraryService.get().subscribe(res => {
       if (res.result) {
         this.libraries = res.data;
-        this.dataSource = new MatTableDataSource(this.libraries);
+
+        const data = this.libraries.map(l => {
+          return {
+            start: l.program.start,
+            stationName: l.program.station.name,
+            title: l.program.title,
+            size: l.size,
+            created: l.created,
+            orgData: l
+          };
+        });
+
+        this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
       }
     });
   }
 
-  public play = (library: Library) => {
-   // this.stateServie.playLibrary.next(library);
-   window.open(`./records/${library.path}`);
+  /**
+   * 詳細表示
+   * @param {Library} library
+   */
+  public detail = (library: Library) => {
+    this.stateServie.showLibraryDetail(library, (res) => {
+      if (res) {
+        this.init();
+      }
+    });
+    // this.stateServie.playLibrary.next(library);
+    //window.open(`./records/${library.path}`);
   }
-
 }

@@ -1,3 +1,5 @@
+import {Station} from './station';
+
 export interface Program {
   cast: string;
   description: string;
@@ -8,6 +10,7 @@ export interface Program {
   title: string;
   reservable?: boolean;
   tsNg?: string;
+  station?: Station;
 }
 
 export interface ProgramSearchCondition {

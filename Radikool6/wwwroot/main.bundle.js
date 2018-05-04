@@ -113,6 +113,7 @@ var library_service_1 = __webpack_require__("../../../../../src/app/services/lib
 var player_component_1 = __webpack_require__("../../../../../src/app/components/player/player.component.ts");
 var macro_component_1 = __webpack_require__("../../../../../src/app/components/macro/macro.component.ts");
 var progress_component_1 = __webpack_require__("../../../../../src/app/components/progress/progress.component.ts");
+var library_detail_component_1 = __webpack_require__("../../../../../src/app/components/library-detail/library-detail.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -133,7 +134,8 @@ var AppModule = /** @class */ (function () {
                 reset_station_component_1.ResetStationComponent,
                 player_component_1.PlayerComponent,
                 macro_component_1.MacroComponent,
-                progress_component_1.ProgressComponent
+                progress_component_1.ProgressComponent,
+                library_detail_component_1.LibraryDetailComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -169,7 +171,8 @@ var AppModule = /** @class */ (function () {
             entryComponents: [
                 reserve_edit_component_1.ReserveEditComponent,
                 macro_component_1.MacroComponent,
-                progress_component_1.ProgressComponent
+                progress_component_1.ProgressComponent,
+                library_detail_component_1.LibraryDetailComponent
             ],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -341,10 +344,106 @@ exports.ContentComponent = ContentComponent;
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/library-detail/library-detail.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div mat-dialog-content>\n  <table>\n    <tbody>\n      <tr>\n        <th>放送局</th>\n        <td>{{data.program.station.name}}</td>\n      </tr>\n      <tr>\n        <th>番組名</th>\n        <td>{{data.program.title}}</td>\n      </tr>\n      <tr>\n        <th>放送日</th>\n        <td>{{data.program.start | date: 'yyyy/MM/dd'}}</td>\n      </tr>\n      <tr>\n        <th>放送時間</th>\n        <td>{{data.program.start | time}} 〜 {{data.program.end | time}}</td>\n      </tr>\n      <tr>\n        <th>出演者</th>\n        <td>{{data.program.cast}}</td>\n      </tr>\n      <tr>\n        <th>説明</th>\n        <td [innerHTML]=\"description\">\n        </td>\n      </tr>\n      <tr>\n        <th>ファイルサイズ</th>\n        <td>{{data.size}}</td>\n      </tr>\n      <tr>\n        <th>作成日時</th>\n        <td>{{data.created | date: 'yyyy/MM/dd hh:mm:ss'}}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n<div mat-dialog-actions>\n  <div>\n    <button type=\"button\" mat-button (click)=\"play()\">再生</button>\n    <button type=\"button\" mat-button (click)=\"download()\">ダウンロード</button>\n    <button type=\"button\" mat-button (click)=\"delete()\">削除</button>\n  </div>\n\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/library-detail/library-detail.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/library-detail/library-detail.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
+var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
+var library_service_1 = __webpack_require__("../../../../../src/app/services/library.service.ts");
+var LibraryDetailComponent = /** @class */ (function () {
+    function LibraryDetailComponent(dialogRef, data, sanitizer, libraryService) {
+        var _this = this;
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.sanitizer = sanitizer;
+        this.libraryService = libraryService;
+        /**
+         * 再生
+         */
+        this.play = function () {
+            window.open("./records/" + _this.data.path);
+        };
+        /**
+         * ダウンロード
+         */
+        this.download = function () {
+        };
+        /**
+         * 削除
+         */
+        this.delete = function () {
+            if (confirm('削除しますか？')) {
+                _this.libraryService.delete(_this.data.id).subscribe(function (res) {
+                    _this.dialogRef.close(true);
+                });
+            }
+        };
+    }
+    LibraryDetailComponent.prototype.ngOnInit = function () {
+        this.description = this.sanitizer.bypassSecurityTrustHtml(this.data.program.description);
+    };
+    LibraryDetailComponent = __decorate([
+        core_1.Component({
+            selector: 'app-library-detail',
+            template: __webpack_require__("../../../../../src/app/components/library-detail/library-detail.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/library-detail/library-detail.component.scss")]
+        }),
+        __param(1, core_1.Inject(material_1.MAT_DIALOG_DATA)),
+        __metadata("design:paramtypes", [material_1.MatDialogRef, Object, platform_browser_1.DomSanitizer,
+            library_service_1.LibraryService])
+    ], LibraryDetailComponent);
+    return LibraryDetailComponent;
+}());
+exports.LibraryDetailComponent = LibraryDetailComponent;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/library/library.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"title\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>番組名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"play(library)\"> {{library.program.title}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"fileName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>ファイル名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"play(library)\"> {{library.fileName}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
+module.exports = "<mat-table [dataSource]=\"dataSource\" matSort>\n  <ng-container matColumnDef=\"start\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送日</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.start | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"stationName\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.stationName}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"title\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>番組名</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.title}} </mat-cell>\n  </ng-container>\n\n  <ng-container matColumnDef=\"size\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>サイズ</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.size}} </mat-cell>\n  </ng-container>\n  <ng-container matColumnDef=\"created\">\n    <mat-header-cell *matHeaderCellDef mat-sort-header>作成日時</mat-header-cell>\n    <mat-cell *matCellDef=\"let library\" (click)=\"detail(library.orgData)\"> {{library.created | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n</mat-table>\n"
 
 /***/ }),
 
@@ -387,26 +486,51 @@ var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var state_service_1 = __webpack_require__("../../../../../src/app/services/state.service.ts");
 var LibraryComponent = /** @class */ (function () {
     function LibraryComponent(stateServie, libraryService) {
+        var _this = this;
         this.stateServie = stateServie;
         this.libraryService = libraryService;
         this.libraries = [];
         // mat-table
         this.dataSource = new material_1.MatTableDataSource();
-        this.displayedColumns = ['fileName', 'title'];
-        this.play = function (library) {
+        this.displayedColumns = ['start', 'stationName', 'title', 'size', 'created'];
+        /**
+         * 初期化
+         */
+        this.init = function () {
+            _this.libraryService.get().subscribe(function (res) {
+                if (res.result) {
+                    _this.libraries = res.data;
+                    var data = _this.libraries.map(function (l) {
+                        return {
+                            start: l.program.start,
+                            stationName: l.program.station.name,
+                            title: l.program.title,
+                            size: l.size,
+                            created: l.created,
+                            orgData: l
+                        };
+                    });
+                    _this.dataSource = new material_1.MatTableDataSource(data);
+                    _this.dataSource.sort = _this.sort;
+                }
+            });
+        };
+        /**
+         * 詳細表示
+         * @param {Library} library
+         */
+        this.detail = function (library) {
+            _this.stateServie.showLibraryDetail(library, function (res) {
+                if (res) {
+                    _this.init();
+                }
+            });
             // this.stateServie.playLibrary.next(library);
-            window.open("./records/" + library.path);
+            //window.open(`./records/${library.path}`);
         };
     }
     LibraryComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.libraryService.get().subscribe(function (res) {
-            if (res.result) {
-                _this.libraries = res.data;
-                _this.dataSource = new material_1.MatTableDataSource(_this.libraries);
-                _this.dataSource.sort = _this.sort;
-            }
-        });
+        this.init();
     };
     __decorate([
         core_1.ViewChild(material_1.MatSort),
@@ -770,7 +894,7 @@ exports.ProgressComponent = ProgressComponent;
 /***/ "../../../../../src/app/components/reserve-edit/reserve-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"save()\">\n  <div mat-dialog-content>\n    <mat-form-field class=\"full\">\n      <input matInput placeholder=\"予約名\" name=\"name\" [(ngModel)]=\"reserve.name\" />\n    </mat-form-field>\n    <mat-form-field class=\"full\">\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"startPicker\" placeholder=\"開始日時\" name=\"start\" [(ngModel)]=\"startDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"startPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #startPicker></mat-datepicker>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"startHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"startMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"endPicker\" placeholder=\"終了日時\" name=\"end\" [(ngModel)]=\"endDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"endPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #endPicker></mat-datepicker>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"endHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"endMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-checkbox name=\"isTimeFree\" [(ngModel)]=\"reserve.isTimeFree\" *ngIf=\"tsNg === '0' || tsNg === '1'\">タイムフリーで録音</mat-checkbox>\n      <p *ngIf=\"tsNg ==='1'\">タイムフリー一部未対応</p>\n      <p *ngIf=\"tsNg ==='2'\">タイムフリー未対応</p>\n    </div>\n  </div>\n  <div mat-dialog-actions>\n    <div>\n      <button type=\"button\" mat-raised-button color=\"warn\" (click)=\"delete()\" *ngIf=\"reserve.id\">削除</button>\n    </div>\n    <div>\n      <button type=\"submit\" mat-button>保存</button>\n      <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n    </div>\n\n  </div>\n</form>\n\n"
+module.exports = "<form (submit)=\"save()\">\n  <div mat-dialog-content>\n    <mat-form-field class=\"full\">\n      <input matInput placeholder=\"予約名\" name=\"name\" [(ngModel)]=\"reserve.name\" />\n    </mat-form-field>\n    <mat-form-field class=\"full\">\n      <mat-select placeholder=\"放送局\" [(value)]=\"reserve.stationId\">\n        <mat-option *ngFor=\"let station of stations\" [value]=\"station.id\">\n          {{station.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"startPicker\" placeholder=\"開始日\" name=\"start\" [(ngModel)]=\"startDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"startPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #startPicker></mat-datepicker>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"startHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"startMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-form-field>\n        <input matInput [matDatepicker]=\"endPicker\" placeholder=\"終了日\" name=\"end\" [(ngModel)]=\"endDate\" />\n        <mat-datepicker-toggle matSuffix [for]=\"endPicker\"></mat-datepicker-toggle>\n        <mat-datepicker #endPicker></mat-datepicker>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"時\" [(value)]=\"endHour\">\n          <mat-option *ngFor=\"let hour of hours\" [value]=\"hour\">\n            {{hour}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n\n      <mat-form-field>\n        <mat-select placeholder=\"分\" [(value)]=\"endMinute\">\n          <mat-option *ngFor=\"let minute of minutes\" [value]=\"minute\">\n            {{minute}}\n          </mat-option>\n        </mat-select>\n      </mat-form-field>\n    </div>\n    <div>\n      <mat-checkbox name=\"isTimeFree\" [(ngModel)]=\"reserve.isTimeFree\" *ngIf=\"tsNg === '0' || tsNg === '1'\">タイムフリーで録音</mat-checkbox>\n      <p *ngIf=\"tsNg ==='1'\">タイムフリー一部未対応</p>\n      <p *ngIf=\"tsNg ==='2'\">タイムフリー未対応</p>\n    </div>\n  </div>\n  <div mat-dialog-actions>\n    <div>\n      <button type=\"button\" mat-raised-button color=\"warn\" (click)=\"delete()\" *ngIf=\"reserve.id\">削除</button>\n    </div>\n    <div>\n      <button type=\"submit\" mat-button>保存</button>\n      <button type=\"button\" mat-button mat-dialog-close>キャンセル</button>\n    </div>\n\n  </div>\n</form>\n\n"
 
 /***/ }),
 
@@ -1640,6 +1764,14 @@ var LibraryService = /** @class */ (function (_super) {
         _this.get = function () {
             return _this.http.get('./api/library');
         };
+        /**
+         * ライブラリ削除
+         * @param {string} id
+         * @returns {Observable<Object>}
+         */
+        _this.delete = function (id) {
+            return _this.http.delete("./api/library/" + id);
+        };
         return _this;
     }
     LibraryService = __decorate([
@@ -1825,6 +1957,7 @@ var material_1 = __webpack_require__("../../../material/esm5/material.es5.js");
 var reserve_edit_component_1 = __webpack_require__("../../../../../src/app/components/reserve-edit/reserve-edit.component.ts");
 var macro_component_1 = __webpack_require__("../../../../../src/app/components/macro/macro.component.ts");
 var progress_component_1 = __webpack_require__("../../../../../src/app/components/progress/progress.component.ts");
+var library_detail_component_1 = __webpack_require__("../../../../../src/app/components/library-detail/library-detail.component.ts");
 var StateService = /** @class */ (function (_super) {
     __extends(StateService, _super);
     function StateService(http, dialog) {
@@ -1839,7 +1972,6 @@ var StateService = /** @class */ (function (_super) {
          */
         _this.editReserve = function (data, callback) {
             var dialogRef = _this.dialog.open(reserve_edit_component_1.ReserveEditComponent, {
-                //width: '250px',
                 disableClose: true,
                 data: data
             });
@@ -1854,7 +1986,6 @@ var StateService = /** @class */ (function (_super) {
          */
         _this.macro = function (data, callback) {
             var dialogRef = _this.dialog.open(macro_component_1.MacroComponent, {
-                //width: '250px',
                 disableClose: true,
                 data: data
             });
@@ -1868,8 +1999,20 @@ var StateService = /** @class */ (function (_super) {
          */
         _this.showTimefreeProgress = function (callback) {
             var dialogRef = _this.dialog.open(progress_component_1.ProgressComponent, {
-                //width: '250px',
                 disableClose: true,
+            });
+            dialogRef.afterClosed().subscribe(function (res) {
+                callback(res);
+            });
+        };
+        /**
+         * ライブラリ詳細表示
+         * @param {Library} library
+         * @param callback
+         */
+        _this.showLibraryDetail = function (library, callback) {
+            var dialogRef = _this.dialog.open(library_detail_component_1.LibraryDetailComponent, {
+                data: library
             });
             dialogRef.afterClosed().subscribe(function (res) {
                 callback(res);

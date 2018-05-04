@@ -59,6 +59,25 @@ namespace Radikool6.Controllers
                 }
             });
         }
+        
+        /// <summary>
+        /// ライブラリ削除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("api/library/{id}")]
+        public async Task<ApiResponse> Delete(string id)
+        {
+            return await Execute(() =>
+            {
+                using (SqliteConnection)
+                {
+                    var lModel = new LibraryModel(SqliteConnection);
+                    Result.Result = lModel.Delete(id);
+                }
+            });
+        }
 
     }
 }

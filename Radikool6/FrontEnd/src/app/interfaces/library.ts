@@ -5,4 +5,6 @@ export interface Library {
   fileName?: string;
   path?: string;
   program?: Program;
+  size?: string;
+  created?: Date;
 }

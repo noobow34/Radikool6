@@ -1,11 +1,24 @@
 <mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="start">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>放送日</mat-header-cell>
+    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.start | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="stationName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>放送局</mat-header-cell>
+    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.stationName}} </mat-cell>
+  </ng-container>
   <ng-container matColumnDef="title">
     <mat-header-cell *matHeaderCellDef mat-sort-header>番組名</mat-header-cell>
-    <mat-cell *matCellDef="let library" (click)="play(library)"> {{library.program.title}} </mat-cell>
+    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.title}} </mat-cell>
   </ng-container>
-  <ng-container matColumnDef="fileName">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>ファイル名</mat-header-cell>
-    <mat-cell *matCellDef="let library" (click)="play(library)"> {{library.fileName}} </mat-cell>
+
+  <ng-container matColumnDef="size">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>サイズ</mat-header-cell>
+    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.size}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="created">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>作成日時</mat-header-cell>
+    <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.created | date: 'yyyy/MM/dd hh:mm:ss'}} </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

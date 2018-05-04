@@ -10,7 +10,10 @@ namespace Radikool6.Entities
         public string Id { get; set; }
         public string FileName { get; set; }
         public string Path { get; set; }
+        public string Size { get; set; }
+        public DateTime Created { get; set; }
 
+        [JsonIgnore]
         public string ProgramJson
         {
             get

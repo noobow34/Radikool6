@@ -7,6 +7,7 @@ import {ReserveEditComponent} from '../components/reserve-edit/reserve-edit.comp
 import {Library} from '../interfaces/library';
 import {MacroComponent} from "../components/macro/macro.component";
 import {ProgressComponent} from "../components/progress/progress.component";
+import {LibraryDetailComponent} from "../components/library-detail/library-detail.component";
 
 @Injectable()
 export class StateService extends BaseService {
@@ -26,7 +27,6 @@ export class StateService extends BaseService {
    */
   public editReserve = (data, callback) => {
     const dialogRef = this.dialog.open(ReserveEditComponent, {
-      //width: '250px',
       disableClose: true,
       data: data
     });
@@ -43,7 +43,6 @@ export class StateService extends BaseService {
    */
   public macro = (data, callback) => {
     const dialogRef = this.dialog.open(MacroComponent, {
-      //width: '250px',
       disableClose: true,
       data: data
     });
@@ -59,8 +58,22 @@ export class StateService extends BaseService {
    */
   public showTimefreeProgress = (callback) => {
     const dialogRef = this.dialog.open(ProgressComponent, {
-      //width: '250px',
       disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      callback(res);
+    });
+  }
+
+  /**
+   * ライブラリ詳細表示
+   * @param {Library} library
+   * @param callback
+   */
+  public showLibraryDetail = (library: Library, callback) => {
+    const dialogRef = this.dialog.open(LibraryDetailComponent, {
+      data: library
     });
 
     dialogRef.afterClosed().subscribe(res => {
