@@ -48,6 +48,7 @@ namespace Radikool6.Controllers
                 catch (Exception ex)
                 {
                     Result.Errors.Add(ex.Message);
+                    Global.Logger.Error($"{ex.Message}¥n{ex.StackTrace}");
                 }
 
                 return Result;
