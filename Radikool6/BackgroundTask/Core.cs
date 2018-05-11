@@ -106,6 +106,9 @@ namespace Radikool6.BackgroundTask
                     }
 
                 }
+                
+                // 終了タスクを削除する
+                _recorders.RemoveAll(r => r.Status == Recorder.RecorderStatus.End);
 
                 _recorderLock = false;
             }
