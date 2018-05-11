@@ -1,0 +1,14 @@
+version: '2'
+services:
+  radikool:
+    image: radikool6
+    environment:
+      radikool_id: '[ID]'
+      radikool_password: '[PASSWORD]'
+      TZ: Japan
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/:/Radikool6/data/
+      - ./logs/:/Radikool6/logs/
+      - ./records/:/Radikool6/wwwroot/records/
