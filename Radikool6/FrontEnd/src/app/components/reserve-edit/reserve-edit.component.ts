@@ -5,7 +5,7 @@ import {Reserve} from '../../interfaces/reserve';
 import {ReserveService} from '../../services/reserve.service';
 import {StationService} from '../../services/station.service';
 import {Station} from '../../interfaces/station';
-import moment = require("moment");
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reserve-edit',

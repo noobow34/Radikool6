@@ -27,8 +27,8 @@
         <div [innerHTML]="p.descriptionHTML"></div>
         <div *ngIf="p.reservable">
           <button mat-raised-button (click)="editReserve('single', p)">単発予約</button>
-          <button mat-raised-button (click)="editReserve('weekly', p)">毎週予約</button>
-          <button mat-raised-button (click)="editReserve('daily', p)">毎日予約</button>
+         <!-- <button mat-raised-button (click)="editReserve('weekly', p)">毎週予約</button>
+          <button mat-raised-button (click)="editReserve('daily', p)">毎日予約</button>-->
         </div>
         <div *ngIf="!p.reservable">
           <button mat-raised-button (click)="getTimeFree(p)" *ngIf="p.tsNg === '0' || p.tsNg === '1'">ダウンロード</button>

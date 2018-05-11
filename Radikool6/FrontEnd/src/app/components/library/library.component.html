@@ -1,4 +1,5 @@
-<mat-table [dataSource]="dataSource" matSort>
+<p *ngIf="libraries.length === 0">ライブラリはありません</p>
+<mat-table [dataSource]="dataSource" matSort *ngIf="libraries.length > 0">
   <ng-container matColumnDef="start">
     <mat-header-cell *matHeaderCellDef mat-sort-header>放送日</mat-header-cell>
     <mat-cell *matCellDef="let library" (click)="detail(library.orgData)"> {{library.start | date: 'yyyy/MM/dd HH:mm'}} </mat-cell>

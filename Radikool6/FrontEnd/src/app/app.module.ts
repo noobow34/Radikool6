@@ -35,6 +35,8 @@ import { PlayerComponent } from './components/player/player.component';
 import { MacroComponent } from './components/macro/macro.component';
 import { ProgressComponent } from './components/progress/progress.component';
 import { LibraryDetailComponent } from './components/library-detail/library-detail.component';
+import { SystemInfoComponent } from './components/system-info/system-info.component';
+import {SystemInfoService} from './services/system-info.service';
 
 
 @NgModule({
@@ -54,7 +56,8 @@ import { LibraryDetailComponent } from './components/library-detail/library-deta
     PlayerComponent,
     MacroComponent,
     ProgressComponent,
-    LibraryDetailComponent
+    LibraryDetailComponent,
+    SystemInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +88,8 @@ import { LibraryDetailComponent } from './components/library-detail/library-deta
     ReserveService,
     ConfigService,
     TaskService,
-    LibraryService
+    LibraryService,
+    SystemInfoService
   ],
   entryComponents: [
     ReserveEditComponent,

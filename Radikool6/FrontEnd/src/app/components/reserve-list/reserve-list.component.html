@@ -1,4 +1,5 @@
-<mat-table [dataSource]="reserveDataSource" matSort #reserveSort="matSort">
+<p *ngIf="reserves.length === 0">予約はありません</p>
+<mat-table [dataSource]="reserveDataSource" matSort #reserveSort="matSort" *ngIf="reserves.length > 0">
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header>予約名</mat-header-cell>
     <mat-cell *matCellDef="let reserve" (click)="editReserve(reserve)"> {{reserve.name}} </mat-cell>
@@ -24,7 +25,7 @@
 </mat-table>
 
 
-<mat-table [dataSource]="taskDataSource" matSort #taskSort="matSort">
+<mat-table [dataSource]="taskDataSource" matSort #taskSort="matSort" *ngIf="tasks.length > 0">
 
   <ng-container matColumnDef="start">
     <mat-header-cell *matHeaderCellDef mat-sort-header>開始</mat-header-cell>

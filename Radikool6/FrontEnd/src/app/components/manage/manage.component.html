@@ -3,10 +3,12 @@
     <button mat-button (click)="selectedItem = 'config'" [class.selected]="selectedItem === 'config'">一般設定</button>
     <button mat-button (click)="selectedItem = 'resetStation'" [class.selected]="selectedItem === 'resetStation'">放送局初期化</button>
     <button mat-button (click)="selectedItem = 'resetProgram'" [class.selected]="selectedItem === 'resetProgram'">番組表取得</button>
+    <button mat-button (click)="selectedItem = 'systemInfo'" [class.selected]="selectedItem === 'systemInfo'">システム情報</button>
   </div>
   <div class="content">
     <app-config *ngIf="selectedItem === 'config'"></app-config>
     <app-reset-program *ngIf="selectedItem === 'resetProgram'"></app-reset-program>
     <app-reset-station *ngIf="selectedItem === 'resetStation'"></app-reset-station>
+    <app-system-info *ngIf="selectedItem === 'systemInfo'"></app-system-info>
   </div>
 </div>

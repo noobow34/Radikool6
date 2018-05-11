@@ -2,11 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {StationService} from '../../services/station.service';
 import {Station} from '../../interfaces/station';
 import {ProgramService} from '../../services/program.service';
-import moment = require('moment');
 import {Program, ProgramSearchCondition} from '../../interfaces/program';
 import {StateService} from '../../services/state.service';
-import {Moment} from 'moment';
+import * as moment from 'moment';
 import {DomSanitizer} from '@angular/platform-browser';
+import {Moment} from 'moment';
 
 @Component({
   selector: 'app-timetable',
