@@ -202,6 +202,34 @@ namespace Radikool6.Classes
             public const string Image = "http://www.nhk.or.jp/radio/img/parts.png";
 
         }
+        
+        /// <summary>
+        /// ListenRadio
+        /// </summary>
+        public class ListenRadio
+        {
+            /// <summary>
+            /// カテゴリリスト
+            /// </summary>
+            public const string CategoryList = "https://listenradio.jp/service/channelcategory.aspx";
+
+            /// <summary>
+            /// 放送局一覧
+            /// </summary>
+            public const string StationList = "https://listenradio.jp/service/categorychannel.aspx?categoryid=";
+            //public const string StationList = "http://listenradio.jp/";
+
+            /// <summary>
+            /// 番組表
+            /// </summary>
+            public const string Timetable = "https://listenradio.jp/service/schedule.aspx?channelid=";
+
+            /// <summary>
+            /// 種別
+            /// </summary>
+            public const string TypeName = "lr";
+
+        }
 
         /// <summary>
         /// 規定の録音形式

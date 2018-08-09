@@ -66,6 +66,9 @@ namespace Radikool6.Controllers
                         case Define.Nhk.TypeName:
                             stations = Nhk.GetStations().Result;
                             break;
+                        case Define.ListenRadio.TypeName:
+                            stations = ListenRadio.GetStations().Result;
+                            break;
                     }
 
                     var model = new StationModel(SqliteConnection);

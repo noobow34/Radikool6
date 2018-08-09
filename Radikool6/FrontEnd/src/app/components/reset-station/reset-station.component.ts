@@ -9,14 +9,20 @@ import {Station} from '../../interfaces/station';
 })
 export class ResetStationComponent implements OnInit {
   public loading = false;
-  public stations: Station[] = [];
+  public stations: { [key: string]: Station[] } = {};
 
-  constructor(private stationService: StationService) { }
+  constructor(private stationService: StationService) {
+  }
 
   ngOnInit() {
     this.stationService.get('radiko').subscribe(res => {
-      if (res.result){
-        this.stations = res.data;
+      if (res.result) {
+        this.stations['radiko'] = res.data;
+      }
+    });
+    this.stationService.get('lr').subscribe(res => {
+      if (res.result) {
+        this.stations['lr'] = res.data;
       }
     });
   }
@@ -24,7 +30,7 @@ export class ResetStationComponent implements OnInit {
   public reset = (type: string) => {
     this.stationService.refresh(type).subscribe(res => {
       if (res.result) {
-        this.stations = res.data;
+        this.stations[type] = res.data;
       }
     });
   }

@@ -13,11 +13,14 @@ export class ResetProgramComponent implements OnInit {
 
   public radiko = {};
   public radikoRegions = [];
+  public listenRadio = {};
+  public listenRadioRegions = [];
+
   public total = 0;
   public progress = 0;
   public loading = false;
 
-  private stations: Station[] = [];
+  private stations: {[key: string]: Station[]} = {};
 
   constructor(private stationService: StationService,
               private programService: ProgramService) {
@@ -26,12 +29,11 @@ export class ResetProgramComponent implements OnInit {
   ngOnInit() {
     this.stationService.get('radiko').subscribe(res => {
       // 種別、地域ごとに分類する
-      this.stations = res.data;
+      this.stations['radiko'] = res.data;
       this.radiko = {};
       this.radikoRegions = [];
 
-      let nhk = {};
-      for (const station of this.stations) {
+      for (const station of this.stations['radiko']) {
         if (station.type === 'radiko') {
           if (!(station.regionName in this.radiko)) {
             this.radiko[station.regionName] = [];
@@ -41,22 +43,42 @@ export class ResetProgramComponent implements OnInit {
         }
       }
     });
+
+    this.stationService.get('lr').subscribe(res => {
+      // 種別、地域ごとに分類する
+      this.stations['lr'] = res.data;
+      this.listenRadio = {};
+      this.listenRadioRegions= [];
+
+      for (const station of this.stations['lr']) {
+        if (station.type === 'lr') {
+          if (!(station.regionName in this.listenRadio)) {
+            this.listenRadio[station.regionName] = [];
+            this.listenRadioRegions.push(station.regionName);
+          }
+          this.listenRadio[station.regionName].push(station);
+        }
+      }
+    });
+
   }
 
   /**
    * 地域全チェック／解除
    * @param {MatCheckboxChange} e
-   * @param region
+   * @param stations
    */
-  public toggleCheck = (e: MatCheckboxChange, region) => {
-    this.radiko[region].forEach(s => {
+  public toggleCheck = (e: MatCheckboxChange, stations) => {
+    stations.forEach(s => {
       s.checked = e.checked;
     });
   }
 
   public submit = () => {
     this.loading = true;
-    const stationIds = this.stations.filter(s => s.checked).map(s => s.id);
+    const stationIds = this.stations['radiko'].filter(s => s.checked).map(s => s.id)
+      .concat(this.stations['lr'].filter(s => s.checked).map(s => s.id));
+
     this.total = stationIds.length;
     this.progress = 1;
     let i = 0;

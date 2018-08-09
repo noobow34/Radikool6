@@ -1,4 +1,9 @@
 <button mat-raised-button (click)="reset('radiko')">radikoを初期化</button>
 <mat-list>
-  <mat-list-item *ngFor="let s of stations">{{s.name}}</mat-list-item>
+  <mat-list-item *ngFor="let s of stations['radiko']">{{s.name}}</mat-list-item>
+</mat-list>
+
+<button mat-raised-button (click)="reset('lr')">ListenRadioを初期化</button>
+<mat-list>
+  <mat-list-item *ngFor="let s of stations['lr']">{{s.name}}</mat-list-item>
 </mat-list>

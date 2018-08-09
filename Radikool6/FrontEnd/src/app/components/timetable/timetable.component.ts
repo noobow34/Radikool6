@@ -17,6 +17,9 @@ export class TimetableComponent implements OnInit {
 
   public radiko = {};
   public radikoRegions = [];
+  public listenRadio = {};
+  public listenRadioRegions = [];
+
   public date = moment().format('YYYY-MM-DD');
   public stationId;
 
@@ -49,6 +52,22 @@ export class TimetableComponent implements OnInit {
           }
           this.radiko[station.regionName].push(station);
         }
+      }
+
+    });
+
+    this.stationService.get('lr').subscribe(res => {
+      // 種別、地域ごとに分類する
+      const stations = res.data as Station[];
+      this.listenRadio = {};
+      this.listenRadioRegions = [];
+
+      for (const station of stations) {
+          if (!(station.regionName in this.listenRadio)) {
+            this.listenRadio[station.regionName] = [];
+            this.listenRadioRegions.push(station.regionName);
+          }
+          this.listenRadio[station.regionName].push(station);
       }
 
     });

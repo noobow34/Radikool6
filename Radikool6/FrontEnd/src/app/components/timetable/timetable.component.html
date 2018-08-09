@@ -8,6 +8,15 @@
         <button mat-button *ngFor="let s of radiko[r]" (click)="setStation(s)" class="station-button" [class.selected]="stationId === s.id">{{s.name}}</button>
 
       </mat-expansion-panel>
+
+
+      <mat-expansion-panel *ngFor="let r of listenRadioRegions">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{r}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button *ngFor="let s of listenRadio[r]" (click)="setStation(s)" class="station-button" [class.selected]="stationId === s.id">{{s.name}}</button>
+      </mat-expansion-panel>
+
     </mat-accordion>
   </div>
   <div class="timetable">

@@ -2,11 +2,22 @@
 <mat-card *ngFor="let r of radikoRegions">
   <mat-card-header>
     <mat-card-title>
-      <mat-checkbox (change)="toggleCheck($event, r)" [disabled]="loading">{{r}}</mat-checkbox>
+      <mat-checkbox (change)="toggleCheck($event, radiko[r])" [disabled]="loading">{{r}}</mat-checkbox>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-checkbox [(ngModel)]="s.checked" *ngFor="let s of radiko[r]" [disabled]="loading">{{s.name}}</mat-checkbox>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngFor="let r of listenRadioRegions">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-checkbox (change)="toggleCheck($event, listenRadio[r])" [disabled]="loading">{{r}}</mat-checkbox>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-checkbox [(ngModel)]="s.checked" *ngFor="let s of listenRadio[r]" [disabled]="loading">{{s.name}}</mat-checkbox>
   </mat-card-content>
 </mat-card>
 

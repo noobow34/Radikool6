@@ -142,6 +142,9 @@ namespace Radikool6.Controllers
                     case Define.Nhk.TypeName:
                         programs = Nhk.GetPrograms(station, DateTime.Now, DateTime.Now.AddDays(1)).Result;
                         break;
+                    case Define.ListenRadio.TypeName:
+                        programs = ListenRadio.GetPrograms(station).Result;
+                        break;
                 }
 
 
