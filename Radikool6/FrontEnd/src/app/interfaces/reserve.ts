@@ -6,7 +6,7 @@ export interface Reserve {
   start?: string;
   end?: string;
   formatId?: string;
-  repeat?: string[];
+  repeat?: number[];
   enabled?: boolean;
   isTimeFree?: boolean;
 }

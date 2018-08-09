@@ -12,7 +12,24 @@
     </mat-form-field>
 
     <div>
-      <mat-form-field>
+      <mat-radio-group [(ngModel)]="repeat" name="repeat">
+        <mat-radio-button [value]="false">単発予約</mat-radio-button>
+        <mat-radio-button [value]="true">曜日指定予約</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div *ngIf="repeat">
+      <mat-checkbox name="sun" [(ngModel)]="days[0]">日</mat-checkbox>
+      <mat-checkbox name="mon" [(ngModel)]="days[1]">月</mat-checkbox>
+      <mat-checkbox name="tue" [(ngModel)]="days[2]">火</mat-checkbox>
+      <mat-checkbox name="wed" [(ngModel)]="days[3]">水</mat-checkbox>
+      <mat-checkbox name="thu" [(ngModel)]="days[4]">木</mat-checkbox>
+      <mat-checkbox name="fri" [(ngModel)]="days[5]">金</mat-checkbox>
+      <mat-checkbox name="sat" [(ngModel)]="days[6]">土</mat-checkbox>
+    </div>
+
+    <div>
+      <mat-form-field *ngIf="!repeat">
         <input matInput [matDatepicker]="startPicker" placeholder="開始日" name="start" [(ngModel)]="startDate" />
         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
         <mat-datepicker #startPicker></mat-datepicker>
@@ -33,7 +50,7 @@
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field>
+      <mat-form-field *ngIf="!repeat">
         <input matInput [matDatepicker]="endPicker" placeholder="終了日" name="end" [(ngModel)]="endDate" />
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>

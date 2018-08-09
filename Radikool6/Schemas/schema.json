@@ -53,7 +53,9 @@
       "Id": "text",
       "Start": "text",
       "End": "text",
-      "ReserveId": "text"
+      "ReserveId": "text",
+      "ProgramStart": "text",
+      "ProgramEnd": "text"
     },
     "primaryKey": ["Id"]
   },

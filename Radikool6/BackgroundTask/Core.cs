@@ -108,7 +108,18 @@ namespace Radikool6.BackgroundTask
                 }
                 
                 // 終了タスクを削除する
-                _recorders.RemoveAll(r => r.Status == Recorder.RecorderStatus.End);
+                if (_recorders.RemoveAll(r => r.Status == Recorder.RecorderStatus.End) > 0)
+                {
+                    // 予約が終了した場合、タスクを更新する
+                    using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
+                    {
+                        con.Open();
+                        var cModel = new ConfigModel(con);
+                        var config = cModel.Get();
+                        var model = new ReserveModel(con);
+                        model.RefreshTasks(config);
+                    }
+                }
 
                 _recorderLock = false;
             }

@@ -25,6 +25,16 @@ export class ReserveEditComponent implements OnInit {
   public endDate;
   public endHour;
   public endMinute;
+  public repeat = false;
+  public days = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
 
   constructor(public dialogRef: MatDialogRef<ReserveEditComponent>,
@@ -76,6 +86,11 @@ export class ReserveEditComponent implements OnInit {
         this.stations = res.data;
       }
     });
+
+    this.reserve.repeat.forEach(r => {
+      this.days[r] = true;
+      this.repeat = true;
+    });
   }
 
 
@@ -83,7 +98,7 @@ export class ReserveEditComponent implements OnInit {
    * 削除
    */
   public delete = () => {
-    if(confirm(`削除しますか？`)) {
+    if (confirm(`削除しますか？`)) {
       this.reserveService.delete(this.reserve.id).subscribe(res => {
         if (res.result) {
           this.dialogRef.close(true);
@@ -98,6 +113,16 @@ export class ReserveEditComponent implements OnInit {
   public save = () => {
     this.reserve.start = moment(this.startDate).hour(this.startHour).minute(this.startMinute).format('YYYY-MM-DD HH:mm:ss');
     this.reserve.end = moment(this.endDate).hour(this.endHour).minute(this.endMinute).format('YYYY-MM-DD HH:mm:ss');
+
+    this.reserve.repeat = [];
+    if (this.repeat) {
+      this.days.forEach((d, i) => {
+        if (d) {
+          this.reserve.repeat.push(i);
+        }
+      });
+    }
+
 
     this.reserveService.update(this.reserve).subscribe(res => {
       if (res.result) {

@@ -54,7 +54,7 @@ namespace Radikool6.Entities
         public string FormatId { get; set; }
 
         [NotMapped]
-        public List<string> Repeat { get; set; } = new List<string>();
+        public List<int> Repeat { get; set; } = new List<int>();
 
         [NotMapped]
         public bool Enabled { get; set; } = true;

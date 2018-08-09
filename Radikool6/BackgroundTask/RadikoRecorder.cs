@@ -78,7 +78,10 @@ namespace Radikool6.BackgroundTask
                 using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
                 {
                     var pModel = new ProgramModel(con);
-                    _program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.Reserve.Start, To = Task.Reserve.End}).FirstOrDefault();
+
+                    // 番組判定用の時刻
+                 
+                    _program = pModel.Search(new ProgramSearchCondition() { StationId = Task.Station.Id, From = Task.ProgramStart, To = Task.ProgramEnd}).FirstOrDefault();
                     _program.Station = Task.Station;
                 }
 

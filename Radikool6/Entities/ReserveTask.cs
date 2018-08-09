@@ -15,6 +15,8 @@ namespace Radikool6.Entities
         public Station Station { get; set; }
         public string Status { get; set; }
         public bool IsTimeFree { get; set; }
+        public DateTime ProgramStart { get; set; }
+        public DateTime ProgramEnd { get; set; }
 
     }
 }

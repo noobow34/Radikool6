@@ -11,7 +11,8 @@ import {
   MatInputModule, MatListModule, MatNativeDateModule, MatProgressBarModule,
   MatProgressSpinnerModule,
   MatSelectModule, MatSliderModule, MatSortModule, MatTableModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatRadioModule
 } from '@angular/material';
 import { ContentComponent } from './components/content/content.component';
 import {StateService} from './services/state.service';
@@ -79,7 +80,8 @@ import {SystemInfoService} from './services/system-info.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    MatSliderModule
+    MatSliderModule,
+    MatRadioModule
   ],
   providers: [
     StateService,

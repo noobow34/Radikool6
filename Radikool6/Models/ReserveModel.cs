@@ -95,31 +95,67 @@ namespace Radikool6.Models
             var tasks = new List<ReserveTask>();
             foreach (var r in reserves)
             {
-                if (r.IsTimeFree)
-                {
-                    // タイムフリー
-                    var task = new ReserveTask()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Start = r.End.AddMinutes(config.TimeFreeMargin),
-                        End = r.End.AddMinutes(config.TimeFreeMargin + 10),
-                        ReserveId = r.Id
-                    };
-                    tasks.Add(task);
-                    
-                }
-                else if (r.Repeat.Count == 0)
+                var days = new List<DateTime[]>();
+                if (r.Repeat.Count == 0)
                 {
                     // 単発
-                    var task = new ReserveTask()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Start = r.Start,
-                        End = r.End,
-                        ReserveId = r.Id
-                    };
-                    tasks.Add(task);
+                    days.Add(new[]{ r.Start, r.End});
                 }
+                else
+                {
+                    // 曜日指定
+                    var date = DateTime.Now;
+                    for (var i = 0; i < 7; i++)
+                    {
+                        if (r.Repeat.Contains((int) date.DayOfWeek))
+                        {
+                            var start = date.Date.AddHours(r.Start.Hour).AddMinutes(r.Start.Minute)
+                                .AddSeconds(r.Start.Second);
+                            var end = date.Date.AddHours(r.End.Hour).AddMinutes(r.End.Minute).AddSeconds(r.End.Second);
+                            if (end < start)
+                            {
+                                end = end.AddDays(1);
+                            }
+                            days.Add(new[]{ start, end});
+                        }
+
+                        date = date.AddDays(1);
+                    }
+                }
+                
+                days.ForEach(d =>
+                {
+                    if (r.IsTimeFree)
+                    {
+                        // タイムフリー
+                        var task = new ReserveTask()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Start = d[1].AddMinutes(config.TimeFreeMargin),
+                            End = d[1].AddMinutes(config.TimeFreeMargin + 10),
+                            ProgramStart = d[0],
+                            ProgramEnd = d[1],
+                            ReserveId = r.Id
+                        };
+                        tasks.Add(task);
+                    
+                    }
+                    else
+                    {
+                        // リアルタイム
+                        var task = new ReserveTask()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Start = d[0],
+                            End = d[1],
+                            ReserveId = r.Id,
+                            ProgramStart = d[0],
+                            ProgramEnd = d[1]
+                        };
+                        tasks.Add(task);
+                    }
+                });
+                
             }
 
 
@@ -134,14 +170,18 @@ namespace Radikool6.Models
                                            Id,
                                            Start,
                                            End,
-                                           ReserveId
+                                           ReserveId,
+                                           ProgramStart,
+                                           ProgramEnd
                                        )
                                        VALUES
                                        (
                                            @Id,
                                            @Start,
                                            @End,
-                                           @ReserveId
+                                           @ReserveId,
+                                           @ProgramStart,
+                                           @ProgramEnd
                                        )";
                 tasks.ForEach(t => { SqliteConnection.Execute(query, t, trn); });
                 
