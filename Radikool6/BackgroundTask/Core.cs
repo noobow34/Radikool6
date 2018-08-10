@@ -18,7 +18,7 @@ namespace Radikool6.BackgroundTask
         private bool _timetableLock = false;
         
        // private readonly List<Recorder> _recorders = new List<Recorder>();
-        private readonly List<RadikoRecorder> _recorders = new List<RadikoRecorder>();
+        private readonly List<ListenRadioRecorder> _recorders = new List<ListenRadioRecorder>();
         private DateTime _refreshTimetableDate = DateTime.MinValue;
         
         public Core()
@@ -95,8 +95,8 @@ namespace Radikool6.BackgroundTask
                             // 予約実行
                             if (_recorders.All(r => r.Id != t.Id))
                             {
-                                //    var recorder = Recorder.GetRecorder(config, t);
-                                var recorder = new RadikoRecorder(config, t);
+                                //var recorder = Recorder.GetRecorder(config, t);
+                                var recorder = new ListenRadioRecorder(config, t);
                                 _recorders.Add(recorder);
                                 recorder.Start().Wait();
                                 var logger = NLog.LogManager.GetCurrentClassLogger();

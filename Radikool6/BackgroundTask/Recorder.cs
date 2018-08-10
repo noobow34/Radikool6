@@ -34,6 +34,9 @@ namespace Radikool6.BackgroundTask
                 case Define.Radiko.TypeName:
                     res = new RadikoRecorder(config, task);
                     break;
+                case Define.ListenRadio.TypeName:
+                    res = new ListenRadioRecorder(config, task);
+                    break;
 
             }
 

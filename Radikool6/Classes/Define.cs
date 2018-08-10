@@ -229,6 +229,12 @@ namespace Radikool6.Classes
             /// </summary>
             public const string TypeName = "lr";
 
+
+            /// <summary>
+            /// ffmpeg引数
+            /// </summary>
+            public const string RealTimeFfmpegArgs = "-i [M3U8] -t [TIME] -metadata title=\"[TAG_TITLE]\" -metadata artist=\"[TAG_ARTIST]\" -metadata album=\"[TAG_ALBUM]\" -metadata genre=\"[TAG_GENRE]\" -metadata comment=\"[TAG_COMMENT]\" -bsf:a aac_adtstoasc -ar [SAMPLINGRATE] -ab [BITRATE] -vol [VOLUME]  \"[FILE]\"";
+
         }
 
         /// <summary>
