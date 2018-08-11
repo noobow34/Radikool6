@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Radikool6.Classes;
@@ -13,6 +14,11 @@ namespace Radikool6.Controllers
 {
     public class StationController : BaseController
     {
+        public class Receive
+        {
+            public string[] Types { get; set; }
+        }
+        
         public StationController()
         {
         }
@@ -20,11 +26,11 @@ namespace Radikool6.Controllers
         /// <summary>
         /// 種別指定で放送局取得
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="post"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("api/station/{type}")]
-        public async Task<ApiResponse> Get(string type)
+        [HttpPost]
+        [Route("api/station/")]
+        public async Task<ApiResponse> Get([FromBody]Receive post)
         {
             
             return await Execute(() =>
@@ -33,7 +39,7 @@ namespace Radikool6.Controllers
                 {
                     var model = new StationModel(SqliteConnection);
                     Result.Result = true;
-                    Result.Data = model.Get(type);
+                    Result.Data = model.Get(post.Types);
                 }
                 
             });

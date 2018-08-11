@@ -1,11 +1,8 @@
-.container{
-  display: flex;
-}
-
 .sidebar{
   width: 25vw;
   box-sizing: border-box;
   padding: .5rem;
+  overflow: auto;
 
   button{
     width: 100%;
@@ -22,6 +19,7 @@
   width: 75vw;
   box-sizing: border-box;
   padding: .5rem;
+  overflow: auto;
 }
 
 

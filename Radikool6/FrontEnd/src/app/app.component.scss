@@ -7,5 +7,7 @@
     flex-grow: 1;
     min-height: 100px;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
   }
 }

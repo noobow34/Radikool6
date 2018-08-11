@@ -23,8 +23,8 @@ export class StationService extends BaseService{
    * 放送局取得
    * @returns {Observable<Object>}
    */
-  public get = (type: string) => {
-    return this.http.get<ApiResult<Station[]>>(`./api/station/${type}`);
+  public get = (types: string[]) => {
+    return this.http.post<ApiResult<{[key: string]: Station[]}>>(`./api/station/`, { types: types });
   }
 
 }

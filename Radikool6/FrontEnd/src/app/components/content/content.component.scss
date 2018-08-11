@@ -1,0 +1,17 @@
+.container {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  & > *{
+    height: 100%;
+    overflow: auto;
+    flex-grow: 1;
+  }
+
+}
+
+app-timetable, app-manage{
+  display: flex;
+}

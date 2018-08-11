@@ -81,9 +81,9 @@ export class ReserveEditComponent implements OnInit {
       this.minutes.push(i);
     }
 
-    this.stationService.get('radiko').subscribe(res => {
+    this.stationService.get(['radiko', 'lr']).subscribe(res => {
       if (res.result) {
-        this.stations = res.data;
+        this.stations = res.data['radiko'];
       }
     });
 

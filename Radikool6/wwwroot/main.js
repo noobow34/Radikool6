@@ -321,7 +321,7 @@ module.exports = "<div class=\"main\">\n  <app-toolbar></app-toolbar>\n <!-- <ap
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".main {\n  display: flex;\n  flex-direction: column;\n  height: 100vh; }\n  .main > *:last-child {\n    flex-grow: 1;\n    min-height: 100px;\n    overflow: auto; }\n"
+module.exports = ".main {\n  display: flex;\n  flex-direction: column;\n  height: 100vh; }\n  .main > *:last-child {\n    flex-grow: 1;\n    min-height: 100px;\n    overflow: auto;\n    display: flex;\n    flex-direction: column; }\n"
 
 /***/ }),
 
@@ -613,7 +613,7 @@ var ConfigComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n<app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n<app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n<app-manage *ngIf=\"selectedContent === 'manage'\"></app-manage>\n"
+module.exports = "<div class=\"container\">\n  <app-timetable *ngIf=\"selectedContent === 'timetable'\"></app-timetable>\n  <app-reserve-list *ngIf=\"selectedContent === 'reserve'\"></app-reserve-list>\n  <app-library *ngIf=\"selectedContent === 'library'\"></app-library>\n  <app-manage *ngIf=\"selectedContent === 'manage'\"></app-manage>\n</div>\n\n"
 
 /***/ }),
 
@@ -624,7 +624,7 @@ module.exports = "<app-timetable *ngIf=\"selectedContent === 'timetable'\"></app
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".container {\n  flex-grow: 1;\n  height: 100%;\n  display: flex;\n  flex-direction: column; }\n  .container > * {\n    height: 100%;\n    overflow: auto;\n    flex-grow: 1; }\n  app-timetable, app-manage {\n  display: flex; }\n"
 
 /***/ }),
 
@@ -992,7 +992,7 @@ var MacroComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <button mat-button (click)=\"selectedItem = 'config'\" [class.selected]=\"selectedItem === 'config'\">一般設定</button>\n    <button mat-button (click)=\"selectedItem = 'resetStation'\" [class.selected]=\"selectedItem === 'resetStation'\">放送局初期化</button>\n    <button mat-button (click)=\"selectedItem = 'resetProgram'\" [class.selected]=\"selectedItem === 'resetProgram'\">番組表取得</button>\n    <button mat-button (click)=\"selectedItem = 'systemInfo'\" [class.selected]=\"selectedItem === 'systemInfo'\">システム情報</button>\n  </div>\n  <div class=\"content\">\n    <app-config *ngIf=\"selectedItem === 'config'\"></app-config>\n    <app-reset-program *ngIf=\"selectedItem === 'resetProgram'\"></app-reset-program>\n    <app-reset-station *ngIf=\"selectedItem === 'resetStation'\"></app-reset-station>\n    <app-system-info *ngIf=\"selectedItem === 'systemInfo'\"></app-system-info>\n  </div>\n</div>\n"
+module.exports = "<div class=\"sidebar\">\n  <button mat-button (click)=\"selectItem('config')\" [class.selected]=\"selectedItem === 'config'\">一般設定</button>\n  <button mat-button (click)=\"selectItem('resetStation')\" [class.selected]=\"selectedItem === 'resetStation'\">放送局初期化</button>\n  <button mat-button (click)=\"selectItem('resetProgram')\" [class.selected]=\"selectedItem === 'resetProgram'\">番組表取得</button>\n  <button mat-button (click)=\"selectItem('systemInfo')\" [class.selected]=\"selectedItem === 'systemInfo'\">システム情報</button>\n</div>\n<div class=\"content\">\n  <app-config *ngIf=\"selectedItem === 'config'\"></app-config>\n  <app-reset-program *ngIf=\"selectedItem === 'resetProgram'\"></app-reset-program>\n  <app-reset-station *ngIf=\"selectedItem === 'resetStation'\"></app-reset-station>\n  <app-system-info *ngIf=\"selectedItem === 'systemInfo'\"></app-system-info>\n</div>\n"
 
 /***/ }),
 
@@ -1003,7 +1003,7 @@ module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <but
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".container {\n  display: flex; }\n\n.sidebar {\n  width: 25vw;\n  box-sizing: border-box;\n  padding: .5rem; }\n\n.sidebar button {\n    width: 100%;\n    text-align: left;\n    color: #999; }\n\n.sidebar button.selected {\n      color: #3f51b5; }\n\n.content {\n  width: 75vw;\n  box-sizing: border-box;\n  padding: .5rem; }\n\n@media screen and (max-width: 767px) {\n  .container {\n    flex-direction: column; }\n  .sidebar, .content {\n    width: 100vw; } }\n"
+module.exports = ".sidebar {\n  width: 25vw;\n  box-sizing: border-box;\n  padding: .5rem;\n  overflow: auto; }\n  .sidebar button {\n    width: 100%;\n    text-align: left;\n    color: #999; }\n  .sidebar button.selected {\n      color: #3f51b5; }\n  .content {\n  width: 75vw;\n  box-sizing: border-box;\n  padding: .5rem;\n  overflow: auto; }\n  @media screen and (max-width: 767px) {\n  .container {\n    flex-direction: column; }\n  .sidebar, .content {\n    width: 100vw; } }\n"
 
 /***/ }),
 
@@ -1030,7 +1030,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var ManageComponent = /** @class */ (function () {
     function ManageComponent() {
+        var _this = this;
         this.selectedItem = 'config';
+        this.selectItem = function (item) {
+            _this.selectedItem = item;
+        };
     }
     ManageComponent.prototype.ngOnInit = function () {
     };
@@ -1390,9 +1394,9 @@ var ReserveEditComponent = /** @class */ (function () {
         for (var i = 0; i < 60; i++) {
             this.minutes.push(i);
         }
-        this.stationService.get('radiko').subscribe(function (res) {
+        this.stationService.get(['radiko', 'lr']).subscribe(function (res) {
             if (res.result) {
-                _this.stations = res.data;
+                _this.stations = res.data['radiko'];
             }
         });
         this.reserve.repeat.forEach(function (r) {
@@ -1653,36 +1657,26 @@ var ResetProgramComponent = /** @class */ (function () {
     }
     ResetProgramComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.stationService.get('radiko').subscribe(function (res) {
+        this.stationService.get(['radiko', 'lr']).subscribe(function (res) {
             // 種別、地域ごとに分類する
-            _this.stations['radiko'] = res.data;
+            _this.stations = res.data;
             _this.radiko = {};
             _this.radikoRegions = [];
             for (var _i = 0, _a = _this.stations['radiko']; _i < _a.length; _i++) {
                 var station = _a[_i];
-                if (station.type === 'radiko') {
-                    if (!(station.regionName in _this.radiko)) {
-                        _this.radiko[station.regionName] = [];
-                        _this.radikoRegions.push(station.regionName);
-                    }
-                    _this.radiko[station.regionName].push(station);
+                if (!(station.regionName in _this.radiko)) {
+                    _this.radiko[station.regionName] = [];
+                    _this.radikoRegions.push(station.regionName);
                 }
+                _this.radiko[station.regionName].push(station);
             }
-        });
-        this.stationService.get('lr').subscribe(function (res) {
-            // 種別、地域ごとに分類する
-            _this.stations['lr'] = res.data;
-            _this.listenRadio = {};
-            _this.listenRadioRegions = [];
-            for (var _i = 0, _a = _this.stations['lr']; _i < _a.length; _i++) {
-                var station = _a[_i];
-                if (station.type === 'lr') {
-                    if (!(station.regionName in _this.listenRadio)) {
-                        _this.listenRadio[station.regionName] = [];
-                        _this.listenRadioRegions.push(station.regionName);
-                    }
-                    _this.listenRadio[station.regionName].push(station);
+            for (var _b = 0, _c = _this.stations['lr']; _b < _c.length; _b++) {
+                var station = _c[_b];
+                if (!(station.regionName in _this.listenRadio)) {
+                    _this.listenRadio[station.regionName] = [];
+                    _this.listenRadioRegions.push(station.regionName);
                 }
+                _this.listenRadio[station.regionName].push(station);
             }
         });
     };
@@ -1709,7 +1703,7 @@ var ResetProgramComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<button mat-raised-button (click)=\"reset('radiko')\">radikoを初期化</button>\n<mat-list>\n  <mat-list-item *ngFor=\"let s of stations['radiko']\">{{s.name}}</mat-list-item>\n</mat-list>\n\n<button mat-raised-button (click)=\"reset('lr')\">ListenRadioを初期化</button>\n<mat-list>\n  <mat-list-item *ngFor=\"let s of stations['lr']\">{{s.name}}</mat-list-item>\n</mat-list>\n"
+module.exports = "<mat-accordion>\n  <mat-expansion-panel>\n    <mat-expansion-panel-header>\n      <mat-panel-title>radiko</mat-panel-title>\n    </mat-expansion-panel-header>\n    <button mat-raised-button (click)=\"reset('radiko')\">radikoを初期化</button>\n    <mat-list>\n      <mat-list-item *ngFor=\"let s of stations['radiko']\">{{s.name}}</mat-list-item>\n    </mat-list>\n  </mat-expansion-panel>\n\n  <mat-expansion-panel>\n    <mat-expansion-panel-header>\n      <mat-panel-title>ListenRadio</mat-panel-title>\n    </mat-expansion-panel-header>\n    <button mat-raised-button (click)=\"reset('lr')\">ListenRadioを初期化</button>\n    <mat-list>\n      <mat-list-item *ngFor=\"let s of stations['lr']\">{{s.name}}</mat-list-item>\n    </mat-list>\n  </mat-expansion-panel>\n</mat-accordion>\n"
 
 /***/ }),
 
@@ -1763,14 +1757,9 @@ var ResetStationComponent = /** @class */ (function () {
     }
     ResetStationComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.stationService.get('radiko').subscribe(function (res) {
+        this.stationService.get(['radiko', 'lr']).subscribe(function (res) {
             if (res.result) {
-                _this.stations['radiko'] = res.data;
-            }
-        });
-        this.stationService.get('lr').subscribe(function (res) {
-            if (res.result) {
-                _this.stations['lr'] = res.data;
+                _this.stations = res.data;
             }
         });
     };
@@ -1869,7 +1858,7 @@ var SystemInfoComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat-accordion>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <button mat-button *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\" class=\"station-button\" [class.selected]=\"stationId === s.id\">{{s.name}}</button>\n\n      </mat-expansion-panel>\n\n\n      <mat-expansion-panel *ngFor=\"let r of listenRadioRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <button mat-button *ngFor=\"let s of listenRadio[r]\" (click)=\"setStation(s)\" class=\"station-button\" [class.selected]=\"stationId === s.id\">{{s.name}}</button>\n      </mat-expansion-panel>\n\n    </mat-accordion>\n  </div>\n  <div class=\"timetable\">\n    <mat-form-field *ngIf=\"stationId\">\n      <mat-select [(value)]=\"date\" (selectionChange)=\"setDate()\">\n        <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n    <mat-accordion *ngIf=\"!loadingProgram\">\n      <mat-expansion-panel *ngFor=\"let p of programs\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            {{p.start| time}} {{p.title}}\n          </mat-panel-title>\n        </mat-expansion-panel-header>\n        <div [innerHTML]=\"p.descriptionHTML\"></div>\n        <div *ngIf=\"p.reservable\">\n          <button mat-raised-button (click)=\"editReserve('single', p)\">予約</button>\n        </div>\n        <div *ngIf=\"!p.reservable\">\n          <button mat-raised-button (click)=\"getTimeFree(p)\" *ngIf=\"p.tsNg === '0' || p.tsNg === '1'\">ダウンロード</button>\n          <p *ngIf=\"p.tsNg === '1'\">一部タイムフリー未対応</p>\n          <p *ngIf=\"p.tsNg === '2'\">タイムフリー未対応</p>\n        </div>\n\n      </mat-expansion-panel>\n\n    </mat-accordion>\n    <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"sidebar\">\n  <mat-accordion>\n    <ng-container *ngIf=\"radikoRegions.length > 0\">\n      <h2>radiko</h2>\n      <mat-expansion-panel *ngFor=\"let r of radikoRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <button mat-button *ngFor=\"let s of radiko[r]\" (click)=\"setStation(s)\" class=\"station-button\" [class.selected]=\"stationId === s.id\">{{s.name}}</button>\n      </mat-expansion-panel>\n    </ng-container>\n\n    <ng-container *ngIf=\"listenRadioRegions.length > 0\">\n      <h2>ListenRadio</h2>\n      <mat-expansion-panel *ngFor=\"let r of listenRadioRegions\">\n        <mat-expansion-panel-header>\n          <mat-panel-title>{{r}}</mat-panel-title>\n        </mat-expansion-panel-header>\n        <button mat-button *ngFor=\"let s of listenRadio[r]\" (click)=\"setStation(s)\" class=\"station-button\" [class.selected]=\"stationId === s.id\">{{s.name}}</button>\n      </mat-expansion-panel>\n    </ng-container>\n  </mat-accordion>\n</div>\n\n<div class=\"timetable\">\n  <mat-form-field *ngIf=\"stationId\">\n    <mat-select [(value)]=\"date\" (selectionChange)=\"setDate()\">\n      <mat-option [value]=\"day.format('YYYY-MM-DD')\" *ngFor=\"let day of days\">{{day | date: 'MM/dd'}}</mat-option>\n    </mat-select>\n  </mat-form-field>\n  <mat-accordion *ngIf=\"!loadingProgram\">\n    <mat-expansion-panel *ngFor=\"let p of programs\">\n      <mat-expansion-panel-header>\n        <mat-panel-title>\n          {{p.start| time}} {{p.title}}\n        </mat-panel-title>\n      </mat-expansion-panel-header>\n      <div [innerHTML]=\"p.descriptionHTML\"></div>\n      <div *ngIf=\"p.reservable\">\n        <button mat-raised-button (click)=\"editReserve('single', p)\">予約</button>\n      </div>\n      <div *ngIf=\"!p.reservable\">\n        <button mat-raised-button (click)=\"getTimeFree(p)\" *ngIf=\"p.tsNg === '0' || p.tsNg === '1'\">ダウンロード</button>\n        <p *ngIf=\"p.tsNg === '1'\">一部タイムフリー未対応</p>\n        <p *ngIf=\"p.tsNg === '2'\">タイムフリー未対応</p>\n      </div>\n    </mat-expansion-panel>\n  </mat-accordion>\n  <mat-spinner *ngIf=\"loadingProgram\"></mat-spinner>\n</div>\n\n"
 
 /***/ }),
 
@@ -1880,7 +1869,7 @@ module.exports = "<div class=\"container\">\n  <div class=\"sidebar\">\n    <mat
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".container {\n  display: flex; }\n\n.sidebar {\n  width: 25vw;\n  box-sizing: border-box;\n  padding: .5rem; }\n\n.timetable {\n  width: 75vw;\n  box-sizing: border-box;\n  padding: .5rem; }\n\n.station-button {\n  width: 100%;\n  text-align: left;\n  color: #999; }\n\n.station-button.selected {\n    color: #3f51b5; }\n\n@media screen and (max-width: 767px) {\n  .container {\n    flex-direction: column; }\n  .sidebar, .timetable {\n    width: 100vw; } }\n"
+module.exports = ".sidebar {\n  width: 25vw;\n  box-sizing: border-box;\n  padding: .5rem;\n  overflow: auto; }\n  .sidebar h2 {\n    margin: 0;\n    font-size: 1rem; }\n  .sidebar mat-expansion-panel {\n    margin-bottom: 5rem; }\n  .timetable {\n  width: 75vw;\n  box-sizing: border-box;\n  padding: .5rem;\n  overflow: auto; }\n  .station-button {\n  width: 100%;\n  text-align: left;\n  color: #999; }\n  .station-button.selected {\n    color: #3f51b5; }\n  @media screen and (max-width: 767px) {\n  .container {\n    flex-direction: column; }\n  .sidebar, .timetable {\n    width: 100vw; } }\n"
 
 /***/ }),
 
@@ -2005,30 +1994,23 @@ var TimetableComponent = /** @class */ (function () {
     }
     TimetableComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.stationService.get('radiko').subscribe(function (res) {
+        this.stationService.get(['radiko', 'lr']).subscribe(function (res) {
             // 種別、地域ごとに分類する
             var stations = res.data;
             _this.radiko = {};
             _this.radikoRegions = [];
-            var nhk = {};
-            for (var _i = 0, stations_1 = stations; _i < stations_1.length; _i++) {
-                var station = stations_1[_i];
-                if (station.type === 'radiko') {
-                    if (!(station.regionName in _this.radiko)) {
-                        _this.radiko[station.regionName] = [];
-                        _this.radikoRegions.push(station.regionName);
-                    }
-                    _this.radiko[station.regionName].push(station);
-                }
-            }
-        });
-        this.stationService.get('lr').subscribe(function (res) {
-            // 種別、地域ごとに分類する
-            var stations = res.data;
             _this.listenRadio = {};
             _this.listenRadioRegions = [];
-            for (var _i = 0, stations_2 = stations; _i < stations_2.length; _i++) {
-                var station = stations_2[_i];
+            for (var _i = 0, _a = stations['radiko']; _i < _a.length; _i++) {
+                var station = _a[_i];
+                if (!(station.regionName in _this.radiko)) {
+                    _this.radiko[station.regionName] = [];
+                    _this.radikoRegions.push(station.regionName);
+                }
+                _this.radiko[station.regionName].push(station);
+            }
+            for (var _b = 0, _c = stations['lr']; _b < _c.length; _b++) {
+                var station = _c[_b];
                 if (!(station.regionName in _this.listenRadio)) {
                     _this.listenRadio[station.regionName] = [];
                     _this.listenRadioRegions.push(station.regionName);
@@ -2668,8 +2650,8 @@ var StationService = /** @class */ (function (_super) {
          * 放送局取得
          * @returns {Observable<Object>}
          */
-        _this.get = function (type) {
-            return _this.http.get("./api/station/" + type);
+        _this.get = function (types) {
+            return _this.http.post("./api/station/", { types: types });
         };
         return _this;
     }

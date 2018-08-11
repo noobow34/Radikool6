@@ -27,39 +27,30 @@ export class ResetProgramComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stationService.get('radiko').subscribe(res => {
+    this.stationService.get(['radiko', 'lr']).subscribe(res => {
       // 種別、地域ごとに分類する
-      this.stations['radiko'] = res.data;
+      this.stations = res.data;
       this.radiko = {};
       this.radikoRegions = [];
 
       for (const station of this.stations['radiko']) {
-        if (station.type === 'radiko') {
           if (!(station.regionName in this.radiko)) {
             this.radiko[station.regionName] = [];
             this.radikoRegions.push(station.regionName);
           }
           this.radiko[station.regionName].push(station);
-        }
       }
-    });
-
-    this.stationService.get('lr').subscribe(res => {
-      // 種別、地域ごとに分類する
-      this.stations['lr'] = res.data;
-      this.listenRadio = {};
-      this.listenRadioRegions= [];
 
       for (const station of this.stations['lr']) {
-        if (station.type === 'lr') {
-          if (!(station.regionName in this.listenRadio)) {
-            this.listenRadio[station.regionName] = [];
-            this.listenRadioRegions.push(station.regionName);
-          }
-          this.listenRadio[station.regionName].push(station);
+        if (!(station.regionName in this.listenRadio)) {
+          this.listenRadio[station.regionName] = [];
+          this.listenRadioRegions.push(station.regionName);
         }
+        this.listenRadio[station.regionName].push(station);
       }
     });
+
+
 
   }
 

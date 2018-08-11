@@ -146,17 +146,40 @@ namespace Radikool6.BackgroundTask
                 con.Open();
                 var sModel = new StationModel(con);
                 var pModel = new ProgramModel(con);
-                foreach (var station in sModel.Get(Define.Radiko.TypeName))
+                foreach (var stations in sModel.Get(Define.Radiko.TypeName, Define.ListenRadio.TypeName))
                 {
-                    try
+                    switch (stations.Key)
                     {
-                        var programs = Radiko.GetPrograms(station).Result;
-                        pModel.Refresh(programs);
+                        case Define.Radiko.TypeName:
+                            foreach (var station in stations.Value)
+                            {
+                                try
+                                {
+                                    var programs = Radiko.GetPrograms(station).Result;
+                                    pModel.Refresh(programs);
+                                }
+                                catch (Exception e)
+                                {
+                                    Global.Logger.Error($"{e.Message}¥r¥n{e.StackTrace}");
+                                }
+                            }
+                            break;
+                        case Define.ListenRadio.TypeName:
+                            foreach (var station in stations.Value)
+                            {
+                                try
+                                {
+                                    var programs = ListenRadio.GetPrograms(station).Result;
+                                    pModel.Refresh(programs);
+                                }
+                                catch (Exception e)
+                                {
+                                    Global.Logger.Error($"{e.Message}¥r¥n{e.StackTrace}");
+                                }
+                            }
+                            break;
                     }
-                    catch (Exception e)
-                    {
-                        Global.Logger.Error($"{e.Message}¥r¥n{e.StackTrace}");
-                    }
+                    
                 }
                 
                 _refreshTimetableDate = DateTime.Now;

@@ -13,4 +13,8 @@ export class ManageComponent implements OnInit {
   ngOnInit() {
   }
 
+  public selectItem = (item: string) => {
+    this.selectedItem = item;
+  }
+
 }

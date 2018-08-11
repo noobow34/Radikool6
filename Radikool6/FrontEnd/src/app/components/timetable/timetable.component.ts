@@ -30,6 +30,7 @@ export class TimetableComponent implements OnInit {
   public loadingProgram = false;
 
 
+
   constructor(private stationService: StationService,
               private programService: ProgramService,
               private stateService: StateService,
@@ -37,40 +38,34 @@ export class TimetableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stationService.get('radiko').subscribe(res => {
+    this.stationService.get(['radiko', 'lr']).subscribe(res => {
       // 種別、地域ごとに分類する
-      const stations = res.data as Station[];
+      const stations = res.data as {[key: string]: Station[] };
       this.radiko = {};
       this.radikoRegions = [];
+      this.listenRadio = {};
+      this.listenRadioRegions = [];
 
-      const nhk = {};
-      for (const station of stations) {
-        if (station.type === 'radiko') {
+
+      for (const station of stations['radiko']) {
           if (!(station.regionName in this.radiko)) {
             this.radiko[station.regionName] = [];
             this.radikoRegions.push(station.regionName);
           }
           this.radiko[station.regionName].push(station);
+      }
+
+      for (const station of stations['lr']) {
+        if (!(station.regionName in this.listenRadio)) {
+          this.listenRadio[station.regionName] = [];
+          this.listenRadioRegions.push(station.regionName);
         }
+        this.listenRadio[station.regionName].push(station);
       }
 
     });
 
-    this.stationService.get('lr').subscribe(res => {
-      // 種別、地域ごとに分類する
-      const stations = res.data as Station[];
-      this.listenRadio = {};
-      this.listenRadioRegions = [];
 
-      for (const station of stations) {
-          if (!(station.regionName in this.listenRadio)) {
-            this.listenRadio[station.regionName] = [];
-            this.listenRadioRegions.push(station.regionName);
-          }
-          this.listenRadio[station.regionName].push(station);
-      }
-
-    });
   }
 
 

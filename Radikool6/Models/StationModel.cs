@@ -29,12 +29,13 @@ namespace Radikool6.Models
         /// <summary>
         /// 種別で放送局取得
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="types"></param>
         /// <returns></returns>
-        public IEnumerable<Station> Get(string type = "")
+        public Dictionary<string, List<Station>> Get(params string[] types)
         {
-            return SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Type = @type ORDER BY Sequence ",
-                new {type = type});
+            return SqliteConnection.Query<Station>(
+                "SELECT * FROM Stations WHERE Type IN @types ORDER BY Type,Sequence ",
+                new {types = types}).GroupBy(s => s.Type).ToDictionary(s => s.Key, s => s.ToList());
         }
 
         /// <summary>

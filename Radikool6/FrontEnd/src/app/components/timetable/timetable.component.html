@@ -1,51 +1,51 @@
-<div class="container">
-  <div class="sidebar">
-    <mat-accordion>
+<div class="sidebar">
+  <mat-accordion>
+    <ng-container *ngIf="radikoRegions.length > 0">
+      <h2>radiko</h2>
       <mat-expansion-panel *ngFor="let r of radikoRegions">
         <mat-expansion-panel-header>
           <mat-panel-title>{{r}}</mat-panel-title>
         </mat-expansion-panel-header>
         <button mat-button *ngFor="let s of radiko[r]" (click)="setStation(s)" class="station-button" [class.selected]="stationId === s.id">{{s.name}}</button>
-
       </mat-expansion-panel>
+    </ng-container>
 
-
+    <ng-container *ngIf="listenRadioRegions.length > 0">
+      <h2>ListenRadio</h2>
       <mat-expansion-panel *ngFor="let r of listenRadioRegions">
         <mat-expansion-panel-header>
           <mat-panel-title>{{r}}</mat-panel-title>
         </mat-expansion-panel-header>
         <button mat-button *ngFor="let s of listenRadio[r]" (click)="setStation(s)" class="station-button" [class.selected]="stationId === s.id">{{s.name}}</button>
       </mat-expansion-panel>
+    </ng-container>
+  </mat-accordion>
+</div>
 
-    </mat-accordion>
-  </div>
-  <div class="timetable">
-    <mat-form-field *ngIf="stationId">
-      <mat-select [(value)]="date" (selectionChange)="setDate()">
-        <mat-option [value]="day.format('YYYY-MM-DD')" *ngFor="let day of days">{{day | date: 'MM/dd'}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-accordion *ngIf="!loadingProgram">
-      <mat-expansion-panel *ngFor="let p of programs">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{p.start| time}} {{p.title}}
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div [innerHTML]="p.descriptionHTML"></div>
-        <div *ngIf="p.reservable">
-          <button mat-raised-button (click)="editReserve('single', p)">予約</button>
-        </div>
-        <div *ngIf="!p.reservable">
-          <button mat-raised-button (click)="getTimeFree(p)" *ngIf="p.tsNg === '0' || p.tsNg === '1'">ダウンロード</button>
-          <p *ngIf="p.tsNg === '1'">一部タイムフリー未対応</p>
-          <p *ngIf="p.tsNg === '2'">タイムフリー未対応</p>
-        </div>
-
-      </mat-expansion-panel>
-
-    </mat-accordion>
-    <mat-spinner *ngIf="loadingProgram"></mat-spinner>
-  </div>
+<div class="timetable">
+  <mat-form-field *ngIf="stationId">
+    <mat-select [(value)]="date" (selectionChange)="setDate()">
+      <mat-option [value]="day.format('YYYY-MM-DD')" *ngFor="let day of days">{{day | date: 'MM/dd'}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-accordion *ngIf="!loadingProgram">
+    <mat-expansion-panel *ngFor="let p of programs">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{p.start| time}} {{p.title}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div [innerHTML]="p.descriptionHTML"></div>
+      <div *ngIf="p.reservable">
+        <button mat-raised-button (click)="editReserve('single', p)">予約</button>
+      </div>
+      <div *ngIf="!p.reservable">
+        <button mat-raised-button (click)="getTimeFree(p)" *ngIf="p.tsNg === '0' || p.tsNg === '1'">ダウンロード</button>
+        <p *ngIf="p.tsNg === '1'">一部タイムフリー未対応</p>
+        <p *ngIf="p.tsNg === '2'">タイムフリー未対応</p>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-spinner *ngIf="loadingProgram"></mat-spinner>
 </div>
 

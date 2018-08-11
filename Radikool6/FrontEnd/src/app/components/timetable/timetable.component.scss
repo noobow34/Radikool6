@@ -1,17 +1,24 @@
-.container{
-  display: flex;
-}
-
 .sidebar{
   width: 25vw;
   box-sizing: border-box;
   padding: .5rem;
+  overflow: auto;
+
+  h2{
+    margin: 0;
+    font-size: 1rem;
+
+  }
+  mat-expansion-panel{
+    margin-bottom: 5rem;
+  }
 }
 
 .timetable{
   width: 75vw;
   box-sizing: border-box;
   padding: .5rem;
+  overflow: auto;
 }
 
 .station-button{

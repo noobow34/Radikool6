@@ -15,14 +15,9 @@ export class ResetStationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stationService.get('radiko').subscribe(res => {
+    this.stationService.get(['radiko', 'lr']).subscribe(res => {
       if (res.result) {
-        this.stations['radiko'] = res.data;
-      }
-    });
-    this.stationService.get('lr').subscribe(res => {
-      if (res.result) {
-        this.stations['lr'] = res.data;
+        this.stations = res.data;
       }
     });
   }
