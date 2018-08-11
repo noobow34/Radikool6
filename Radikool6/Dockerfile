@@ -1,5 +1,10 @@
+FROM node AS node
+COPY . /src 
+WORKDIR /src/FrontEnd
+RUN npm install && npm run build
+
 FROM microsoft/dotnet:sdk AS sdk
-COPY . /src
+COPY --from=node /src /src
 WORKDIR /src
 RUN dotnet publish -c release -o publish 
 
