@@ -1,24 +1,33 @@
-<form (submit)="save()">
-  <div mat-dialog-content>
+<h2 mat-dialog-title>予約編集</h2>
+<div mat-dialog-content>
+  <form>
     <mat-form-field class="full">
       <input matInput placeholder="予約名" name="name" [(ngModel)]="reserve.name" />
     </mat-form-field>
     <mat-form-field class="full">
       <mat-select placeholder="放送局" [(value)]="reserve.stationId">
-        <mat-option *ngFor="let station of stations" [value]="station.id">
-          {{station.name}}
-        </mat-option>
+        <mat-optgroup [label]="'radiko'">
+          <mat-option *ngFor="let station of radikoStations" [value]="station.id">
+            {{station.name}}
+          </mat-option>
+        </mat-optgroup>
+
+        <mat-optgroup [label]="'ListenRadio'">
+          <mat-option *ngFor="let station of listenRadioStations" [value]="station.id">
+            {{station.name}}
+          </mat-option>
+        </mat-optgroup>
       </mat-select>
     </mat-form-field>
 
-    <div>
+    <div class="checkbox">
       <mat-radio-group [(ngModel)]="repeat" name="repeat">
         <mat-radio-button [value]="false">単発予約</mat-radio-button>
         <mat-radio-button [value]="true">曜日指定予約</mat-radio-button>
       </mat-radio-group>
     </div>
 
-    <div *ngIf="repeat">
+    <div *ngIf="repeat" class="checkbox">
       <mat-checkbox name="sun" [(ngModel)]="days[0]">日</mat-checkbox>
       <mat-checkbox name="mon" [(ngModel)]="days[1]">月</mat-checkbox>
       <mat-checkbox name="tue" [(ngModel)]="days[2]">火</mat-checkbox>
@@ -75,18 +84,19 @@
     <div>
       <mat-checkbox name="isTimeFree" [(ngModel)]="reserve.isTimeFree" *ngIf="tsNg === '0' || tsNg === '1'">タイムフリーで録音</mat-checkbox>
       <p *ngIf="tsNg ==='1'">タイムフリー一部未対応</p>
-      <p *ngIf="tsNg ==='2'">タイムフリー未対応</p>
+      <p *ngIf="tsNg ==='2' || !tsNg">タイムフリー未対応</p>
     </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <div>
+    <button type="button" mat-raised-button color="warn" (click)="delete()" *ngIf="reserve.id">削除</button>
   </div>
-  <div mat-dialog-actions>
-    <div>
-      <button type="button" mat-raised-button color="warn" (click)="delete()" *ngIf="reserve.id">削除</button>
-    </div>
-    <div>
-      <button type="submit" mat-button>保存</button>
-      <button type="button" mat-button mat-dialog-close>キャンセル</button>
-    </div>
+  <div>
+    <button type="button" mat-button (click)="save()">保存</button>
+    <button type="button" mat-button mat-dialog-close>キャンセル</button>
+  </div>
 
-  </div>
-</form>
+</div>
+
 

@@ -2,8 +2,8 @@
   width: 100%;
 }
 
-.mat-dialog-content{
-  height: 20rem;
+form{
+  height: 30rem;
 }
 
 .mat-dialog-actions > div {
@@ -13,4 +13,13 @@
   &:last-child {
     text-align: right;
   }
+}
+
+
+mat-radio-button, mat-checkbox{
+  margin-right: 1rem;
+}
+
+.checkbox{
+  margin-bottom: 1rem;
 }

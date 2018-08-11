@@ -14,7 +14,8 @@ import * as moment from 'moment';
 })
 export class ReserveEditComponent implements OnInit {
   public reserve: Reserve = {};
-  public stations: Station[] = [];
+  public radikoStations: Station[] = [];
+  public listenRadioStations: Station[] = [];
   public hours: number[] = [];
   public minutes: number[] = [];
   public tsNg = '0';
@@ -83,7 +84,8 @@ export class ReserveEditComponent implements OnInit {
 
     this.stationService.get(['radiko', 'lr']).subscribe(res => {
       if (res.result) {
-        this.stations = res.data['radiko'];
+        this.radikoStations = res.data['radiko'];
+        this.listenRadioStations = res.data['lr'];
       }
     });
 
