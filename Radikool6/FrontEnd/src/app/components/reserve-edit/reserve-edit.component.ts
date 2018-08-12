@@ -50,7 +50,7 @@ export class ReserveEditComponent implements OnInit {
         stationId: data.program.stationId,
         start: data.program.start,
         end: data.program.end,
-        isTimeFree: this.data.program.tsNg !== '2'
+        isTimeFree: this.data.program.tsNg !== '2' && !this.data.program.tsNg
       };
 
       this.tsNg = this.data.program.tsNg;
