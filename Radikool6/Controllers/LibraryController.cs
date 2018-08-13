@@ -20,6 +20,29 @@ namespace Radikool6.Controllers
         }
 
         [HttpGet]
+        [Route("library/{id}")]
+        public ActionResult Get(string id)
+        {
+            using (SqliteConnection)
+            {
+                var lModel = new LibraryModel(SqliteConnection);
+                lModel.Maintenance();
+                var library = lModel.Get(id);
+
+                if (library != null && System.IO.File.Exists(library.Path))
+                {
+                    Response.Headers.Add("Accept-Ranges", "bytes");
+                    return File(System.IO.File.OpenRead(library.Path), "audio/mp4");
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
+        
+        
+        [HttpGet]
         [Route("library/download/{id}")]
         public ActionResult Download(string id)
         {
