@@ -1,6 +1,7 @@
 <div class="sidebar">
   <mat-accordion>
-    <ng-container *ngIf="radikoRegions.length > 0">
+    <div class="station-group" *ngIf="radikoRegions.length > 0">
+
       <h2>radiko</h2>
       <mat-expansion-panel *ngFor="let r of radikoRegions">
         <mat-expansion-panel-header>
@@ -8,9 +9,9 @@
         </mat-expansion-panel-header>
         <button mat-button *ngFor="let s of radiko[r]" (click)="setStation(s)" class="station-button" [class.selected]="stationId === s.id">{{s.name}}</button>
       </mat-expansion-panel>
-    </ng-container>
+    </div>
 
-    <ng-container *ngIf="listenRadioRegions.length > 0">
+    <div class="station-group" *ngIf="listenRadioRegions.length > 0">
       <h2>ListenRadio</h2>
       <mat-expansion-panel *ngFor="let r of listenRadioRegions">
         <mat-expansion-panel-header>
@@ -18,7 +19,7 @@
         </mat-expansion-panel-header>
         <button mat-button *ngFor="let s of listenRadio[r]" (click)="setStation(s)" class="station-button" [class.selected]="stationId === s.id">{{s.name}}</button>
       </mat-expansion-panel>
-    </ng-container>
+    </div>
   </mat-accordion>
 </div>
 
