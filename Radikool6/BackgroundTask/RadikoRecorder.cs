@@ -87,7 +87,7 @@ namespace Radikool6.BackgroundTask
                     // 番組情報取得
                     using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))      
                     {
-                        TimeFree(_program);
+                        _ = TimeFree(_program);
                     }
                 }
                 else
@@ -172,7 +172,7 @@ namespace Radikool6.BackgroundTask
             if (Status == RecorderStatus.Stopped)
             {
                 // 再開
-                Start();
+                _ = Start();
             }
             else if(Status == RecorderStatus.Working)
             {

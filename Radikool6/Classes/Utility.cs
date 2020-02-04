@@ -80,7 +80,7 @@ namespace Radikool6.Classes
                         return Convert.ToBase64String(encrypt);
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     return "";
                 }
@@ -112,7 +112,7 @@ namespace Radikool6.Classes
                         return Encoding.UTF8.GetString(decript);
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     return "";
                 }

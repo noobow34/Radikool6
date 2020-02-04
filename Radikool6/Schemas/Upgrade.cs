@@ -109,7 +109,7 @@ namespace Radikool6.Schemas
                             cmd.ExecuteNonQuery();
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
 
                     }

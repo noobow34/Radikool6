@@ -135,7 +135,7 @@ namespace Radikool6.Radio
                         date = date.AddDays(1);
 
                     }
-                    catch (Exception e)
+                    catch
                     {
                         //  LogData.Save(Log.LogType.Warn, "番組取得エラー(NHK):" + url + " " + e.Message + " 再試行します");
                         System.Threading.Thread.Sleep(5000);

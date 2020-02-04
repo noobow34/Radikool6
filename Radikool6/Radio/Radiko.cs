@@ -51,7 +51,7 @@ namespace Radikool6.Radio
                         var loginResult = JsonConvert.DeserializeObject<RadikoLoginCheckResult>(json);
                         result = !string.IsNullOrWhiteSpace(loginResult.UserKey);
                     }
-                    catch (Exception e)
+                    catch
                     {
                         result = false;
                     }

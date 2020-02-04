@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
-using Radikool6.Entities;
-using Radikool6.Radio;
 
 namespace Radikool6
 {

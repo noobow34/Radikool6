@@ -95,7 +95,7 @@ namespace Radikool6.Controllers
                                 _timefreeProgress = progress;
                             }
                         };
-                        rr.TimeFree(program);
+                        _ = rr.TimeFree(program);
                     }
                     Result.Result = true;
                 }
