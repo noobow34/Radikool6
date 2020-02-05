@@ -27,7 +27,6 @@ namespace Radikool6
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMiddleware<BasicAuthenticationMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();

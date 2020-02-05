@@ -10,7 +10,6 @@ using Radikool6.Classes;
 
 namespace Radikool6.Controllers
 {
-    [Authorize]
     public class BaseController : Controller
     {
         public ApiResponse Result { get; set; } = new ApiResponse();
