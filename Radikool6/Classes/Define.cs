@@ -55,7 +55,7 @@ namespace Radikool6.Classes
             /// <summary>
             /// ログインURL
             /// </summary>
-            public const string Login = "https://radiko.jp/ap/member/login/login";
+            public const string Login = "https://radiko.jp/ap/member/webapi/member/login";
             //public const string Login = "https://radiko.jp/ap/member/login/login_page";
             //   https://radiko.jp/ap/member/login/login_page
 
