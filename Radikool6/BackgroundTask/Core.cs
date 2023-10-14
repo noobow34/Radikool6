@@ -58,15 +58,12 @@ namespace Radikool6.BackgroundTask
         /// </summary>
         private static void Init()
         {
-            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
-            {
-                con.Open();
-                var cModel = new ConfigModel(con);
-                var config = cModel.Get();
-                var model = new ReserveModel(con);
-                model.RefreshTasks(config);
-
-            }
+            using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
+            con.Open();
+            var cModel = new ConfigModel(con);
+            var config = cModel.Get();
+            var model = new ReserveModel(con);
+            model.RefreshTasks(config);
         }
 
         /// <summary>
@@ -128,31 +125,29 @@ namespace Radikool6.BackgroundTask
         /// </summary>
         private void RefreshTimeTable()
         {
-            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
+            using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
+            var sw = new Stopwatch();
+            sw.Start();
+            con.Open();
+            var sModel = new StationModel(con);
+            var pModel = new ProgramModel(con);
+            foreach (var station in sModel.Get(Define.Radiko.TypeName))
             {
-                var sw = new Stopwatch();
-                sw.Start();
-                con.Open();
-                var sModel = new StationModel(con);
-                var pModel = new ProgramModel(con);
-                foreach (var station in sModel.Get(Define.Radiko.TypeName))
+                try
                 {
-                    try
-                    {
-                        var programs = Radiko.GetPrograms(station).Result;
-                        pModel.Refresh(programs);
-                    }
-                    catch (Exception e)
-                    {
-                        Global.Logger.Error($"{e.Message}¥r¥n{e.StackTrace}");
-                    }
+                    var programs = Radiko.GetPrograms(station).Result;
+                    pModel.Refresh(programs);
                 }
-                
-                _refreshTimetableDate = DateTime.Now;
-                _timetableLock= false;
-                sw.Stop();
-                Global.Logger.Info($"番組表全更新:{sw.Elapsed}");
+                catch (Exception e)
+                {
+                    Global.Logger.Error($"{e.Message}¥r¥n{e.StackTrace}");
+                }
             }
+
+            _refreshTimetableDate = DateTime.Now;
+            _timetableLock = false;
+            sw.Stop();
+            Global.Logger.Info($"番組表全更新:{sw.Elapsed}");
         }
     }
     

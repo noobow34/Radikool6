@@ -1,5 +1,3 @@
-using System;
-
 namespace Radikool6.Models
 {
     public class ErrorViewModel

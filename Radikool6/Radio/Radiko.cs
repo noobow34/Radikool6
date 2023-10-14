@@ -2,7 +2,6 @@
 using Radikool6.Classes;
 using Radikool6.Entities;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -31,31 +30,28 @@ namespace Radikool6.Radio
             var result = false;
             using (var handler = new HttpClientHandler() {UseCookies = true})
             {
-                using (var client = new HttpClient(handler))
-                {
+                using var client = new HttpClient(handler);
 
-                    var content = new FormUrlEncodedContent(new Dictionary<string, string>
+                var content = new FormUrlEncodedContent(new Dictionary<string, string>
                     {
                         {"mail", email},
                         {"pass", pass}
                     });
 
-                    var res = await client.PostAsync(Define.Radiko.Login, content);
-                    var html = await res.Content.ReadAsStringAsync();
-                    _cookieContainer = handler.CookieContainer;
+                var res = await client.PostAsync(Define.Radiko.Login, content);
+                var html = await res.Content.ReadAsStringAsync();
+                _cookieContainer = handler.CookieContainer;
 
-                    res = await client.GetAsync(Define.Radiko.LoginCheck);
-                    var json = await res.Content.ReadAsStringAsync();
-                    try
-                    {
-                        var loginResult = JsonConvert.DeserializeObject<RadikoLoginCheckResult>(json);
-                        result = !string.IsNullOrWhiteSpace(loginResult.UserKey);
-                    }
-                    catch
-                    {
-                        result = false;
-                    }
-
+                res = await client.GetAsync(Define.Radiko.LoginCheck);
+                var json = await res.Content.ReadAsStringAsync();
+                try
+                {
+                    var loginResult = JsonConvert.DeserializeObject<RadikoLoginCheckResult>(json);
+                    result = !string.IsNullOrWhiteSpace(loginResult.UserKey);
+                }
+                catch
+                {
+                    result = false;
                 }
             }
 
@@ -75,14 +71,12 @@ namespace Radikool6.Radio
                 if (!login)
                 {
                     // 地域判定をする
-                    using (var client = new HttpClient())
+                    using var client = new HttpClient();
+                    var text = client.GetStringAsync(Define.Radiko.AreaCheck).Result;
+                    var m = Regex.Match(text, @"JP[0-9]+");
+                    if (m.Success)
                     {
-                        var text = client.GetStringAsync(Define.Radiko.AreaCheck).Result;
-                        var m = Regex.Match(text, @"JP[0-9]+");
-                        if (m.Success)
-                        {
-                            xmlUrl = Define.Radiko.StationListPref.Replace("[AREA]", m.Value);
-                        }
+                        xmlUrl = Define.Radiko.StationListPref.Replace("[AREA]", m.Value);
                     }
                 }
                 
@@ -155,51 +149,47 @@ namespace Radikool6.Radio
         /// <returns></returns>
         public static async Task<string> GetAuthToken()
         {
-            using (var handler = new HttpClientHandler() {UseCookies = true})
+            using var handler = new HttpClientHandler() { UseCookies = true };
+            using var client = new HttpClient(handler);
+            if (_cookieContainer != null)
             {
-                using (var client = new HttpClient(handler))
-                {
-                    if (_cookieContainer != null)
-                    {
-                        handler.CookieContainer = _cookieContainer;
-                    }
-                    
-                    // auth token取得
-                    client.DefaultRequestHeaders.Add("pragma", "no-cache");
-                    client.DefaultRequestHeaders.Add("x-radiko-app", "pc_html5");
-                    client.DefaultRequestHeaders.Add("x-radiko-app-version", "0.0.1");
-                    client.DefaultRequestHeaders.Add("x-radiko-device", "pc");
-                    client.DefaultRequestHeaders.Add("x-radiko-user", "dummy_user");
-
-                    var res = await client.GetAsync(Define.Radiko.Auth1);
-                    var token = res.Headers.GetValues("X-Radiko-AuthToken").FirstOrDefault();
-                    int.TryParse(res.Headers.GetValues("X-Radiko-KeyLength").FirstOrDefault(), out var keyLength);
-                    int.TryParse(res.Headers.GetValues("X-Radiko-KeyOffset").FirstOrDefault(), out var keyOffset);
-
-                    // partial keyの元を取得
-                    client.DefaultRequestHeaders.Clear();
-                    var js = await client.GetStringAsync(Define.Radiko.CommonJs);
-
-                    var m = Regex.Match(js, @"new RadikoJSPlayer.*{");
-                    var key = "";
-                    if (m.Success)
-                    {
-                        key = m.Value.Split(",")[2].Replace("'", "").Trim();
-                    }
-
-                    var partialKey =
-                        Convert.ToBase64String(Encoding.UTF8.GetBytes(key.Substring(keyOffset, keyLength)));
-
-                    // auto tokenを有効可
-                    client.DefaultRequestHeaders.Add("x-radiko-authtoken", token);
-                    client.DefaultRequestHeaders.Add("x-radiko-device", "pc");
-                    client.DefaultRequestHeaders.Add("x-radiko-partialkey", partialKey);
-                    client.DefaultRequestHeaders.Add("x-radiko-user", "dummy_user");
-                    res = await client.GetAsync(Define.Radiko.Auth2);
-
-                    return token;
-                }
+                handler.CookieContainer = _cookieContainer;
             }
+
+            // auth token取得
+            client.DefaultRequestHeaders.Add("pragma", "no-cache");
+            client.DefaultRequestHeaders.Add("x-radiko-app", "pc_html5");
+            client.DefaultRequestHeaders.Add("x-radiko-app-version", "0.0.1");
+            client.DefaultRequestHeaders.Add("x-radiko-device", "pc");
+            client.DefaultRequestHeaders.Add("x-radiko-user", "dummy_user");
+
+            var res = await client.GetAsync(Define.Radiko.Auth1);
+            var token = res.Headers.GetValues("X-Radiko-AuthToken").FirstOrDefault();
+            int.TryParse(res.Headers.GetValues("X-Radiko-KeyLength").FirstOrDefault(), out var keyLength);
+            int.TryParse(res.Headers.GetValues("X-Radiko-KeyOffset").FirstOrDefault(), out var keyOffset);
+
+            // partial keyの元を取得
+            client.DefaultRequestHeaders.Clear();
+            var js = await client.GetStringAsync(Define.Radiko.CommonJs);
+
+            var m = Regex.Match(js, @"new RadikoJSPlayer.*{");
+            var key = "";
+            if (m.Success)
+            {
+                key = m.Value.Split(",")[2].Replace("'", "").Trim();
+            }
+
+            var partialKey =
+                Convert.ToBase64String(Encoding.UTF8.GetBytes(key.Substring(keyOffset, keyLength)));
+
+            // auto tokenを有効可
+            client.DefaultRequestHeaders.Add("x-radiko-authtoken", token);
+            client.DefaultRequestHeaders.Add("x-radiko-device", "pc");
+            client.DefaultRequestHeaders.Add("x-radiko-partialkey", partialKey);
+            client.DefaultRequestHeaders.Add("x-radiko-user", "dummy_user");
+            res = await client.GetAsync(Define.Radiko.Auth2);
+
+            return token;
         }
 
         /// <summary>
@@ -216,24 +206,22 @@ namespace Radikool6.Radio
                 .Replace("[TO]", program.End.ToString("yyyyMMddHHmmss"));
             using (var handler = new HttpClientHandler() {UseCookies = true})
             {
-                using (var client = new HttpClient(handler))
+                using var client = new HttpClient(handler);
+                if (_cookieContainer != null)
                 {
-                    if (_cookieContainer != null)
-                    {
-                        handler.CookieContainer = _cookieContainer;
-                    }
-                    var request = new HttpRequestMessage(HttpMethod.Post, url);
-                    request.Headers.Add("pragma", "no-cache");
-                    request.Headers.Add("X-Radiko-AuthToken", token);
-                    var res = await client.SendAsync(request);
-                    var text = await res.Content.ReadAsStringAsync();
+                    handler.CookieContainer = _cookieContainer;
+                }
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
+                request.Headers.Add("pragma", "no-cache");
+                request.Headers.Add("X-Radiko-AuthToken", token);
+                var res = await client.SendAsync(request);
+                var text = await res.Content.ReadAsStringAsync();
 
-                    foreach (var line in text.Split("\n"))
-                    {
-                        if (!line.Contains("http")) continue;
-                        m3U8 = line;
-                        break;
-                    }
+                foreach (var line in text.Split("\n"))
+                {
+                    if (!line.Contains("http")) continue;
+                    m3U8 = line;
+                    break;
                 }
             }
 

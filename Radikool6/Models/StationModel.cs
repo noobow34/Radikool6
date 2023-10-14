@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Radikool6.Entities;
 
 namespace Radikool6.Models
@@ -43,12 +42,11 @@ namespace Radikool6.Models
         /// <param name="stations"></param>
         public void Refresh(List<Station> stations)
         {
-            using (var trn = SqliteConnection.BeginTransaction())
-            {
-                // 種別が同じものを削除
-                SqliteConnection.Execute("DELETE FROM Stations WHERE Type IN @types",
-                    new {types = stations.Select(s => s.Type).Distinct().ToList()}, trn);
-                const string query = @"INSERT INTO 
+            using var trn = SqliteConnection.BeginTransaction();
+            // 種別が同じものを削除
+            SqliteConnection.Execute("DELETE FROM Stations WHERE Type IN @types",
+                new { types = stations.Select(s => s.Type).Distinct().ToList() }, trn);
+            const string query = @"INSERT INTO 
                                            Stations
                                        (
                                            Id,
@@ -75,21 +73,20 @@ namespace Radikool6.Models
                                             @MediaUrl,
                                             @TimetableUrl
                                        )";
-                stations.ForEach(s =>
+            stations.ForEach(s =>
+            {
+                try
                 {
-                    try
-                    {
 
-                        SqliteConnection.Execute(query, s, trn);
-                    }
-                    catch (Exception ex)
-                    {
-                        var a = ex.Message;
-                    }
-                });
+                    SqliteConnection.Execute(query, s, trn);
+                }
+                catch (Exception ex)
+                {
+                    var a = ex.Message;
+                }
+            });
 
-                trn.Commit();
-            }
+            trn.Commit();
 
         }
     }

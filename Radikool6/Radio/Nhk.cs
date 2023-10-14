@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Radikool6.Classes;
 using Radikool6.Entities;

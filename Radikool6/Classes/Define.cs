@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
 using Radikool6.Entities;
 
 namespace Radikool6.Classes

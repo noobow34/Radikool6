@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Radikool6.Entities;
 using Radikool6.Models;
 
 namespace Radikool6.Controllers
 {
-    
+
     public class ConfigController : BaseController
     {
         public ConfigController()

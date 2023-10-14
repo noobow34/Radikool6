@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using Newtonsoft.Json;
 using Radikool6.Classes;
 using Radikool6.Entities;
-using SQLitePCL;
 
 namespace Radikool6.Models
 {

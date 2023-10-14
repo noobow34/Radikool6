@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Security.Cryptography;
 using Radikool6.Classes;
 using Radikool6.Entities;
 

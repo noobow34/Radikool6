@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using Microsoft.Data.Sqlite;
-using Radikool6.Entities;
+﻿using Microsoft.Data.Sqlite;
 
 namespace Radikool6.Models
 {

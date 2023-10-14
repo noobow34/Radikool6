@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
+﻿using System.Linq;
 using Dapper;
-using Microsoft.Data.Edm;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 using Radikool6.Classes;

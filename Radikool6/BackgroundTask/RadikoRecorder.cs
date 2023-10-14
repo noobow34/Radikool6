@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
-using NLog;
 using Radikool6.Classes;
 using Radikool6.Entities;
 using Radikool6.Models;
@@ -85,10 +83,8 @@ namespace Radikool6.BackgroundTask
                 if (Task.Reserve.IsTimeFree)
                 {
                     // 番組情報取得
-                    using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))      
-                    {
-                        _ = TimeFree(_program);
-                    }
+                    using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
+                    _ = TimeFree(_program);
                 }
                 else
                 {              
@@ -225,13 +221,10 @@ namespace Radikool6.BackgroundTask
 
         private void process_Exited(object sender, System.EventArgs e)
         {
-            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
-            {
-                con.Open();
-                var lModel = new LibraryModel(con);
-                lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = Replace(Config.FileName, _program), Path = _filename, Program = _program });
-
-            }
+            using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
+            con.Open();
+            var lModel = new LibraryModel(con);
+            lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = Replace(Config.FileName, _program), Path = _filename, Program = _program });
         }
 
         private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)

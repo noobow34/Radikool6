@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
 using Newtonsoft.Json;
 using Radikool6.Entities;
 
@@ -123,12 +119,11 @@ namespace Radikool6.Models
             }
 
 
-            using (var trn = SqliteConnection.BeginTransaction())
-            {
-                var where = reserve != null ? "WHERE ReserveId IN @ReserveIds" : "";
-                SqliteConnection.Execute($"DELETE FROM ReserveTasks {where}",
-                    new {ReserveIds = reserves.Select(r => r.Id).ToList()}, trn);
-                const string query = @"INSERT INTO 
+            using var trn = SqliteConnection.BeginTransaction();
+            var where = reserve != null ? "WHERE ReserveId IN @ReserveIds" : "";
+            SqliteConnection.Execute($"DELETE FROM ReserveTasks {where}",
+                new { ReserveIds = reserves.Select(r => r.Id).ToList() }, trn);
+            const string query = @"INSERT INTO 
                                            ReserveTasks
                                        (
                                            Id,
@@ -143,11 +138,9 @@ namespace Radikool6.Models
                                            @End,
                                            @ReserveId
                                        )";
-                tasks.ForEach(t => { SqliteConnection.Execute(query, t, trn); });
-                
-                trn.Commit();
+            tasks.ForEach(t => { SqliteConnection.Execute(query, t, trn); });
 
-            }
+            trn.Commit();
         }
 
         /// <summary>

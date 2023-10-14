@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Radikool6.Entities
+﻿namespace Radikool6.Entities
 {
     public class Hash
     {

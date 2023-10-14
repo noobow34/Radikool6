@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using NLog.LayoutRenderers.Wrappers;
-using Radikool6.Classes;
 using Radikool6.Entities;
 
 namespace Radikool6.Models
@@ -122,14 +119,13 @@ namespace Radikool6.Models
         {
             // 重複削除
             programs = programs.GroupBy(p => p.Id).Select(g => g.First()).ToList();
-            
-            using (var trn = SqliteConnection.BeginTransaction())
-            {
-                var stationIds = programs.Select(p => p.StationId).Distinct();
-                SqliteConnection.Execute("DELETE FROM Programs WHERE StationId IN @StationIds",
-                    new {StationIds = programs.Select(p => p.StationId).Distinct().ToList()}, trn);
 
-                const string query = @"INSERT INTO 
+            using var trn = SqliteConnection.BeginTransaction();
+            var stationIds = programs.Select(p => p.StationId).Distinct();
+            SqliteConnection.Execute("DELETE FROM Programs WHERE StationId IN @StationIds",
+                new { StationIds = programs.Select(p => p.StationId).Distinct().ToList() }, trn);
+
+            const string query = @"INSERT INTO 
                                            Programs 
                                        (
                                            Id,
@@ -153,10 +149,8 @@ namespace Radikool6.Models
                                            @TsNg
                                        )";
 
-                programs.ForEach(p => { SqliteConnection.Execute(query, p, trn); });
-                trn.Commit();
-
-            }
+            programs.ForEach(p => { SqliteConnection.Execute(query, p, trn); });
+            trn.Commit();
 
         }
 

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.ComTypes;
-using Microsoft.AspNetCore.HttpOverrides;
 using Newtonsoft.Json;
 using Radikool6.Classes;
 
@@ -33,26 +29,21 @@ namespace Radikool6.Schemas
                 JsonConvert.DeserializeObject<Dictionary<string, Table>>(
                     File.ReadAllText("Schemas/schema.json"));
 
-            using (var con = new SqliteConnection($"Data Source={Define.File.DbFile}"))
+            using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
+            con.Open();
+            using var trn = con.BeginTransaction();
+            // 最初に管理用テーブルを作成する
+            CreateTable(trn, "Hashes", tables["Hashes"], false);
+
+            // その他のテーブルを作成する
+            foreach (var (tableName, table) in tables.Where(t => t.Key != "Hashes"))
             {
-                con.Open();
-                using (var trn = con.BeginTransaction())
-                {
-                    // 最初に管理用テーブルを作成する
-                    CreateTable(trn, "Hashes", tables["Hashes"], false);
-
-                    // その他のテーブルを作成する
-                    foreach (var(tableName, table) in tables.Where(t => t.Key != "Hashes"))
-                    {
-                        CreateTable(trn, tableName, table);
-                    }
-
-                    trn.Commit();
-                }
-
+                CreateTable(trn, tableName, table);
             }
 
-          
+            trn.Commit();
+
+
 
         }
 
@@ -86,19 +77,16 @@ namespace Radikool6.Schemas
                         using (var cmd = new SqliteCommand("", trn.Connection, trn))
                         {
                             cmd.CommandText = $"SELECT * FROM {tableName}";
-                            using (var reader = cmd.ExecuteReader())
+                            using var reader = cmd.ExecuteReader();
+                            while (reader.Read())
                             {
-                                while (reader.Read())
+                                var row = new Dictionary<string, object>();
+
+                                for (var i = 0; i < reader.FieldCount; i++)
                                 {
-                                    var row = new Dictionary<string, object>();
-                                    
-                                    for(var i=0;i<reader.FieldCount;i++)
-                                    {
-                                        row[reader.GetName(i)] = reader.GetValue(i);
-                                    }
-                                    orgData.Add(row);
+                                    row[reader.GetName(i)] = reader.GetValue(i);
                                 }
-                                
+                                orgData.Add(row);
                             }
                         }
 
@@ -166,37 +154,32 @@ namespace Radikool6.Schemas
             using (var cmd = new SqliteCommand("", trn.Connection, trn))
             {
                 cmd.CommandText = $"SELECT * FROM {tableName} LIMIT 1";
-                using (var reader = cmd.ExecuteReader())
+                using var reader = cmd.ExecuteReader();
+                reader.Read();
+
+
+                foreach (var orgRow in orgData)
                 {
-                    reader.Read();
-                    
-
-                    foreach (var orgRow in orgData)
+                    var row = new Dictionary<string, object>();
+                    for (var i = 0; i < reader.FieldCount; i++)
                     {
-                        var row = new Dictionary<string, object>();
-                        for (var i = 0; i < reader.FieldCount; i++)
+                        var colName = reader.GetName(i);
+                        if (!orgRow.ContainsKey(colName)) continue;
+                        row[colName] = orgRow[colName];
+                        if (!cols.Contains(colName))
                         {
-                            var colName = reader.GetName(i);
-                            if (!orgRow.ContainsKey(colName)) continue;
-                            row[colName] = orgRow[colName];
-                            if (!cols.Contains(colName))
-                            {
-                                cols.Add(colName);
-                            }
+                            cols.Add(colName);
                         }
-                        data.Add(row);
                     }
-
-                    
+                    data.Add(row);
                 }
-                
+
             }
 
             foreach (var row in data)
             {
-                using (var cmd = new SqliteCommand("", trn.Connection, trn))
-                {
-                    cmd.CommandText = $@"INSERT INTO
+                using var cmd = new SqliteCommand("", trn.Connection, trn);
+                cmd.CommandText = $@"INSERT INTO
                                              {tableName}
                                          ( 
                                              {string.Join(",", cols.OrderBy(c => c))}
@@ -205,10 +188,9 @@ namespace Radikool6.Schemas
                                          (
                                              {string.Join(",", cols.OrderBy(c => c).Select(c => "@" + c))}
                                          ) ";
-                    cols.ForEach(c => { cmd.Parameters.Add(new SqliteParameter(c, row[c])); });
+                cols.ForEach(c => { cmd.Parameters.Add(new SqliteParameter(c, row[c])); });
 
-                    cmd.ExecuteNonQuery();
-                }
+                cmd.ExecuteNonQuery();
             }
             
 
