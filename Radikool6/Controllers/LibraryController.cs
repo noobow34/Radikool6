@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Radikool6.Classes;
 using Radikool6.Models;
 
 namespace Radikool6.Controllers
@@ -19,10 +21,10 @@ namespace Radikool6.Controllers
                 var lModel = new LibraryModel(SqliteConnection);
                 lModel.Maintenance();
                 var library = lModel.Get(id);
-
-                if (library != null && System.IO.File.Exists(library.Path))
+                string fullPath = Path.Combine(Global.BaseDir, "records", library.Path);
+                if (library != null && System.IO.File.Exists(fullPath))
                 {
-                    return File(System.IO.File.OpenRead(library.Path), "audio/mp4", $"{library.FileName}.m4a");
+                    return File(System.IO.File.OpenRead(fullPath), "audio/mp4", $"{library.FileName}.m4a");
                 }
                 else
                 {

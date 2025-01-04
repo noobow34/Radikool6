@@ -42,8 +42,8 @@ namespace Radikool6.BackgroundTask
 
 
                 _program = program;
-                Directory.CreateDirectory(Path.Combine("wwwroot", "records"));
-                _filename = Path.GetFullPath(Path.Combine("wwwroot", "records", $"{Guid.NewGuid().ToString()}.m4a"));
+                Directory.CreateDirectory(Path.Combine(Global.BaseDir, "records"));
+                _filename = Path.GetFullPath(Path.Combine(Global.BaseDir, "records", $"{Guid.NewGuid().ToString()}.m4a"));
                 StartTime = DateTime.Now;
                 var m3U8 = await Radiko.GetTimeFreeM3U8(program);
 
@@ -89,8 +89,8 @@ namespace Radikool6.BackgroundTask
                 else
                 {              
                     await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
-                    Directory.CreateDirectory(Path.Combine("wwwroot","records"));
-                    _filename = Path.GetFullPath(Path.Combine("wwwroot", "records", $"{Guid.NewGuid().ToString()}.m4a"));
+                    Directory.CreateDirectory(Path.Combine(Global.BaseDir, "records"));
+                    _filename = Path.GetFullPath(Path.Combine(Global.BaseDir, "records", $"{Guid.NewGuid().ToString()}.m4a"));
                     StartTime = DateTime.Now;
                     _token = await Radio.Radiko.GetAuthToken();
                     var arg = Define.Radiko.RealTimeFfmpegArgs.Replace("[TOKEN]", _token)
@@ -224,7 +224,7 @@ namespace Radikool6.BackgroundTask
             using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
             con.Open();
             var lModel = new LibraryModel(con);
-            lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = Replace(Config.FileName, _program), Path = _filename, Program = _program });
+            lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = Replace(Config.FileName, _program), Path = Path.GetFileName(_filename), Program = _program });
         }
 
         private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)

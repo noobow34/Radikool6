@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 using Radikool6.Entities;
 
 namespace Radikool6.Classes
@@ -8,8 +10,8 @@ namespace Radikool6.Classes
     {
         public class File
         {
-            public static readonly string DbFile = Path.Combine("data", "data.db");
-            public const string KeyFile = ".key";
+            public static readonly string DbFile = Path.Combine(Global.BaseDir, "data", "data.db");
+            public static readonly string KeyFile = Path.Combine(Global.BaseDir, ".key");
         }
 
         public class Config

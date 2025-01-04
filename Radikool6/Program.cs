@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
 
@@ -12,6 +13,9 @@ namespace Radikool6
         public static Core Core;
         public static void Main(string[] args)
         {
+            var confing = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json").Build();
+            Global.BaseDir = confing["BaseDir"];
+
             Init();
             
             Core = new Core();

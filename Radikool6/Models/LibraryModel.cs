@@ -30,7 +30,7 @@ namespace Radikool6.Models
             
             libraries.ForEach(l =>
             {
-                var fi = new FileInfo(l.Path);
+                var fi = new FileInfo(Path.Combine(Global.BaseDir,"records",l.Path));
                 l.Size = Utility.Text.ToSizeString(fi.Length);
                 l.Created = fi.CreationTime;
                 l.Path = Path.GetFileName(l.Path);
@@ -90,9 +90,10 @@ namespace Radikool6.Models
             // ファイル削除
             try
             {
-                if (File.Exists(library.Path))
+                string fullPath = Path.Combine(Global.BaseDir, "records", library.Path);
+                if (File.Exists(fullPath))
                 {
-                    File.Delete(library.Path);
+                    File.Delete(fullPath);
                 }
             }
             catch (Exception ex)
@@ -110,8 +111,8 @@ namespace Radikool6.Models
         /// <returns></returns>
         public bool Maintenance()
         {
-            var dir = new DirectoryInfo(Path.Combine("wwwroot", "records"));
-            var files = dir.EnumerateFiles("*.m4a").Select(f => f.FullName).ToList();
+            var dir = new DirectoryInfo(Path.Combine(Global.BaseDir, "records"));
+            var files = dir.EnumerateFiles("*.m4a").Select(f => f.Name).ToList();
             var libraries = SqliteConnection.Query<Library>("SELECT * FROM Libraries");
             foreach (var library in libraries)
             {
