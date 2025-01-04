@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Radikool6.Classes;
 
 namespace Radikool6.Controllers
 {
+    [Authorize]
     public class BaseController : Controller
     {
         public ApiResponse Result { get; set; } = new ApiResponse();

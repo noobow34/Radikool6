@@ -10,7 +10,6 @@ namespace Radikool6
     public class Program
     {
         public static Core Core;
-        
         public static void Main(string[] args)
         {
             Init();

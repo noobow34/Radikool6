@@ -2,7 +2,7 @@
 
 namespace Radikool6.Controllers
 {
-    public class HomeController : BaseController
+    public class DummyController : Controller
     {
         public IActionResult Index()
         {

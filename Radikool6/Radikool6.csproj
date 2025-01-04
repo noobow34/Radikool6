@@ -3,6 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.7" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
@@ -22,5 +23,8 @@
     <Folder Include="FrontEnd" />
     <Folder Include="FrontEnd\src\app\components" />
     <Folder Include="records" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\Home\index.cshtml" />
   </ItemGroup>
 </Project>
