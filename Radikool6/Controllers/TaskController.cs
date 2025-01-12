@@ -20,7 +20,7 @@ namespace Radikool6.Controllers
             return await Execute(() =>
             {
                 Result.Result = true;
-                Result.Data = Program.Core.GetStatus();
+                Result.Data = Globals.Core.GetStatus();
             });
         }
         
@@ -34,7 +34,7 @@ namespace Radikool6.Controllers
         {
             return await Execute(() =>
             {
-                Program.Core.StopRestart(taskId);
+                Globals.Core.StopRestart(taskId);
                 Result.Result = true;
             });
         }

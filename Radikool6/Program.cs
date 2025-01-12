@@ -1,50 +1,56 @@
-﻿using System;
-using System.IO;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Auth0.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
+using System;
+using System.IO;
 
-namespace Radikool6
+var confing = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json").Build();
+Global.BaseDir = confing["BaseDir"];
+
+if (File.Exists(Define.File.KeyFile))
 {
-    public class Program
-    {
-        public static Core Core;
-        public static void Main(string[] args)
-        {
-            var confing = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json").Build();
-            Global.BaseDir = confing["BaseDir"];
+    Global.EncKey = File.ReadAllText(Define.File.KeyFile);
+}
+else
+{
+    Global.EncKey = Guid.NewGuid().ToString("N");
+    File.WriteAllText(Define.File.KeyFile, Global.EncKey);
+}
+Radikool6.Schemas.Upgrade.Execute();
 
-            Init();
-            
-            Core = new Core();
-            Core.Run();
+Globals.Core.Run();
 
-            BuildWebHost(args).Run();
-        }
+var builder = WebApplication.CreateBuilder();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddMvc();
+builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllersWithViews();
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = builder.Configuration["Auth0:Domain"] ?? "";
+    options.ClientId = builder.Configuration["Auth0:ClientId"] ?? "";
+});
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseUrls($"http://0.0.0.0:5000")
-                .Build();
+var app = builder.Build();
 
-        /// <summary>
-        /// 初期化
-        /// </summary>port
-        private static void Init()
-        {
-            if (File.Exists(Define.File.KeyFile))
-            {
-                Global.EncKey = File.ReadAllText(Define.File.KeyFile);
-            }
-            else
-            {
-                Global.EncKey = Guid.NewGuid().ToString("N");
-                File.WriteAllText(Define.File.KeyFile, Global.EncKey);
-            }
-            Schemas.Upgrade.Execute();
-        }
-    }
+app.UseExceptionHandler("/Home/Error");
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.UseSession();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.Run();
+
+public static class Globals
+{
+    public static Core Core = new();
 }
