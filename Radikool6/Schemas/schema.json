@@ -64,6 +64,11 @@
       "Path": "text",
       "ProgramJson": "text"
     },
-    "primaryKey": ["Id"]
+    "primaryKey": [ "Id" ]
+  },
+  "Key": {
+    "columns": {
+      "Key": "text"
+    }
   }
 }

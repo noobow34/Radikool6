@@ -1,25 +1,35 @@
 ﻿using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
+using Radikool6.Entities;
 using System;
 using System.IO;
 
 var confing = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json").Build();
 Global.BaseDir = confing["BaseDir"];
 
-if (File.Exists(Define.File.KeyFile))
+Radikool6.Schemas.Upgrade.Execute();
+
+using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
+con.Open();
+using SqliteCommand cmd =new ("select key from key", con);
+var tempKey =  cmd.ExecuteScalar()?.ToString();
+if (!string.IsNullOrEmpty(tempKey))
 {
-    Global.EncKey = File.ReadAllText(Define.File.KeyFile);
+    Global.EncKey = tempKey;
 }
 else
 {
     Global.EncKey = Guid.NewGuid().ToString("N");
-    File.WriteAllText(Define.File.KeyFile, Global.EncKey);
+    using SqliteCommand cmdKeyInsert = new("insert into key(key) values(@key)",con);
+    cmdKeyInsert.Parameters.Add(new SqliteParameter("key", Global.EncKey));
+    cmdKeyInsert.ExecuteNonQuery();
 }
-Radikool6.Schemas.Upgrade.Execute();
 
 Globals.Core.Run();
 

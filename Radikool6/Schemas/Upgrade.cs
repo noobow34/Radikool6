@@ -43,8 +43,6 @@ namespace Radikool6.Schemas
 
             trn.Commit();
 
-
-
         }
 
 

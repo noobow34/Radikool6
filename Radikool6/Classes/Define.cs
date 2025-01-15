@@ -11,7 +11,6 @@ namespace Radikool6.Classes
         public class File
         {
             public static readonly string DbFile = Path.Combine(Global.BaseDir, "data", "data.db");
-            public static readonly string KeyFile = Path.Combine(Global.BaseDir, ".key");
         }
 
         public class Config
