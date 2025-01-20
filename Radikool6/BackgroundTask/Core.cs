@@ -17,7 +17,6 @@ namespace Radikool6.BackgroundTask
         private bool _recorderLock = false;
         private bool _timetableLock = false;
         
-       // private readonly List<Recorder> _recorders = new List<Recorder>();
         private readonly List<RadikoRecorder> _recorders = new List<RadikoRecorder>();
         private DateTime _refreshTimetableDate = DateTime.MinValue;
         
@@ -51,7 +50,6 @@ namespace Radikool6.BackgroundTask
         {
             _recorders.FirstOrDefault(r => r.Id == taskId)?.StopRestart();
         }
-        
 
         /// <summary>
         /// 起動時の処理
@@ -92,7 +90,6 @@ namespace Radikool6.BackgroundTask
                             // 予約実行
                             if (_recorders.All(r => r.Id != t.Id))
                             {
-                                //    var recorder = Recorder.GetRecorder(config, t);
                                 var recorder = new RadikoRecorder(config, t);
                                 _recorders.Add(recorder);
                                 recorder.Start().Wait();
@@ -101,7 +98,6 @@ namespace Radikool6.BackgroundTask
                             }
                         });
                     }
-
                 }
                 
                 // 終了タスクを削除する
@@ -115,10 +111,7 @@ namespace Radikool6.BackgroundTask
                 _timetableLock = true;
                 RefreshTimeTable();
             }
-            
-            
         }
-        
 
         /// <summary>
         /// 全番組表再取得
@@ -150,6 +143,4 @@ namespace Radikool6.BackgroundTask
             Global.Logger.Info($"番組表全更新:{sw.Elapsed}");
         }
     }
-    
-    
 }

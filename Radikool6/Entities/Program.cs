@@ -13,7 +13,6 @@ namespace Radikool6.Entities
         public string Description { get; set; }
         public string TsNg { get; set; }
 
-      //  [JsonIgnore]
         public Station Station { get; set; }
     }
 }

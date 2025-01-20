@@ -11,7 +11,6 @@ namespace Radikool6.Controllers
         {
         }
 
-
         /// <summary>
         /// システム情報取得
         /// </summary>
@@ -26,9 +25,5 @@ namespace Radikool6.Controllers
                 Result.Result = true;
             });
         }
-
-
-
-
     }
 }

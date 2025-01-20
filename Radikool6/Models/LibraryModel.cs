@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using Radikool6.Classes;
 using Radikool6.Entities;
 
 namespace Radikool6.Models

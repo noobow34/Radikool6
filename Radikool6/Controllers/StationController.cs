@@ -32,9 +32,7 @@ namespace Radikool6.Controllers
                     Result.Result = true;
                     Result.Data = model.Get(type);
                 }
-                
             });
-
         }
 
         /// <summary>

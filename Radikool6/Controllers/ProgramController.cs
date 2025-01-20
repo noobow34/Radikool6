@@ -19,7 +19,6 @@ namespace Radikool6.Controllers
         {
         }
 
-        
         /// <summary>
         /// 番組表検索
         /// </summary>
@@ -116,7 +115,6 @@ namespace Radikool6.Controllers
             });
         }
 
-
         /// <summary>
         /// 番組表取得処理
         /// </summary>
@@ -142,19 +140,11 @@ namespace Radikool6.Controllers
                         break;
                 }
 
-
                 var pModel = new ProgramModel(SqliteConnection);
                 pModel.Refresh(programs);
                 
                 return programs;
             }
-            
-         
-
-            
         }
-
-        
-        
     }
 }

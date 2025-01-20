@@ -19,7 +19,6 @@ namespace Radikool6.Classes
                 }
 
                 DateTime res;
-                //  src = src.Substring(0, 4) + "/" + src.Substring(4, 2) + "/" + src.Substring(6, 2) + " " + src.Substring(8, 2) + ":" + src.Substring(10, 2) + ":" + src.Substring(12, 2);
                 int year = int.TryParse(src.Substring(0, 4), out year) ? year : 0;
                 int month = int.TryParse(src.Substring(4, 2), out month) ? month : 0;
                 int day = int.TryParse(src.Substring(6, 2), out day) ? day : 0;
@@ -34,7 +33,6 @@ namespace Radikool6.Classes
 
                 res = new DateTime(year, month, day, hour, min, sec, new GregorianCalendar());
                 return res;
-
             }
             
             /// <summary>

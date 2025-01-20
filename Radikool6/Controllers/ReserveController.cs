@@ -28,7 +28,6 @@ namespace Radikool6.Controllers
                     Result.Data = model.Get();
                 }
             });
-
         }
 
         /// <summary>

@@ -19,7 +19,6 @@ namespace Radikool6.BackgroundTask
         private string _filename;
         private Entities.Program _program = new Entities.Program();
         private bool _isComplete = false;
-        private string _ffmpegOutput;
         private int _duration;
         public Action<int> ChangeProgress { get; set; } = (progress) => { };
 
@@ -40,7 +39,6 @@ namespace Radikool6.BackgroundTask
                 _duration = (int) (program.End - program.Start).TotalSeconds;
                 await Radiko.Login(Config.RadikoEmail, Config.RadikoPassword);
 
-
                 _program = program;
                 Directory.CreateDirectory(Path.Combine(Global.BaseDir, "records"));
                 _filename = Path.GetFullPath(Path.Combine(Global.BaseDir, "records", $"{Guid.NewGuid().ToString()}.m4a"));
@@ -51,7 +49,6 @@ namespace Radikool6.BackgroundTask
                 arg = Replace(arg, _program);
                 CreateProcess(arg);
 
-
                 _ffmpeg.Start();
 
                 _ffmpeg.BeginOutputReadLine();
@@ -61,7 +58,6 @@ namespace Radikool6.BackgroundTask
             {
                 Global.Logger.Error($"{ex.Message}¥n{ex.StackTrace}");
             }
-
         }
 
         /// <summary>
@@ -102,9 +98,7 @@ namespace Radikool6.BackgroundTask
                     _ffmpeg.Start();
                     _ffmpeg.BeginOutputReadLine();
                     _ffmpeg.BeginErrorReadLine();
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -197,17 +191,11 @@ namespace Radikool6.BackgroundTask
                 }
             };
 
-            
             _ffmpeg.OutputDataReceived += process_OutputDataReceived;
             _ffmpeg.ErrorDataReceived += process_OutputDataReceived;
-
             
             Global.Logger.Info($"ffmpeg起動:{arg}");
         }
-
-
-
-        
 
         /// <summary>
         /// 停止
@@ -217,7 +205,6 @@ namespace Radikool6.BackgroundTask
             Status = RecorderStatus.Stopping;
             _ffmpeg.Kill();            
         }
-
 
         private void process_Exited(object sender, System.EventArgs e)
         {
@@ -236,10 +223,6 @@ namespace Radikool6.BackgroundTask
                 _isComplete = true;
                 process_Exited(sender, e);
             }
-            else
-            {
-                _ffmpegOutput = e.Data;
-            }
 
             int progress = 0;
             if (!string.IsNullOrWhiteSpace(e.Data))
@@ -257,9 +240,6 @@ namespace Radikool6.BackgroundTask
             {
                 ChangeProgress(e.Data != null ? progress : -1);
             }            
-            
         }
-
-
     }
 }

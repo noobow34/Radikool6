@@ -1,12 +1,10 @@
 ﻿using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
-using Radikool6.Entities;
 using System;
 using System.IO;
 

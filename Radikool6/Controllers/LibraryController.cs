@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Radikool6.Classes;
 using Radikool6.Models;
 
 namespace Radikool6.Controllers

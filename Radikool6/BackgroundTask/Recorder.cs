@@ -10,7 +10,6 @@ namespace Radikool6.BackgroundTask
         protected ReserveTask Task { get; set; }
         protected Config Config { get; set; }
         protected DateTime StartTime { get; set; }
-
         public RecorderStatus Status { get; set; } = RecorderStatus.None;
         
         public enum RecorderStatus
@@ -23,7 +22,6 @@ namespace Radikool6.BackgroundTask
             End
         }
         
-        
         public static Recorder GetRecorder(Config config, ReserveTask task)
         {
             Recorder res = null;
@@ -32,7 +30,6 @@ namespace Radikool6.BackgroundTask
                 case Define.Radiko.TypeName:
                     res = new RadikoRecorder(config, task);
                     break;
-
             }
 
             return res;
@@ -55,7 +52,6 @@ namespace Radikool6.BackgroundTask
         {
             var res = src;
 
-
             res = res.Replace("[TAG_TITLE]", Config.TagTitle);
             res = res.Replace("[TAG_ARTIST]", Config.TagArtist);
             res = res.Replace("[TAG_COMMENT]", Config.TagComment);
@@ -74,7 +70,6 @@ namespace Radikool6.BackgroundTask
                 res = res.Replace("[TITLE]", program.Title);
                 res = res.Replace("[CAST]", program.Cast);
                 res = res.Replace("[INFO]", program.Description);
-                
 
                 // 28時表記
                 var date = program.Start.Hour < 5 ? program.Start.AddDays(-1) : program.Start;
@@ -95,9 +90,7 @@ namespace Radikool6.BackgroundTask
                     date.Hour < 5 ? (date.Hour + 24).ToString("d2") : date.Hour.ToString("d2"));
                 res = res.Replace("[EMIN]", date.Minute.ToString("d2"));
                 res = res.Replace("[EYOBI]", GetYobi(date.DayOfWeek));
-
             }
-
 
             return res;
         }
@@ -135,9 +128,7 @@ namespace Radikool6.BackgroundTask
                     break;
             }
 
-
             return res;
         }
-
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using Microsoft.Extensions.Configuration;
 using Radikool6.Entities;
 
 namespace Radikool6.Classes
