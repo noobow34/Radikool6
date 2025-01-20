@@ -13,7 +13,10 @@ using System.IO;
 var confing = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json").Build();
 Global.BaseDir = confing["BaseDir"];
 
-Radikool6.Schemas.Upgrade.Execute();
+if (!File.Exists(Define.File.DbFile))
+{
+    Radikool6.Schemas.Upgrade.Execute();
+}
 
 using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
 con.Open();

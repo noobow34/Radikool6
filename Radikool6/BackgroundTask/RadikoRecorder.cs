@@ -224,7 +224,8 @@ namespace Radikool6.BackgroundTask
             using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
             con.Open();
             var lModel = new LibraryModel(con);
-            lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = Replace(Config.FileName, _program), Path = Path.GetFileName(_filename), Program = _program });
+            lModel.Update(new Library() { Id = Guid.NewGuid().ToString(), FileName = Replace(Config.FileName, _program), FileBinary = File.ReadAllBytes(_filename), Program = _program });
+            File.Delete( _filename);
         }
 
         private void process_OutputDataReceived(object sender, DataReceivedEventArgs e)

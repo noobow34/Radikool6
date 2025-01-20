@@ -23,19 +23,14 @@ namespace Radikool6.Models
         /// <returns></returns>
         public IEnumerable<Library> Get()
         {
-            var libraries = SqliteConnection.Query<Library>("SELECT * FROM Libraries").ToList();
+            var libraries = SqliteConnection.Query<Library>("SELECT id,filename,programjson FROM Libraries").ToList();
             var statios = SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Id IN @Ids",
                 new {Ids = libraries.Select(l => l.Program.StationId).Distinct().ToList()});
             
             
             libraries.ForEach(l =>
             {
-                var fi = new FileInfo(Path.Combine(Global.BaseDir,"records",l.Path));
-                l.Size = Utility.Text.ToSizeString(fi.Length);
-                l.Created = fi.CreationTime;
-                l.Path = Path.GetFileName(l.Path);
                 l.Program.Station = statios.FirstOrDefault(s => s.Id == l.Program.StationId);
-
             });
             return libraries;
         }
@@ -84,46 +79,9 @@ namespace Radikool6.Models
         /// <param name="id"></param>
         /// <returns></returns>
         public bool Delete(string id)
-        {
-            
-            var library = Get(id);
-            // ファイル削除
-            try
-            {
-                string fullPath = Path.Combine(Global.BaseDir, "records", library.Path);
-                if (File.Exists(fullPath))
-                {
-                    File.Delete(fullPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                Global.Logger.Error($"{ex.Message}\n{ex.StackTrace}");
-            }
-
-            SqliteConnection.Execute("DELETE FROM Libraries WHERE Id = @Id", new {Id = library.Id});
+        {            
+            SqliteConnection.Execute("DELETE FROM Libraries WHERE Id = @Id", new {Id = id});
             return true;
-        }
-
-        /// <summary>
-        /// 不要データ削除
-        /// </summary>
-        /// <returns></returns>
-        public bool Maintenance()
-        {
-            var dir = new DirectoryInfo(Path.Combine(Global.BaseDir, "records"));
-            var files = dir.EnumerateFiles("*.m4a").Select(f => f.Name).ToList();
-            var libraries = SqliteConnection.Query<Library>("SELECT * FROM Libraries");
-            foreach (var library in libraries)
-            {
-                if (!files.Contains(library.Path))
-                {
-                    SqliteConnection.Execute("DELETE FROM Libraries WHERE Id = @Id", new {Id = library.Id});
-                }
-            }
-
-            return true;
-
         }
     }
 }

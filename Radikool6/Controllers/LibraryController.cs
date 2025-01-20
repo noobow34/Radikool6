@@ -19,12 +19,10 @@ namespace Radikool6.Controllers
             using (SqliteConnection)
             {
                 var lModel = new LibraryModel(SqliteConnection);
-                lModel.Maintenance();
                 var library = lModel.Get(id);
-                string fullPath = Path.Combine(Global.BaseDir, "records", library.Path);
-                if (library != null && System.IO.File.Exists(fullPath))
+                if (library != null && library.FileBinary != null && library.FileBinary.Length != 0)
                 {
-                    return File(System.IO.File.OpenRead(fullPath), "audio/mp4", $"{library.FileName}.m4a");
+                    return File(new MemoryStream(library.FileBinary), "audio/mp4", $"{library.FileName}.m4a");
                 }
                 else
                 {
@@ -46,7 +44,6 @@ namespace Radikool6.Controllers
                 using (SqliteConnection)
                 {
                     var lModel = new LibraryModel(SqliteConnection);
-                    lModel.Maintenance();
                     Result.Result = true;
                     Result.Data = lModel.Get();
                 }
