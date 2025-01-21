@@ -54,16 +54,15 @@ namespace Radikool6.Models
                                    (
                                        Id,
                                        FileName,
-                                       Path,
-                                       ProgramJson
-
+                                       ProgramJson,
+                                       FileBinary
                                    )
                                    VALUES
                                    (
                                        @Id,
                                        @FileName,
-                                       @Path,
-                                       @ProgramJson
+                                       @ProgramJson,
+                                       @FileBinary
                                    )";
 
             SqliteConnection.Execute(query, library);
