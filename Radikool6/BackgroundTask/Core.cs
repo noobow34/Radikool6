@@ -106,7 +106,7 @@ namespace Radikool6.BackgroundTask
                 _recorderLock = false;
             }
 
-            if (!_timetableLock && (DateTime.Now - _refreshTimetableDate).TotalDays > 6)
+            if (!_timetableLock && (DateTime.Now - _refreshTimetableDate).TotalDays > 1)
             {
                 _timetableLock = true;
                 RefreshTimeTable();
