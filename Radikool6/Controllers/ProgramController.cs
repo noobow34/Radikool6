@@ -34,9 +34,11 @@ namespace Radikool6.Controllers
                 {
                     var pModel = new ProgramModel(SqliteConnection);
                     var res = pModel.Search(cond);
-
+                    Global.Logger.Info(res.Any());
+                    Global.Logger.Info($"{cond.From}:{cond.To}:{cond.StationId}:{cond.Refresh}:{cond.Keyword}");
                     if (!res.Any() && string.IsNullOrWhiteSpace(cond.Keyword) && cond.Refresh)
                     {
+                        Global.Logger.Info("RefreshPrograms");
                         RefreshPrograms(cond.StationId);
                         res = pModel.Search(cond);
                     }
