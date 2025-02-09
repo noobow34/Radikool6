@@ -128,8 +128,6 @@ namespace Radikool6.BackgroundTask
             {
                 try
                 {
-                    Global.Logger.Info("-------------------------------------");
-                    Global.Logger.Info(station.Id);
                     var programs = Radiko.GetPrograms(station).Result;
                     pModel.Refresh(programs);
                 }

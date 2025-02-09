@@ -152,7 +152,6 @@ namespace Radikool6.Models
                                        )";
 
             programs.ForEach(p => {
-                Global.Logger.Info(p.Id);
                 SqliteConnection.Execute(query, p, trn); 
             });
             trn.Commit();
