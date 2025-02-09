@@ -42,36 +42,26 @@ namespace Radikool6.Models
         /// <returns></returns>
         public List<Entities.Program> Search(ProgramSearchCondition cond)
         {
-
             var wheres = new List<string>();
 
-
-            //var q = Db.Programs.Where(p => p.Id != null);
             if (!string.IsNullOrWhiteSpace(cond.StationId))
             {
                 wheres.Add("StationId = @StationId");
-                //  q = q.Where(p => p.StationId == cond.StationId);
             }
 
             if (cond.From != null)
             {
                 wheres.Add("End > @From");
-                //q = q.Where(p => p.End > cond.From);
             }
 
             if (cond.To != null)
             {
                 wheres.Add("Start < @To");
-                //q = q.Where(p => p.Start < cond.To);
             }
 
             if (!string.IsNullOrWhiteSpace(cond.Keyword))
             {
                 wheres.Add("( Title LIKE @Keyword OR Cast LIKE @Keyword OR Description LIKE @Keyword)");
-                /*
-                q = q.Where(p =>
-                    p.Title.Contains(cond.Keyword) || p.Cast.Contains(cond.Keyword) ||
-                    p.Description.Contains(cond.Keyword));*/
             }
 
             var where = wheres.Count != 0 ? $"WHERE {string.Join(" AND ", wheres)}" : "";
@@ -83,9 +73,6 @@ namespace Radikool6.Models
                           {where}
                           ORDER BY StationId, Start";
             var res = SqliteConnection.Query<Entities.Program>(query, cond);
-
-            //  var res = q.OrderBy(p => p.StationId).ThenBy(p => p.Start).ToList();
-
 
             return res.ToList();
         }
@@ -155,8 +142,6 @@ namespace Radikool6.Models
                 SqliteConnection.Execute(query, p, trn); 
             });
             trn.Commit();
-
         }
-
     }
 }
