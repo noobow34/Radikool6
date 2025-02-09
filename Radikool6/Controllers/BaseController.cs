@@ -31,7 +31,7 @@ namespace Radikool6.Controllers
         {
             public bool Result { get; set; }
             public object Data { get; set; }
-            public List<string> Errors { get; set; } = new List<string>();
+            public List<string> Errors { get; set; } = [];
         }
 
 

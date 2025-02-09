@@ -14,7 +14,7 @@ namespace Radikool6.Entities
         public int Sequence { get; set; }
         public string MediaUrl { get; set; } = "";
         public string TimetableUrl { get; set; } = "";
-        public List<Program> Programs { get; set; } = new List<Program>();
+        public List<Program> Programs { get; set; } = [];
 
     }
 }

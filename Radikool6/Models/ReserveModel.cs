@@ -22,7 +22,7 @@ namespace Radikool6.Models
         {
             var res = SqliteConnection.Query<Reserve>("SELECT * FROM Reserves").ToList();
 
-            if (!res.Any()) return res;
+            if (res.Count == 0) return res;
 
             var stationIds = res.Select(r => r.StationId).Distinct().ToList();
             var stations = SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Id IN @StationIds",
