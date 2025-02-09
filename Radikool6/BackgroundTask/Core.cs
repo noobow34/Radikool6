@@ -17,7 +17,7 @@ namespace Radikool6.BackgroundTask
         private bool _recorderLock = false;
         private bool _timetableLock = false;
         
-        private readonly List<RadikoRecorder> _recorders = new List<RadikoRecorder>();
+        private readonly List<RadikoRecorder> _recorders = [];
         private DateTime _refreshTimetableDate = DateTime.MinValue;
         
         public Core()
@@ -82,7 +82,7 @@ namespace Radikool6.BackgroundTask
 
                     var rModel = new ReserveModel(con);
                     var tasks = rModel.GetTasks(true);
-                    if (tasks.Any())
+                    if (tasks.Count != 0)
                     {
 
                         tasks.ForEach(t =>

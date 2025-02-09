@@ -74,7 +74,7 @@ namespace Radikool6.Models
                     p.Description.Contains(cond.Keyword));*/
             }
 
-            var where = wheres.Any() ? $"WHERE {string.Join(" AND ", wheres)}" : "";
+            var where = wheres.Count != 0 ? $"WHERE {string.Join(" AND ", wheres)}" : "";
 
             var query = $@"SELECT 
                               * 

@@ -203,8 +203,8 @@ namespace Radikool6.Classes
         /// </summary>
         public class EncodeSettings
         {
-            public readonly List<EncodeSetting> Default = new List<EncodeSetting>()
-            {
+            public readonly List<EncodeSetting> Default =
+            [
                 // mp3
                 new EncodeSetting
                 {
@@ -229,7 +229,7 @@ namespace Radikool6.Classes
                     Codec = "-acodec copy",
                     BaseId = 2
                 }
-            };
+            ];
         }
     }
 }
