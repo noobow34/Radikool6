@@ -24,7 +24,7 @@ namespace Radikool6.BackgroundTask
         {
             Init();
 
-            _timer = new Timer(1000);
+            _timer = new Timer(60_000);
             _timer.Elapsed += this.TimerElapsed;
         }
 
@@ -106,7 +106,7 @@ namespace Radikool6.BackgroundTask
                 _recorderLock = false;
             }
 
-            if (!_timetableLock && (DateTime.Now - _refreshTimetableDate).TotalDays > 1)
+            if (!_timetableLock && (DateTime.Now.Date != _refreshTimetableDate.Date))
             {
                 _timetableLock = true;
                 RefreshTimeTable();
