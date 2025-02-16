@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Data.Sqlite;
-using Radikool6.Classes;
 using Radikool6.Entities;
 
 namespace Radikool6.Models
@@ -112,7 +108,6 @@ namespace Radikool6.Models
             var stationIds = programs.Select(p => p.StationId).Distinct();
             var delCount = SqliteConnection.Execute("DELETE FROM Programs WHERE StationId IN @StationIds",
                 new { StationIds = programs.Select(p => p.StationId).Distinct().ToList() }, trn);
-            Global.Logger.Info($"StationCount:{stationIds.Count()},DelCount:{delCount},ProgramCount:{programs.Count()}");
 
             const string query = @"INSERT INTO 
                                            Programs 

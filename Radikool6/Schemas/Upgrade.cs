@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using Microsoft.Data.Sqlite;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using Radikool6.Classes;
 

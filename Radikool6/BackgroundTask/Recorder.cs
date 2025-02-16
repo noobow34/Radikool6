@@ -1,5 +1,4 @@
-﻿using System;
-using Radikool6.Classes;
+﻿using Radikool6.Classes;
 using Radikool6.Entities;
 
 namespace Radikool6.BackgroundTask

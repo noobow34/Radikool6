@@ -1,12 +1,9 @@
 ﻿using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Quartz;
+using Quartz.Impl;
 using Radikool6.BackgroundTask;
 using Radikool6.Classes;
-using System;
-using System.IO;
 
 var confing = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json").Build();
 Global.BaseDir = confing["BaseDir"];
@@ -33,6 +30,30 @@ else
 }
 
 Globals.Core.Run();
+
+//番組表更新とSQLite VACCUMのためのスケジューラー
+var schedulerFactory = new StdSchedulerFactory();
+var sch = await schedulerFactory.GetScheduler();
+await sch.Start();
+var jobDetailRT = JobBuilder.Create<RefreshTimeTable>()
+                .WithIdentity("RefreshTimeTable")
+                .Build();
+var triggerRT = TriggerBuilder.Create()
+    .WithIdentity("RefreshTimeTable")
+    .StartNow()
+    .WithCronSchedule("0 0 6 ? * * *")
+    .Build();
+await sch.ScheduleJob(jobDetailRT, triggerRT);
+
+var jobDetailVc = JobBuilder.Create<SqliteVacuum>()
+                .WithIdentity("SqliteVacuum")
+                .Build();
+var triggerVc = TriggerBuilder.Create()
+    .WithIdentity("SqliteVacuum")
+    .StartNow()
+    .WithCronSchedule("0 30 6 ? * * *")
+    .Build();
+await sch.ScheduleJob(jobDetailVc, triggerVc);
 
 var builder = WebApplication.CreateBuilder();
 builder.Services.AddMemoryCache();

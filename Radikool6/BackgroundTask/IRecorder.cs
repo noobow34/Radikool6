@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Radikool6.BackgroundTask
+﻿namespace Radikool6.BackgroundTask
 {
     public interface IRecorder
     {

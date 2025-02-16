@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Data.Sqlite;
 using Radikool6.Entities;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 using Radikool6.Entities;

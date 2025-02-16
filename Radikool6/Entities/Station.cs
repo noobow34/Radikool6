@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Radikool6.Entities
+﻿namespace Radikool6.Entities
 {
     public class Station
     {
