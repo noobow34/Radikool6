@@ -32,7 +32,6 @@ namespace Radikool6.Controllers
                     var res = pModel.Search(cond);
                     if (res.Count == 0 && string.IsNullOrWhiteSpace(cond.Keyword) && cond.Refresh)
                     {
-                        Global.Logger.Info("RefreshPrograms");
                         RefreshPrograms(cond.StationId);
                         res = pModel.Search(cond);
                     }
