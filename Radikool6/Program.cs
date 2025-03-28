@@ -1,5 +1,4 @@
 ﻿using Auth0.AspNetCore.Authentication;
-using Microsoft.Data.Sqlite;
 using Quartz;
 using Quartz.Impl;
 using Radikool6.BackgroundTask;
@@ -13,20 +12,17 @@ if (!File.Exists(Define.File.DbFile))
     Radikool6.Schemas.Upgrade.Execute();
 }
 
-using var con = new SqliteConnection($"Data Source={Define.File.DbFile}");
-con.Open();
-using SqliteCommand cmd =new ("select key from key", con);
-var tempKey =  cmd.ExecuteScalar()?.ToString();
-if (!string.IsNullOrEmpty(tempKey))
+string enckey = Environment.GetEnvironmentVariable("RADIKOOL_ENCKEY");
+if (!string.IsNullOrEmpty(enckey))
 {
-    Global.EncKey = tempKey;
+    Global.EncKey = enckey;
 }
 else
 {
-    Global.EncKey = Guid.NewGuid().ToString("N");
-    using SqliteCommand cmdKeyInsert = new("insert into key(key) values(@key)",con);
-    cmdKeyInsert.Parameters.Add(new SqliteParameter("key", Global.EncKey));
-    cmdKeyInsert.ExecuteNonQuery();
+    Console.WriteLine("Please set the environment variable RADIKOOL_ENCKEY");
+    var logger = NLog.LogManager.GetCurrentClassLogger();
+    logger.Error("Please set the environment variable RADIKOOL_ENCKEY");
+    Environment.Exit(1);
 }
 
 Globals.Core.Run();
