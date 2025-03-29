@@ -15,6 +15,7 @@ if (!File.Exists(Define.File.DbFile))
 string enckey = Environment.GetEnvironmentVariable("RADIKOOL_ENCKEY");
 if (!string.IsNullOrEmpty(enckey))
 {
+    Console.WriteLine(enckey.Length);
     Global.EncKey = enckey;
 }
 else
