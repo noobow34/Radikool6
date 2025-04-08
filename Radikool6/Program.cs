@@ -5,7 +5,8 @@ using Radikool6.BackgroundTask;
 using Radikool6.Classes;
 
 var confing = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory).AddJsonFile("appsettings.json").Build();
-Global.BaseDir = confing["BaseDir"];
+string userHome = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+Global.BaseDir = Path.Combine(userHome,confing["BaseDir"]);
 
 if (!File.Exists(Define.File.DbFile))
 {
@@ -15,7 +16,7 @@ if (!File.Exists(Define.File.DbFile))
 string enckey = Environment.GetEnvironmentVariable("RADIKOOL_ENCKEY");
 if (!string.IsNullOrEmpty(enckey))
 {
-    Console.WriteLine(enckey.Length);
+    Console.WriteLine($"RADIKOOL_ENCKEY{enckey.Length}");
     Global.EncKey = enckey;
 }
 else
@@ -25,6 +26,11 @@ else
     logger.Error("Please set the environment variable RADIKOOL_ENCKEY");
     Environment.Exit(1);
 }
+
+string auth0Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN") ?? "";
+string auth0ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENT_ID") ?? "";
+Console.WriteLine($"AUTH0_ISSUER:{auth0Domain.Length}");
+Console.WriteLine($"AUTH0_CLIENT_ID:{auth0ClientId.Length}");
 
 Globals.Core.Run();
 
@@ -60,8 +66,8 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
-    options.Domain = builder.Configuration["Auth0:Domain"] ?? "";
-    options.ClientId = builder.Configuration["Auth0:ClientId"] ?? "";
+    options.Domain = auth0Domain;
+    options.ClientId = auth0ClientId;
 });
 
 var app = builder.Build();
