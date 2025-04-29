@@ -18,7 +18,7 @@ namespace Radikool6.Models
         /// <returns></returns>
         public IEnumerable<Library> Get()
         {
-            var libraries = SqliteConnection.Query<Library>("SELECT id,filename,programjson FROM Libraries").ToList();
+            var libraries = SqliteConnection.Query<Library>("SELECT id,filename,programjson,round(length(FileBinary)/1024.0/1024.0,1) || 'MB' size,Created FROM Libraries").ToList();
             var statios = SqliteConnection.Query<Station>("SELECT * FROM Stations WHERE Id IN @Ids",
                 new {Ids = libraries.Select(l => l.Program.StationId).Distinct().ToList()});
             
@@ -53,14 +53,16 @@ namespace Radikool6.Models
                                        Id,
                                        FileName,
                                        ProgramJson,
-                                       FileBinary
+                                       FileBinary,
+                                       Created
                                    )
                                    VALUES
                                    (
                                        @Id,
                                        @FileName,
                                        @ProgramJson,
-                                       @FileBinary
+                                       @FileBinary,
+                                       datetime()
                                    )";
 
             SqliteConnection.Execute(query, library);

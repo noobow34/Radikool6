@@ -7,6 +7,8 @@ namespace Radikool6.Entities
         public string Id { get; set; }
         public string FileName { get; set; }
         public byte[] FileBinary { get; set; }
+        public string Size { get; set; }
+        public string created { get; set; }
 
         [JsonIgnore]
         public string ProgramJson
