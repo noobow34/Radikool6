@@ -62,7 +62,7 @@ namespace Radikool6.Models
                                        @FileName,
                                        @ProgramJson,
                                        @FileBinary,
-                                       datetime()
+                                       datetime('now', 'localtime')
                                    )";
 
             SqliteConnection.Execute(query, library);
